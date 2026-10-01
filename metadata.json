@@ -1,0 +1,6 @@
+{
+  "name": "MIHORA Tech Careers — Candidate Profile Portal",
+  "description": "Official MIHORA Tech candidate profile and data-collection portal for engineering, technology, and operations roles.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
