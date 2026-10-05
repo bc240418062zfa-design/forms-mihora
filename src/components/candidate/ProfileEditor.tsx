@@ -55,10 +55,52 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
   const [skills, setSkills] = useState<Skill[]>(initialSkills);
   const [completeness, setCompleteness] = useState<CompletenessBreakdown>(initialCompleteness);
 
-  const [activeStep, setActiveStep] = useState<number>(1);
+  const [activeStep, setActiveStep] = useState<number>(() => {
+    try {
+      const saved = sessionStorage.getItem('mihora_portal_active_step');
+      if (saved) {
+        const val = parseInt(saved, 10);
+        if (val >= 1 && val <= 8) return val;
+      }
+    } catch {}
+    return 1;
+  });
+
+  const goToStep = (stepNumber: number) => {
+    setActiveStep(stepNumber);
+    try {
+      sessionStorage.setItem('mihora_portal_active_step', String(stepNumber));
+    } catch {}
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const isStepComplete = (stepId: number) => {
+    switch (stepId) {
+      case 1:
+        return completeness.basicInfo;
+      case 2:
+        return completeness.roleAndLevel;
+      case 3:
+        return completeness.experience;
+      case 4:
+        return completeness.education;
+      case 5:
+        return completeness.skills;
+      case 6:
+        return completeness.workPreferences;
+      case 7:
+        return completeness.compensationAvailability;
+      case 8:
+        return completeness.percentage >= 80;
+      default:
+        return false;
+    }
+  };
+
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [copiedCode, setCopiedCode] = useState(false);
 
   // Form states for modals/inline adding
   const [newExp, setNewExp] = useState<Partial<Experience>>({
@@ -134,9 +176,9 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
       if (!silent) {
         setSaveSuccess('Profile saved successfully to PostgreSQL database.');
         setTimeout(() => setSaveSuccess(null), 4000);
-      }
-      if (onProfileUpdated) {
-        onProfileUpdated();
+        if (onProfileUpdated) {
+          onProfileUpdated();
+        }
       }
     } catch (err: any) {
       setErrorMessage(err.message || 'Failed to save profile.');
@@ -252,93 +294,124 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Top Banner with Profile Reference & Real Completion Gauge */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8 shadow-xs">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white rounded-2xl border border-slate-200/80 p-6 md:p-8 mb-8 shadow-xs relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-gradient-to-bl from-blue-50/70 to-transparent rounded-full -mr-28 -mt-28 pointer-events-none" />
+
+        <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <div className="flex items-center gap-2 text-xs font-mono text-slate-500 mb-1">
+            <div className="flex items-center gap-2 text-xs font-mono text-slate-500 mb-1.5">
               <span>REFERENCE CODE</span>
-              <span className="font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                {candidate.reference_code}
-              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText(candidate.reference_code || '');
+                  setCopiedCode(true);
+                  setTimeout(() => setCopiedCode(false), 2000);
+                }}
+                className="font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 px-2 py-0.5 rounded border border-blue-200/80 transition-colors flex items-center gap-1 cursor-pointer"
+                title="Click to copy reference code"
+              >
+                <span>{candidate.reference_code}</span>
+                <span className="text-[10px] text-blue-500">{copiedCode ? '✓ Copied' : '📋'}</span>
+              </button>
               <span>·</span>
-              <span>PostgreSQL Persisted</span>
+              <span className="text-emerald-700 font-semibold flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block" />
+                PostgreSQL Persisted
+              </span>
             </div>
-            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
               {candidate.first_name || candidate.last_name
                 ? `${candidate.first_name || ''} ${candidate.last_name || ''}`.trim()
-                : 'Candidate Profile'}
+                : 'Candidate Technical Profile'}
             </h1>
-            <p className="text-sm text-slate-600 mt-0.5">
-              Keep your profile comprehensive and up-to-date for direct evaluation by MIHORA engineering leads.
+            <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl">
+              Keep your credentials and deployment criteria updated for direct evaluation by MIHORA engineering team.
             </p>
           </div>
 
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-5 shrink-0">
             <div className="flex flex-col items-end">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
                   Completeness
                 </span>
                 <span className="text-xl font-extrabold font-mono tabular-nums text-slate-900">
                   {completeness.percentage}%
                 </span>
               </div>
-              <div className="w-36 bg-slate-100 rounded-full h-2.5 mt-1 overflow-hidden border border-slate-200">
+              <div className="w-36 bg-slate-100 rounded-full h-2.5 mt-1.5 overflow-hidden border border-slate-200/80 p-0.5">
                 <div
-                  className="bg-blue-600 h-full rounded-full transition-all duration-300"
+                  className="bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 h-full rounded-full transition-all duration-500"
                   style={{ width: `${completeness.percentage}%` }}
                 />
               </div>
             </div>
 
             <button
-              onClick={() => saveProfileData()}
+              onClick={() => saveProfileData(false)}
               disabled={isSaving}
-              className="px-4 py-2 text-xs font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors shadow-xs flex items-center gap-2 disabled:opacity-50"
+              className="px-4 py-2.5 text-xs font-semibold text-white bg-slate-900 rounded-xl hover:bg-slate-800 transition-all shadow-xs hover:shadow flex items-center gap-2 disabled:opacity-50 cursor-pointer"
             >
-              <Save className="w-3.5 h-3.5" />
-              {isSaving ? 'Saving...' : 'Save Changes'}
+              <Save className="w-3.5 h-3.5 text-blue-400" />
+              <span>{isSaving ? 'Saving...' : 'Save Draft'}</span>
             </button>
           </div>
         </div>
 
         {/* Status Alerts */}
         {saveSuccess && (
-          <div className="mt-4 p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-emerald-800 text-xs flex items-center gap-2">
+          <div className="mt-4 p-3.5 bg-emerald-50 border border-emerald-200/80 rounded-xl text-emerald-900 text-xs flex items-center gap-2 shadow-2xs">
             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-            <span>{saveSuccess}</span>
+            <span className="font-medium">{saveSuccess}</span>
           </div>
         )}
 
         {errorMessage && (
-          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-800 text-xs flex items-center gap-2">
-            <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
-            <span>{errorMessage}</span>
+          <div className="mt-4 p-3.5 bg-rose-50 border border-rose-200/80 rounded-xl text-rose-900 text-xs flex items-center gap-2 shadow-2xs">
+            <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+            <span className="font-medium">{errorMessage}</span>
           </div>
         )}
       </div>
 
-      {/* Multi-Step Navigation Bar */}
-      <div className="flex items-center gap-1 overflow-x-auto pb-3 mb-8 border-b border-slate-200 no-scrollbar">
-        {steps.map((step) => {
-          const Icon = step.icon;
-          const isActive = activeStep === step.id;
-          return (
-            <button
-              key={step.id}
-              onClick={() => setActiveStep(step.id)}
-              className={`flex items-center gap-2 px-3.5 py-2 text-xs font-medium rounded-lg whitespace-nowrap transition-colors shrink-0 ${
-                isActive
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
-              }`}
-            >
-              <span className="font-mono text-[10px] opacity-75">{step.id}</span>
-              <Icon className="w-3.5 h-3.5" />
-              <span>{step.label}</span>
-            </button>
-          );
-        })}
+      {/* Multi-Step Stepper Navigation */}
+      <div className="bg-white rounded-2xl border border-slate-200/80 p-2 mb-8 shadow-xs">
+        <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1 px-1">
+          {steps.map((step) => {
+            const Icon = step.icon;
+            const isActive = activeStep === step.id;
+            const isDone = isStepComplete(step.id);
+
+            return (
+              <button
+                key={step.id}
+                onClick={() => goToStep(step.id)}
+                className={`flex items-center gap-2 px-3.5 py-2 text-xs font-semibold rounded-xl whitespace-nowrap transition-all duration-200 shrink-0 cursor-pointer ${
+                  isActive
+                    ? 'bg-slate-900 text-white shadow-sm ring-2 ring-blue-600/20'
+                    : isDone
+                    ? 'bg-emerald-50/70 text-emerald-900 hover:bg-emerald-100/70 border border-emerald-200/60'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80'
+                }`}
+              >
+                <span
+                  className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-mono font-bold ${
+                    isActive
+                      ? 'bg-blue-600 text-white'
+                      : isDone
+                      ? 'bg-emerald-600 text-white'
+                      : 'bg-slate-200 text-slate-600'
+                  }`}
+                >
+                  {isDone && !isActive ? '✓' : step.id}
+                </span>
+                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-blue-400' : isDone ? 'text-emerald-600' : 'text-slate-400'}`} />
+                <span>{step.label}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* STEP 1: BASIC INFORMATION */}
@@ -451,13 +524,13 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
           <div className="mt-8 pt-6 border-t border-slate-100 flex justify-end">
             <button
-              onClick={() => {
-                saveProfileData(true);
-                setActiveStep(2);
+              onClick={async () => {
+                await saveProfileData(true);
+                goToStep(2);
               }}
-              className="px-4 py-2 text-xs font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1.5"
+              className="px-5 py-2.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all shadow-sm hover:shadow flex items-center gap-2 cursor-pointer"
             >
-              Continue to Roles & Seniority
+              <span>Continue to Roles & Seniority</span>
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
@@ -583,20 +656,20 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
           <div className="mt-8 pt-6 border-t border-slate-100 flex justify-between">
             <button
-              onClick={() => setActiveStep(1)}
-              className="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors flex items-center gap-1.5"
+              onClick={() => goToStep(1)}
+              className="px-4 py-2.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
-              Back
+              <span>Back</span>
             </button>
             <button
-              onClick={() => {
-                saveProfileData(true);
-                setActiveStep(3);
+              onClick={async () => {
+                await saveProfileData(true);
+                goToStep(3);
               }}
-              className="px-4 py-2 text-xs font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1.5"
+              className="px-5 py-2.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all shadow-sm hover:shadow flex items-center gap-2 cursor-pointer"
             >
-              Continue to Experience
+              <span>Continue to Experience</span>
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
@@ -804,20 +877,20 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
           <div className="mt-8 pt-6 border-t border-slate-100 flex justify-between">
             <button
-              onClick={() => setActiveStep(2)}
-              className="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 flex items-center gap-1.5"
+              onClick={() => goToStep(2)}
+              className="px-4 py-2.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
-              Back
+              <span>Back</span>
             </button>
             <button
-              onClick={() => {
-                saveProfileData(true);
-                setActiveStep(4);
+              onClick={async () => {
+                await saveProfileData(true);
+                goToStep(4);
               }}
-              className="px-4 py-2 text-xs font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 flex items-center gap-1.5"
+              className="px-5 py-2.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all shadow-sm hover:shadow flex items-center gap-2 cursor-pointer"
             >
-              Continue to Education
+              <span>Continue to Education</span>
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
@@ -960,20 +1033,20 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
           <div className="mt-8 pt-6 border-t border-slate-100 flex justify-between">
             <button
-              onClick={() => setActiveStep(3)}
-              className="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 flex items-center gap-1.5"
+              onClick={() => goToStep(3)}
+              className="px-4 py-2.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
-              Back
+              <span>Back</span>
             </button>
             <button
-              onClick={() => {
-                saveProfileData(true);
-                setActiveStep(5);
+              onClick={async () => {
+                await saveProfileData(true);
+                goToStep(5);
               }}
-              className="px-4 py-2 text-xs font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 flex items-center gap-1.5"
+              className="px-5 py-2.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all shadow-sm hover:shadow flex items-center gap-2 cursor-pointer"
             >
-              Continue to Skills
+              <span>Continue to Skills</span>
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
@@ -1089,20 +1162,20 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
           <div className="mt-8 pt-6 border-t border-slate-100 flex justify-between">
             <button
-              onClick={() => setActiveStep(4)}
-              className="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 flex items-center gap-1.5"
+              onClick={() => goToStep(4)}
+              className="px-4 py-2.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
-              Back
+              <span>Back</span>
             </button>
             <button
-              onClick={() => {
-                saveProfileData(true);
-                setActiveStep(6);
+              onClick={async () => {
+                await saveProfileData(true);
+                goToStep(6);
               }}
-              className="px-4 py-2 text-xs font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 flex items-center gap-1.5"
+              className="px-5 py-2.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all shadow-sm hover:shadow flex items-center gap-2 cursor-pointer"
             >
-              Continue to Preferences
+              <span>Continue to Preferences</span>
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
@@ -1283,20 +1356,20 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
           <div className="mt-8 pt-6 border-t border-slate-100 flex justify-between">
             <button
-              onClick={() => setActiveStep(5)}
-              className="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 flex items-center gap-1.5"
+              onClick={() => goToStep(5)}
+              className="px-4 py-2.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
-              Back
+              <span>Back</span>
             </button>
             <button
-              onClick={() => {
-                saveProfileData(true);
-                setActiveStep(7);
+              onClick={async () => {
+                await saveProfileData(true);
+                goToStep(7);
               }}
-              className="px-4 py-2 text-xs font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 flex items-center gap-1.5"
+              className="px-5 py-2.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all shadow-sm hover:shadow flex items-center gap-2 cursor-pointer"
             >
-              Continue to Compensation & Availability
+              <span>Continue to Compensation & Availability</span>
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
@@ -1445,20 +1518,20 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
           <div className="mt-8 pt-6 border-t border-slate-100 flex justify-between">
             <button
-              onClick={() => setActiveStep(6)}
-              className="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 flex items-center gap-1.5"
+              onClick={() => goToStep(6)}
+              className="px-4 py-2.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
-              Back
+              <span>Back</span>
             </button>
             <button
-              onClick={() => {
-                saveProfileData(true);
-                setActiveStep(8);
+              onClick={async () => {
+                await saveProfileData(true);
+                goToStep(8);
               }}
-              className="px-4 py-2 text-xs font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 flex items-center gap-1.5"
+              className="px-5 py-2.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all shadow-sm hover:shadow flex items-center gap-2 cursor-pointer"
             >
-              Review Complete Profile
+              <span>Review Complete Profile</span>
               <ChevronRight className="w-4 h-4" />
             </button>
           </div>
@@ -1584,18 +1657,18 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
           <div className="mt-8 pt-6 border-t border-slate-100 flex justify-between">
             <button
-              onClick={() => setActiveStep(7)}
-              className="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 flex items-center gap-1.5"
+              onClick={() => goToStep(7)}
+              className="px-4 py-2.5 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <ChevronLeft className="w-4 h-4" />
-              Back
+              <span>Back</span>
             </button>
             <button
-              onClick={() => saveProfileData()}
-              className="px-6 py-2 text-xs font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 flex items-center gap-2 shadow-xs"
+              onClick={() => saveProfileData(false)}
+              className="px-6 py-2.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all shadow-sm hover:shadow flex items-center gap-2 cursor-pointer"
             >
               <CheckCircle2 className="w-4 h-4" />
-              Confirm & Save Profile
+              <span>Confirm & Save Profile</span>
             </button>
           </div>
         </div>

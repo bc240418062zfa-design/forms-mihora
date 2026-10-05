@@ -26,45 +26,53 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = () 
   const [error, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
-  const loadProfile = async () => {
-    setIsLoading(true);
+  const loadProfile = async (silent = false) => {
+    if (!silent) {
+      setIsLoading(true);
+    }
     setError(null);
     try {
       const data = await api.getCandidateProfile();
       setProfileData(data);
     } catch (err: any) {
-      setError(err.message || 'Failed to load profile.');
+      if (!silent) {
+        setError(err.message || 'Failed to load profile.');
+      }
     } finally {
-      setIsLoading(false);
+      if (!silent) {
+        setIsLoading(false);
+      }
     }
   };
 
   useEffect(() => {
-    loadProfile();
+    loadProfile(false);
   }, []);
 
-  if (isLoading) {
+  if (isLoading && !profileData) {
     return (
-      <div className="max-w-6xl mx-auto px-4 py-16 text-center">
-        <div className="w-8 h-8 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-        <p className="text-xs text-slate-500 font-mono">Loading candidate profile from PostgreSQL...</p>
+      <div className="max-w-6xl mx-auto px-4 py-24 text-center">
+        <div className="w-9 h-9 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-xs text-slate-500 font-mono tracking-tight">Synchronizing candidate dossier from PostgreSQL...</p>
       </div>
     );
   }
 
   if (error || !profileData) {
     return (
-      <div className="max-w-lg mx-auto px-4 py-16 text-center">
-        <div className="p-6 bg-red-50 border border-red-200 rounded-xl text-red-900">
-          <AlertTriangle className="w-8 h-8 text-red-600 mx-auto mb-2" />
-          <h2 className="text-base font-bold">Profile Unavailable</h2>
-          <p className="text-xs text-red-700 mt-1 mb-4">{error || 'Could not retrieve profile data.'}</p>
+      <div className="max-w-md mx-auto px-4 py-20 text-center">
+        <div className="p-8 bg-white border border-rose-200/80 rounded-2xl shadow-sm text-slate-800">
+          <div className="w-12 h-12 rounded-full bg-rose-50 text-rose-600 flex items-center justify-center mx-auto mb-3">
+            <AlertTriangle className="w-6 h-6" />
+          </div>
+          <h2 className="text-base font-bold text-slate-900">Profile Unavailable</h2>
+          <p className="text-xs text-slate-600 mt-1.5 mb-6">{error || 'Could not retrieve profile data.'}</p>
           <button
-            onClick={loadProfile}
-            className="px-4 py-2 text-xs font-semibold text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors inline-flex items-center gap-1.5"
+            onClick={() => loadProfile(false)}
+            className="w-full py-2.5 px-4 text-xs font-semibold text-white bg-slate-900 rounded-xl hover:bg-slate-800 transition-colors inline-flex items-center justify-center gap-2 shadow-xs"
           >
             <RefreshCw className="w-3.5 h-3.5" />
-            Retry
+            <span>Retry Connection</span>
           </button>
         </div>
       </div>
@@ -75,17 +83,22 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = () 
 
   if (isEditing) {
     return (
-      <div>
-        <div className="max-w-6xl mx-auto px-4 pt-4 flex justify-between items-center">
+      <div className="min-h-screen bg-slate-50/70 pb-16">
+        <div className="max-w-6xl mx-auto px-4 pt-6 pb-2 flex justify-between items-center">
           <button
             onClick={() => {
               setIsEditing(false);
-              loadProfile();
+              loadProfile(true);
             }}
-            className="text-xs font-semibold text-slate-600 hover:text-blue-600 transition-colors flex items-center gap-1.5"
+            className="group text-xs font-semibold text-slate-600 hover:text-blue-600 transition-colors flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-white border border-transparent hover:border-slate-200 shadow-2xs"
           >
-            ← Back to Dashboard Overview
+            <span className="transition-transform group-hover:-translate-x-1">←</span>
+            <span>Return to Dashboard Overview</span>
           </button>
+
+          <span className="text-[11px] font-mono text-slate-400 bg-white px-2.5 py-1 rounded-md border border-slate-200">
+            AUTO-SAVE ENABLED
+          </span>
         </div>
         <ProfileEditor
           initialCandidate={candidate}
@@ -94,7 +107,7 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = () 
           initialSkills={skills}
           initialDocuments={documents}
           initialCompleteness={completeness}
-          onProfileUpdated={loadProfile}
+          onProfileUpdated={() => loadProfile(true)}
         />
       </div>
     );
@@ -105,64 +118,69 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = () 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
       {/* Welcome & Overview Header */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 mb-8 shadow-xs">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white rounded-2xl border border-slate-200/80 p-6 md:p-8 mb-8 shadow-xs relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-blue-50/60 to-transparent rounded-full -mr-32 -mt-32 pointer-events-none" />
+
+        <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
-            <div className="flex items-center gap-2 text-xs font-mono text-slate-500 mb-1">
-              <span>CANDIDATE PORTAL</span>
+            <div className="flex items-center gap-2 text-xs font-mono text-slate-500 mb-1.5">
+              <span>ENGINEERING DOSSIER</span>
               <span>·</span>
-              <span className="font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+              <span className="font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded border border-blue-200/70">
                 {candidate.reference_code}
               </span>
             </div>
-            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
               Welcome back, {fullName}
             </h1>
-            <p className="text-xs text-slate-600 mt-1">
-              Account email: <span className="font-mono text-slate-800">{account.email}</span> · Last updated:{' '}
-              {candidate.updated_at ? new Date(candidate.updated_at).toLocaleString() : 'Just now'}
+            <p className="text-xs text-slate-600 mt-1 flex flex-wrap items-center gap-2">
+              <span>Account: <span className="font-mono text-slate-800">{account.email}</span></span>
+              <span>·</span>
+              <span>Last updated: {candidate.updated_at ? new Date(candidate.updated_at).toLocaleString() : 'Just now'}</span>
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={() => generateCandidatePdf(candidate, experiences, education, skills)}
-              className="px-3.5 py-2 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors flex items-center gap-1.5 shadow-2xs"
+              className="px-4 py-2.5 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl transition-all flex items-center gap-2 shadow-2xs hover:shadow-xs"
             >
               <Download className="w-3.5 h-3.5 text-slate-500" />
-              Download Dossier
+              <span>Download PDF Dossier</span>
             </button>
             <button
               onClick={() => setIsEditing(true)}
-              className="px-4 py-2 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors flex items-center gap-1.5 shadow-xs"
+              className="px-4 py-2.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all flex items-center gap-2 shadow-sm hover:shadow-md"
             >
               <Briefcase className="w-3.5 h-3.5" />
-              Edit / Update Profile
+              <span>Edit / Update Profile</span>
             </button>
           </div>
         </div>
 
         {/* Dynamic Completeness Tracker */}
-        <div className="mt-6 pt-6 border-t border-slate-100">
-          <div className="flex items-center justify-between mb-2">
+        <div className="mt-8 pt-6 border-t border-slate-100">
+          <div className="flex items-center justify-between mb-2.5">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-900">Profile Completeness Score</span>
-              <span className="text-xs text-slate-400">· Database Verified</span>
+              <span className="text-xs font-bold text-slate-900 tracking-tight">Profile Completeness Score</span>
+              <span className="text-[11px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                PostgreSQL Verified
+              </span>
             </div>
             <span className="text-sm font-extrabold font-mono text-blue-600 tabular-nums">
               {completeness.percentage}%
             </span>
           </div>
 
-          <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden border border-slate-200">
+          <div className="w-full bg-slate-100 rounded-full h-3 overflow-hidden border border-slate-200/80 p-0.5">
             <div
-              className="bg-blue-600 h-full rounded-full transition-all duration-500"
+              className="bg-gradient-to-r from-blue-600 via-indigo-600 to-emerald-500 h-full rounded-full transition-all duration-700 ease-out"
               style={{ width: `${completeness.percentage}%` }}
             />
           </div>
 
           {/* Section Checklist Indicators */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mt-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 mt-5">
             {[
               { label: 'Basic Info', done: completeness.basicInfo },
               { label: 'Contact', done: completeness.contact },
@@ -171,19 +189,19 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = () 
               { label: 'Experience', done: completeness.experience },
               { label: 'Education', done: completeness.education },
               { label: 'Skills', done: completeness.skills },
-              { label: 'Work Preferences', done: completeness.workPreferences },
+              { label: 'Preferences', done: completeness.workPreferences },
               { label: 'Compensation', done: completeness.compensationAvailability },
             ].map((sec) => (
               <div
                 key={sec.label}
-                className={`p-2 rounded-lg border text-xs flex items-center gap-2 ${
+                className={`p-2.5 rounded-xl border text-xs flex items-center gap-2 transition-colors ${
                   sec.done
-                    ? 'bg-emerald-50/60 border-emerald-200 text-emerald-900'
-                    : 'bg-slate-50 border-slate-200 text-slate-500'
+                    ? 'bg-emerald-50/70 border-emerald-200/80 text-emerald-950 font-medium'
+                    : 'bg-slate-50/60 border-slate-200/70 text-slate-400'
                 }`}
               >
                 <CheckCircle2
-                  className={`w-3.5 h-3.5 shrink-0 ${sec.done ? 'text-emerald-600' : 'text-slate-300'}`}
+                  className={`w-4 h-4 shrink-0 ${sec.done ? 'text-emerald-600' : 'text-slate-300'}`}
                 />
                 <span className="truncate">{sec.label}</span>
               </div>

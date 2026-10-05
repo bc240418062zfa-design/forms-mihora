@@ -20,64 +20,67 @@ interface LandingPageProps {
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-between">
+    <div className="min-h-screen bg-slate-50/70 flex flex-col justify-between relative overflow-hidden">
+      {/* Subtle Background Glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-96 bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(59,130,246,0.12),rgba(255,255,255,0))] pointer-events-none" />
+
       {/* Hero Section */}
-      <section className="pt-16 pb-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full">
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold mb-6">
+      <section className="pt-20 pb-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto w-full relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50/90 border border-blue-200/80 text-blue-700 text-xs font-semibold mb-6 shadow-2xs">
             <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-            Official Candidate Registry · MIHORA Tech
+            <span>Official Candidate Registry · MIHORA Tech</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15] text-balance">
             Build Your Persistent Technical Profile for MIHORA Tech
           </h1>
 
-          <p className="mt-4 text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
-            A dedicated candidate portal for engineers, technical specialists, and project leads. Complete your structured profile once, upload your CV, and update your availability at any time.
+          <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
+            A dedicated candidate portal for engineers, technical specialists, and project leads. Complete your structured profile once, verify your competencies, and update your deployment availability at any time.
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-3.5">
             <button
               onClick={() => onNavigate('register')}
-              className="w-full sm:w-auto px-6 py-3 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-7 py-3.5 text-xs sm:text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2 group cursor-pointer"
             >
               <FileText className="w-4 h-4" />
               <span>Create Candidate Account</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
 
             <button
               onClick={() => onNavigate('signin')}
-              className="w-full sm:w-auto px-6 py-3 text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl transition-all shadow-2xs flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-7 py-3.5 text-xs sm:text-sm font-semibold text-slate-700 bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl transition-all shadow-2xs hover:shadow-xs flex items-center justify-center gap-2 cursor-pointer"
             >
               <span>Sign In to Existing Profile</span>
             </button>
           </div>
 
-          <div className="mt-6 flex items-center justify-center gap-6 text-xs text-slate-500">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500">
             <span className="flex items-center gap-1.5">
               <Database className="w-3.5 h-3.5 text-blue-600" />
-              PostgreSQL Persistent Data
+              <span>PostgreSQL Persistent Data</span>
             </span>
             <span className="flex items-center gap-1.5">
               <Lock className="w-3.5 h-3.5 text-slate-600" />
-              End-to-End Encrypted Auth
+              <span>End-to-End Encrypted Auth</span>
             </span>
             <span className="flex items-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-              Zero Third-Party Tracking
+              <span>Zero Third-Party Tracking</span>
             </span>
           </div>
         </div>
 
         {/* Core Pillars */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-14">
-          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+          <div className="bg-white p-7 rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-all">
+            <div className="w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-4">
               <Briefcase className="w-5 h-5" />
             </div>
-            <h3 className="text-base font-bold text-slate-900 mb-1">
+            <h3 className="text-base font-bold text-slate-900 mb-1.5">
               Persistent Technical Identity
             </h3>
             <p className="text-xs text-slate-600 leading-relaxed">
@@ -85,11 +88,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
             </p>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4">
+          <div className="bg-white p-7 rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-all">
+            <div className="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-4">
               <MapPin className="w-5 h-5" />
             </div>
-            <h3 className="text-base font-bold text-slate-900 mb-1">
+            <h3 className="text-base font-bold text-slate-900 mb-1.5">
               Commute &amp; Deployment Precision
             </h3>
             <p className="text-xs text-slate-600 leading-relaxed">
@@ -97,11 +100,11 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
             </p>
           </div>
 
-          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
+          <div className="bg-white p-7 rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-all">
+            <div className="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
               <CheckCircle2 className="w-5 h-5" />
             </div>
-            <h3 className="text-base font-bold text-slate-900 mb-1">
+            <h3 className="text-base font-bold text-slate-900 mb-1.5">
               Real-Time Administrative Review
             </h3>
             <p className="text-xs text-slate-600 leading-relaxed">
