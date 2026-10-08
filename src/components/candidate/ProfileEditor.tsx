@@ -478,6 +478,39 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
             </div>
 
             <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">Country Calling Code *</label>
+              <input
+                type="text"
+                value={candidate.country_calling_code || '+92'}
+                onChange={(e) => handleInputChange('country_calling_code', e.target.value)}
+                placeholder="e.g. +92, +971, +1"
+                className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">Primary Phone / Mobile *</label>
+              <input
+                type="tel"
+                value={candidate.phone || ''}
+                onChange={(e) => handleInputChange('phone', e.target.value)}
+                placeholder="e.g. 03001234567 or +923001234567"
+                className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-slate-700 mb-1.5">Alternate / WhatsApp Phone</label>
+              <input
+                type="tel"
+                value={candidate.alternate_phone || ''}
+                onChange={(e) => handleInputChange('alternate_phone', e.target.value)}
+                placeholder="Optional"
+                className="w-full px-3 py-2 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+              />
+            </div>
+
+            <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1.5">Current Country *</label>
               <input
                 type="text"

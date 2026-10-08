@@ -7,9 +7,9 @@ interface AuthContextType {
   isLoading: boolean;
   isAuthenticated: boolean;
   isAdmin: boolean;
-  login: (data: { email: string; password: string }) => Promise<void>;
-  register: (data: { email: string; password: string; confirmPassword: string; acceptTerms: boolean }) => Promise<void>;
-  adminLogin: (data: { email: string; password: string }) => Promise<void>;
+  login: (data: { email: string; password: string }) => Promise<User>;
+  register: (data: { email: string; password: string; confirmPassword: string; acceptTerms: boolean }) => Promise<User>;
+  adminLogin: (data: { email: string; password: string }) => Promise<User>;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }
@@ -43,19 +43,22 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     refreshUser();
   }, []);
 
-  const login = async (data: { email: string; password: string }) => {
+  const login = async (data: { email: string; password: string }): Promise<User> => {
     const res = await api.login(data);
     setUser(res.user);
+    return res.user;
   };
 
-  const register = async (data: { email: string; password: string; confirmPassword: string; acceptTerms: boolean }) => {
+  const register = async (data: { email: string; password: string; confirmPassword: string; acceptTerms: boolean }): Promise<User> => {
     const res = await api.register(data);
     setUser(res.user);
+    return res.user;
   };
 
-  const adminLogin = async (data: { email: string; password: string }) => {
+  const adminLogin = async (data: { email: string; password: string }): Promise<User> => {
     const res = await api.adminLogin(data);
     setUser(res.user);
+    return res.user;
   };
 
   const logout = async () => {

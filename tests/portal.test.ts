@@ -131,6 +131,23 @@ async function runAllTests() {
     assert(completeness.skills === true, 'Skills verified completed');
     assert(!('resumeDocument' in completeness), 'Profile completeness does not require CV or document upload');
 
+    // Test 100% full completeness calculation
+    const fullCandidateRecord = {
+      ...candidateRecord,
+      phone: '+923001234567',
+      email: testUser.email,
+      primary_role: 'Lead Project Engineer',
+      seniority_level: 'Lead',
+      current_country: 'Pakistan',
+      current_city: 'Lahore',
+      work_modes: 'Hybrid, On-site',
+      willing_onsite_deployment: true,
+      expected_compensation_amount: 300000,
+      employment_status: 'currently_available',
+    };
+    const fullCompleteness = calculateCandidateCompleteness(fullCandidateRecord, 1, 1, 1);
+    assert(fullCompleteness.percentage === 100, `Complete candidate profile reaches exactly 100%: ${fullCompleteness.percentage}%`);
+
     // 6. AUTHORIZATION BOUNDARY & RBAC
     console.log('\n--- 6. Authorization & RBAC Token Testing ---');
     const candidateToken = generateToken({

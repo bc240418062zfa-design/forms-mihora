@@ -64,8 +64,8 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
-// Trust proxy for Heroku dyno load balancers
-app.set('trust proxy', 1);
+// Trust proxy for Heroku dyno load balancers and Cloudflare
+app.set('trust proxy', true);
 
 // Static assets for branding (logos, public images)
 const publicDir = path.resolve(process.cwd(), 'public');

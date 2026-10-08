@@ -43,6 +43,7 @@ candidateRouter.get('/me', async (req: AuthenticatedRequest, res: Response) => {
       db.query('SELECT * FROM candidate_skills WHERE candidate_id = $1 ORDER BY id ASC', [candidate.id]),
     ]);
 
+    candidate.email = req.user!.email;
     const completeness = calculateCandidateCompleteness(
       candidate,
       expRes.rows.length,
@@ -272,6 +273,7 @@ candidateRouter.put('/profile', async (req: AuthenticatedRequest, res: Response)
     ]);
 
     const updatedCandidate = updatedCandRes.rows[0];
+    updatedCandidate.email = req.user!.email;
     const completeness = calculateCandidateCompleteness(
       updatedCandidate,
       parseInt(expCount.rows[0].cnt, 10),

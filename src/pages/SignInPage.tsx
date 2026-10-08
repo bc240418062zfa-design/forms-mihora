@@ -25,8 +25,12 @@ export const SignInPage: React.FC<SignInPageProps> = ({ onNavigate }) => {
     setError(null);
 
     try {
-      await login({ email, password });
-      onNavigate('dashboard');
+      const loggedUser = await login({ email, password });
+      if (loggedUser && ['SUPER_ADMIN', 'ADMIN', 'VIEWER'].includes(loggedUser.role)) {
+        onNavigate('admin');
+      } else {
+        onNavigate('dashboard');
+      }
     } catch (err: any) {
       setError(err.message || 'Authentication failed. Please verify your credentials.');
     } finally {

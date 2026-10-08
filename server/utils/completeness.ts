@@ -18,25 +18,25 @@ export function calculateCandidateCompleteness(
   skillsCount: number
 ): CompletenessBreakdown {
   const basicInfo = Boolean(candidate?.first_name?.trim() && candidate?.last_name?.trim());
-  const contact = Boolean(candidate?.phone?.trim());
+  const contact = Boolean(
+    candidate?.phone?.trim() || candidate?.email?.trim() || candidate?.user_email?.trim()
+  );
   const location = Boolean(candidate?.current_country?.trim() && candidate?.current_city?.trim());
   const roleAndLevel = Boolean(candidate?.primary_role?.trim() && candidate?.seniority_level?.trim());
-  const experience = Boolean(
-    experiencesCount > 0 ||
-      (candidate?.total_experience_years !== null &&
-        candidate?.total_experience_years !== undefined &&
-        candidate?.total_experience_years >= 0)
-  );
+  const expYears = Number(candidate?.total_experience_years);
+  const hasExpYears = !isNaN(expYears) && expYears >= 0;
+  const experience = Boolean(experiencesCount > 0 || hasExpYears);
   const education = Boolean(educationCount > 0);
   const skills = Boolean(skillsCount > 0);
   const workPreferences = Boolean(
     candidate?.work_modes?.trim() || candidate?.willing_onsite_deployment !== null
   );
-  const compensationAvailability = Boolean(
+  const hasCompensation =
     candidate?.expected_compensation_amount !== null &&
-      candidate?.expected_compensation_amount !== undefined &&
-      candidate?.employment_status?.trim()
-  );
+    candidate?.expected_compensation_amount !== undefined &&
+    String(candidate?.expected_compensation_amount).trim() !== '';
+  const hasStatus = Boolean(candidate?.employment_status?.trim());
+  const compensationAvailability = Boolean(hasCompensation || hasStatus);
 
   const sections = [
     basicInfo,

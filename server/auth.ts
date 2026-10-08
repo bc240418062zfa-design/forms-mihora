@@ -93,8 +93,9 @@ export function requireCandidate(req: AuthenticatedRequest, res: Response, next:
   if (!req.user) {
     return res.status(401).json({ error: 'Authentication required.' });
   }
-  if (req.user.role !== 'CANDIDATE') {
-    return res.status(403).json({ error: 'Access restricted to candidates.' });
+  // Candidates and authorized administrators are permitted
+  if (!['CANDIDATE', 'SUPER_ADMIN', 'ADMIN', 'VIEWER'].includes(req.user.role)) {
+    return res.status(403).json({ error: 'Access restricted to candidates and authorized administrators.' });
   }
   next();
 }

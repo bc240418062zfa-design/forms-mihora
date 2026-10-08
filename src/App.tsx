@@ -48,6 +48,10 @@ const AppContent: React.FC = () => {
         setCurrentView('signin');
       } else if (currentView === 'admin' && !isAdmin) {
         setCurrentView('admin_login');
+      } else if (currentView === 'admin_login' && isAuthenticated && isAdmin) {
+        setCurrentView('admin');
+      } else if (currentView === 'signin' && isAuthenticated) {
+        setCurrentView(isAdmin ? 'admin' : 'dashboard');
       }
     }
   }, [currentView, isAuthenticated, isAdmin, isLoading]);
