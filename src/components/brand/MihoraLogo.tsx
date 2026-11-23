@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { BRANDING } from '../../config/branding';
+import React from 'react';
 
 interface MihoraLogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
@@ -11,51 +10,42 @@ interface MihoraLogoProps {
 export const MihoraLogo: React.FC<MihoraLogoProps> = ({
   size = 'md',
   variant = 'full',
-  theme = 'light',
+  theme = 'dark',
   className = '',
 }) => {
-  const [imageError, setImageError] = useState(false);
-
   const heights = {
     sm: variant === 'full' ? 28 : 24,
-    md: variant === 'full' ? 36 : 32,
-    lg: variant === 'full' ? 52 : 44,
-    xl: variant === 'full' ? 72 : 60,
+    md: variant === 'full' ? 34 : 30,
+    lg: variant === 'full' ? 46 : 40,
+    xl: variant === 'full' ? 60 : 52,
   };
 
   const currentHeight = heights[size];
+  const isDarkSurface = theme === 'dark';
 
-  if (!imageError) {
-    return (
-      <span className={`inline-flex items-center gap-2.5 select-none ${className}`}>
-        <img
-          src={BRANDING.logoSvgPath}
-          alt={BRANDING.companyName}
-          style={{ height: `${currentHeight}px`, width: 'auto' }}
-          className="object-contain"
-          onError={() => setImageError(true)}
-        />
-      </span>
-    );
-  }
+  const wingPrimary = isDarkSurface ? '#F4F7F5' : '#1B3A5C';
+  const wingSecondary = isDarkSurface ? '#B9CCE0' : '#0F2740';
+  const pillarFill = isDarkSurface ? '#22486E' : '#0A1B2E';
+  const lineStroke = isDarkSurface ? '#0F2740' : '#F4F7F5';
+  const nodeFill = isDarkSurface ? '#F4F7F5' : '#F4F7F5';
 
   return (
     <span className={`inline-flex items-center gap-2.5 select-none ${className}`}>
       {variant !== 'wordmark' && (
         <svg
-          viewBox="0 0 1000 1000"
-          style={{ height: `${currentHeight}px`, width: `${currentHeight}px` }}
+          viewBox="220 175 560 430"
+          style={{ height: `${currentHeight}px`, width: 'auto' }}
           className="shrink-0"
           aria-hidden="true"
         >
-          <polygon points="270,195 500,385 435,435 270,285" fill="#0052CC" />
-          <polygon points="730,195 500,385 565,435 730,285" fill="#0052CC" />
-          <polygon points="500,385 435,435 500,515 565,435" fill="#0052CC" />
-          <polygon points="270,285 365,355 365,580 270,510" fill="#0B1324" />
-          <polygon points="365,355 435,435 500,515 365,445" fill="#172542" />
-          <polygon points="730,285 635,355 635,580 730,510" fill="#0B1324" />
-          <polygon points="635,355 565,435 500,515 635,445" fill="#172542" />
-          <g stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="270,195 500,385 435,435 270,285" fill={wingPrimary} />
+          <polygon points="730,195 500,385 565,435 730,285" fill={wingPrimary} />
+          <polygon points="500,385 435,435 500,515 565,435" fill={wingSecondary} />
+          <polygon points="270,285 365,355 365,580 270,510" fill={pillarFill} stroke={wingSecondary} strokeWidth="6" />
+          <polygon points="365,355 435,435 500,515 365,445" fill={wingSecondary} />
+          <polygon points="730,285 635,355 635,580 730,510" fill={pillarFill} stroke={wingSecondary} strokeWidth="6" />
+          <polygon points="635,355 565,435 500,515 635,445" fill={wingSecondary} />
+          <g stroke={lineStroke} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" opacity="0.9">
             <line x1="335" y1="377" x2="400" y2="352" />
             <line x1="335" y1="377" x2="440" y2="434" />
             <line x1="400" y1="352" x2="440" y2="434" />
@@ -69,30 +59,34 @@ export const MihoraLogo: React.FC<MihoraLogoProps> = ({
             <line x1="597" y1="385" x2="687" y2="416" />
             <line x1="651" y1="309" x2="687" y2="416" />
           </g>
-          <g fill="#FFFFFF">
-            <circle cx="335" cy="377" r="10" />
-            <circle cx="400" cy="352" r="11" />
-            <circle cx="440" cy="434" r="9" />
-            <circle cx="497" cy="417" r="12" />
-            <circle cx="585" cy="447" r="9.5" />
-            <circle cx="597" cy="385" r="11" />
-            <circle cx="651" cy="309" r="10.5" />
-            <circle cx="687" cy="416" r="9" />
+          <g fill={nodeFill}>
+            <circle cx="335" cy="377" r="9" />
+            <circle cx="400" cy="352" r="10" />
+            <circle cx="440" cy="434" r="8" />
+            <circle cx="497" cy="417" r="11" />
+            <circle cx="585" cy="447" r="8.5" />
+            <circle cx="597" cy="385" r="10" />
+            <circle cx="651" cy="309" r="9.5" />
+            <circle cx="687" cy="416" r="8" />
           </g>
         </svg>
       )}
 
       {variant !== 'mark' && (
-        <span className="flex flex-col justify-center leading-none">
+        <span className="flex flex-col justify-center leading-none text-left">
           <span
-            className={`font-display font-extrabold tracking-widest text-lg ${
-              theme === 'dark' ? 'text-white' : 'text-[var(--ink-primary)]'
+            className={`font-display font-bold tracking-[0.14em] text-base ${
+              isDarkSurface ? 'text-[var(--exposure)]' : 'text-[var(--edge)]'
             }`}
           >
             MIHORA
           </span>
-          <span className="text-[10px] font-mono font-semibold tracking-[0.26em] text-[var(--accent-primary)] uppercase mt-0.5">
-            TECH
+          <span
+            className={`text-[10px] font-mono font-medium tracking-[0.24em] mt-0.5 ${
+              isDarkSurface ? 'text-[var(--chalk)]' : 'text-[var(--prussian)]'
+            }`}
+          >
+            TECH VAULT
           </span>
         </span>
       )}

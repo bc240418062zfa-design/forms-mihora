@@ -8,10 +8,10 @@ interface RevealProps {
 }
 
 /**
- * Calibrated instrument reveal:
+ * Cyanotype sheet reveal:
  * - Content is NEVER stranded invisible: settles cleanly via IntersectionObserver
  *   plus a strict 450ms failsafe timeout, and renders immediately if reduced-motion is set.
- * - Uses compositor-only transform + opacity.
+ * - Uses compositor-only transform + opacity with Theme 064 --ease-slide (paper settling flat).
  */
 export const Reveal: React.FC<RevealProps> = ({ children, delayMs = 0, className = '' }) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -45,7 +45,7 @@ export const Reveal: React.FC<RevealProps> = ({ children, delayMs = 0, className
           }
         }
       },
-      { threshold: 0.05, rootMargin: '0px 0px -20px 0px' }
+      { threshold: 0.04, rootMargin: '0px 0px -20px 0px' }
     );
 
     observer.observe(el);
@@ -60,10 +60,10 @@ export const Reveal: React.FC<RevealProps> = ({ children, delayMs = 0, className
       ref={ref}
       style={{
         transitionDelay: visible ? `${delayMs}ms` : '0ms',
-        transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
+        transitionTimingFunction: 'cubic-bezier(0.22, 0.9, 0.28, 1)',
       }}
-      className={`transition-[opacity,transform] duration-300 will-change-transform ${
-        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+      className={`transition-[opacity,transform] duration-400 will-change-transform ${
+        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
       } ${className}`}
     >
       {children}
@@ -81,7 +81,7 @@ interface AnimatedNumberProps {
 export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({
   value,
   suffix = '',
-  durationMs = 500,
+  durationMs = 520,
   className = '',
 }) => {
   const [display, setDisplay] = useState<number>(value);
@@ -132,10 +132,10 @@ export const ScrollProgressBar: React.FC = () => {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute bottom-0 left-0 right-0 h-[2px] bg-transparent overflow-hidden"
+      className="pointer-events-none absolute bottom-0 left-0 right-0 h-[1.5px] bg-transparent overflow-hidden"
     >
       <div
-        className="h-full bg-[var(--accent-primary)] origin-left transition-transform duration-75"
+        className="h-full bg-[var(--exposure)] origin-left transition-transform duration-75"
         style={{ transform: `scaleX(${progress})` }}
       />
     </div>

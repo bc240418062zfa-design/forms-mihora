@@ -1,122 +1,182 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   OmniForge Theme #064 — The Cyanotype Vault
+   Canonical Tokens & Design System
+   ========================================================================== */
 :root {
-  /* 60% Canvas & Elevated Surfaces */
-  --surface-canvas: #F7F8FA;
-  --surface-elevated: #FFFFFF;
-  --surface-subtle: #F1F4F8;
-  --surface-inset: #ECEFF4;
-  --surface-ink: #0B1324;
+  /* Core Theme 064 Anchors & Derived Tokens */
+  --table: #0A1B2E;
+  --prussian: #1B3A5C;
+  --prussian-raise: #22486E;
+  --edge: #0F2740;
+  --exposure: #F4F7F5;
+  --chalk: #B9CCE0;
+  --chalk-dim: #7E97B0;
+  --red: #C0392B;
+  --fibre: rgba(244, 247, 245, 0.045);
+  --uv-glow: rgba(244, 247, 245, 0.14);
 
-  /* 30% Ink & Structural Hairlines */
-  --ink-primary: #0B1324;
-  --ink-secondary: #334155;
-  --ink-muted: #64748B;
-  --ink-faint: #94A3B8;
-  --border-hairline: #E2E6EE;
-  --border-strong: #CBD5E1;
+  /* Sheet Rules & Shadows */
+  --rule-hairline: rgba(185, 204, 224, 0.24);
+  --rule-strong: rgba(244, 247, 245, 0.42);
+  --rule-paper: rgba(15, 39, 64, 0.18);
+  --shadow-sheet: 0 24px 48px -20px rgba(4, 11, 22, 0.72), 0 2px 8px rgba(4, 11, 22, 0.4);
+  --shadow-sheet-lift: 0 30px 56px -18px rgba(4, 11, 22, 0.84), 0 4px 12px rgba(4, 11, 22, 0.45);
+  --shadow-slip: 0 28px 64px -16px rgba(4, 11, 22, 0.78);
 
-  /* 10% Signal Accent & Semantic Status */
-  --accent-primary: #0052CC;
-  --accent-primary-hover: #003E9E;
-  --accent-primary-soft: rgba(0, 82, 204, 0.08);
-  --accent-ring: rgba(0, 82, 204, 0.22);
+  /* Semantic Status (Errors speak in chalk & border, never stealing checker's --red) */
+  --status-verified: #7CE8C6;
+  --status-verified-soft: rgba(124, 232, 198, 0.12);
+  --status-warn: #F7D070;
+  --status-warn-soft: rgba(247, 208, 112, 0.12);
+  --status-notice-bg: rgba(15, 39, 64, 0.9);
+  --status-notice-border: rgba(244, 247, 245, 0.45);
 
-  --status-success: #0F766E;
-  --status-success-soft: rgba(15, 118, 110, 0.08);
-  --status-warning: #B45309;
-  --status-warning-soft: rgba(180, 83, 9, 0.08);
-  --status-danger: #BE123C;
-  --status-danger-soft: rgba(190, 18, 60, 0.08);
+  /* Radii (Draughted crisp sheet corners) */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
 
-  /* Radii & Elevation (Single-level crisp hairlines) */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --shadow-card: 0 1px 2px rgba(11, 19, 36, 0.04), 0 1px 1px rgba(11, 19, 36, 0.02);
-  --shadow-popover: 0 12px 32px -8px rgba(11, 19, 36, 0.14), 0 2px 6px rgba(11, 19, 36, 0.06);
-
-  /* Motion Timing */
-  --ease-instrument: cubic-bezier(0.22, 1, 0.36, 1);
-  --duration-fast: 150ms;
-  --duration-base: 240ms;
-  --duration-slow: 420ms;
+  /* Named Theme 064 Easings */
+  --ease-expose: cubic-bezier(0.33, 0, 0.2, 1);
+  --ease-slide: cubic-bezier(0.22, 0.9, 0.28, 1);
+  --ease-rule: cubic-bezier(0.45, 0, 0.25, 1);
+  --ease-fix: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-hand: cubic-bezier(0.2, 0.85, 0.3, 1.08);
 }
 
 @layer base {
   html {
     scroll-behavior: smooth;
-    color: var(--ink-primary);
-    background-color: var(--surface-canvas);
+    color: var(--exposure);
+    background-color: var(--table);
   }
 
   body {
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    color: var(--ink-primary);
-    background-color: var(--surface-canvas);
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    color: var(--exposure);
+    background-color: var(--table);
     overflow-x: hidden;
   }
 
   h1, h2, h3, .font-display {
-    font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
-    letter-spacing: -0.025em;
+    font-family: 'Archivo', system-ui, -apple-system, sans-serif;
+    font-variation-settings: "wdth" 118;
+    letter-spacing: 0.01em;
   }
 
   .font-mono {
-    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     font-variant-numeric: tabular-nums;
   }
 
   button, a, input, select, textarea {
-    outline-color: var(--accent-primary);
+    outline-color: var(--exposure);
   }
 }
 
-/* Precision Architectural Grid Backdrop */
-.bg-instrument-grid {
+/* Light-Table Fine Drafting Grid */
+.bg-cyanotype-table {
+  background-color: var(--table);
   background-image:
-    linear-gradient(to right, rgba(11, 19, 36, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(11, 19, 36, 0.035) 1px, transparent 1px);
-  background-size: 40px 40px;
+    linear-gradient(to right, rgba(185, 204, 224, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(185, 204, 224, 0.04) 1px, transparent 1px),
+    linear-gradient(to right, rgba(185, 204, 224, 0.085) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(185, 204, 224, 0.085) 1px, transparent 1px);
+  background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px;
 }
 
-/* Shared Field Control Styling */
+/* Prussian Blueprint Sheet Surface */
+.cyanotype-sheet {
+  position: relative;
+  background-color: var(--prussian);
+  background-image:
+    radial-gradient(circle at 20% 0%, rgba(244, 247, 245, 0.045), transparent 55%),
+    linear-gradient(to right, var(--fibre) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--fibre) 1px, transparent 1px);
+  background-size: 100% 100%, 24px 24px, 24px 24px;
+  border: 1px solid var(--rule-hairline);
+  border-radius: var(--radius-xs);
+  box-shadow: var(--shadow-sheet);
+}
+
+/* Double Exposure Rule (Theme 064 §6.13 / §6.16) */
+.double-exposure-rule {
+  border-top: 3px double rgba(244, 247, 245, 0.45);
+}
+
+/* Theme 064 §6.14 Ruled Mono Input on --prussian-raise */
 .field-input {
   width: 100%;
-  background-color: var(--surface-elevated);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-md);
-  padding: 0.5625rem 0.75rem;
-  font-size: 0.875rem;
-  line-height: 1.35;
-  color: var(--ink-primary);
-  transition: border-color var(--duration-fast) var(--ease-instrument),
-              box-shadow var(--duration-fast) var(--ease-instrument),
-              background-color var(--duration-fast) var(--ease-instrument);
+  background-color: var(--prussian-raise);
+  border: 1px solid rgba(185, 204, 224, 0.34);
+  border-radius: var(--radius-xs);
+  padding: 0.625rem 0.75rem;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  color: var(--exposure);
+  color-scheme: dark;
+  transition: border-color 220ms var(--ease-fix),
+              background-color 220ms var(--ease-fix),
+              box-shadow 220ms var(--ease-fix);
 }
 
 .field-input::placeholder {
-  color: var(--ink-faint);
+  color: var(--chalk-dim);
 }
 
 .field-input:hover:not(:disabled) {
-  border-color: var(--ink-muted);
+  border-color: var(--chalk);
 }
 
 .field-input:focus {
   outline: none;
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 0 3px var(--accent-ring);
+  background-color: #27517C;
+  border-color: var(--exposure);
+  box-shadow: 0 0 0 2px rgba(244, 247, 245, 0.22);
 }
 
 .field-input:disabled {
-  background-color: var(--surface-subtle);
-  color: var(--ink-muted);
+  background-color: var(--edge);
+  color: var(--chalk-dim);
+  border-color: rgba(185, 204, 224, 0.18);
   cursor: not-allowed;
+}
+
+.field-input option {
+  background-color: var(--edge);
+  color: var(--exposure);
 }
 
 .field-input-icon {
   padding-left: 2.375rem;
+}
+
+/* Theme 064 §6.9 Borrowed Red Pencil Link Underline */
+.pencil-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.pencil-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1.5px;
+  background-color: var(--red);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 200ms var(--ease-rule);
+}
+
+.pencil-link:hover::after,
+.pencil-link:focus-visible::after {
+  transform: scaleX(1);
 }
 
 /* Hide scrollbars cleanly where horizontal overflow is intentional */
@@ -128,7 +188,29 @@
   scrollbar-width: none;
 }
 
-/* Strict Reduced-Motion Support */
+/* Theme 064 §6.1 / §5 UV Exposure Bar Keyframes */
+@keyframes uvSweep {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(105%);
+    opacity: 0;
+  }
+}
+
+.uv-exposure-bar {
+  animation: uvSweep 1600ms var(--ease-expose) forwards;
+}
+
+/* Strict Reduced-Motion Support — Page ships complete & static */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -137,5 +219,8 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  .uv-exposure-bar {
+    display: none !important;
   }
 }

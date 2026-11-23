@@ -1,85 +1,96 @@
 import React, { useState } from 'react';
 import { MihoraLogo } from '../components/brand/MihoraLogo';
 import { Reveal } from '../components/ui/MotionPrimitives';
-import { ArchitecturalMedia } from '../components/ui/ArchitecturalMedia';
-import { useScrollProgress } from '../utils/useScrollProgress';
-import heroStudioImg from '../assets/images/hero_engineering_studio_1795454842220.jpg';
-import fieldSiteImg from '../assets/images/field_site_supervision_1795454843496.jpg';
-import systemsDeskImg from '../assets/images/precision_systems_workstation_1795454842890.jpg';
-import { ArrowRight, ArrowUpRight, Cpu, Building, Layers, ShieldCheck } from 'lucide-react';
+import {
+  RegistrationCrosses,
+  TitleBlock,
+  EdgeDimensionRuler,
+  BlueprintHeroSchematic,
+  CommuteCalibrationDiagram,
+  DossierLayerDiagram,
+  SingleRedMark,
+} from '../components/cyanotype/BlueprintApparatus';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 
 interface LandingPageProps {
   onNavigate: (view: string) => void;
 }
 
 const DOSSIER_INDEX = [
-  { code: '01', label: 'Identity & Residential Locality', detail: 'Contact details, city, region, and calling code' },
-  { code: '02', label: 'Engineering Role & Seniority', detail: 'Primary role, seniority tier, and multi-role track' },
-  { code: '03', label: 'Career Experience Ledger', detail: 'Employment timeline, deliverables, and tooling' },
-  { code: '04', label: 'Academic Qualifications', detail: 'Degrees, institutions, and academic standing' },
-  { code: '05', label: 'Technical Skill Matrix', detail: 'Structured proficiency level and practice years' },
-  { code: '06', label: 'Commute & Site Deployment', detail: 'On-site willingness, km/min limits, and housing' },
-  { code: '07', label: 'Remuneration & Availability', detail: 'Expected package, notice days, and shift windows' },
+  { code: '01', label: 'Identity & Residential Locality', detail: 'Legal identity, calling code, mobile number, city and region' },
+  { code: '02', label: 'Engineering Role & Seniority', detail: 'Primary role, seniority tier, and multi-role track options' },
+  { code: '03', label: 'Career Experience Ledger', detail: 'Employment timeline, deliverables, and engineering tooling' },
+  { code: '04', label: 'Academic Qualifications', detail: 'Accredited degrees, diplomas, institutions, and current enrollment' },
+  { code: '05', label: 'Technical Skill Matrix', detail: 'Structured domain proficiency and verified years of practice' },
+  { code: '06', label: 'Commute & Site Deployment', detail: 'On-site willingness, km/min thresholds, and accommodation logic' },
+  { code: '07', label: 'Remuneration & Availability', detail: 'Expected package, notice period days, shift windows, and PDF dossier' },
 ];
 
-const DISCIPLINES = [
+const DISCIPLINES_SCHEDULE = [
   {
-    index: '01',
-    title: 'Software & Cloud',
-    summary: 'Full-stack web systems, backend APIs, cloud architecture, and database engineering.',
-    icon: Cpu,
+    code: 'TRK-01',
+    title: 'Software & Cloud Systems',
+    scope: 'Full-stack TypeScript web architecture, REST APIs, relational PostgreSQL design, and cloud infrastructure.',
+    mode: 'Remote / Hybrid / On-Site',
   },
   {
-    index: '02',
-    title: 'Civil & Structural',
-    summary: 'Site execution, structural engineering, CAD/BIM modeling, and project planning.',
-    icon: Building,
+    code: 'TRK-02',
+    title: 'Civil & Structural Engineering',
+    scope: 'Site execution, structural drawings, CAD/BIM coordination, rebar detailing, and field supervision.',
+    mode: 'On-Site / Regional Corridor',
   },
   {
-    index: '03',
-    title: 'Electrical & Power',
-    summary: 'Power distribution, field instrumentation, industrial controls, and grid systems.',
-    icon: Layers,
+    code: 'TRK-03',
+    title: 'Electrical & Power Systems',
+    scope: 'Grid distribution, industrial controls, substation instrumentation, and commissioning protocols.',
+    mode: 'On-Site Deployment',
   },
   {
-    index: '04',
-    title: 'QA/QC & Supervision',
-    summary: 'Quality inspection, compliance verification, testing protocols, and site supervision.',
-    icon: ShieldCheck,
+    code: 'TRK-04',
+    title: 'QA/QC & Field Supervision',
+    scope: 'Inspection checklists, compliance documentation, testing sign-offs, and handover verification.',
+    mode: 'Project Site / Hybrid',
   },
 ];
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
-  const { scrollY } = useScrollProgress();
   const [selectedModule, setSelectedModule] = useState(0);
-  const subtleParallax = Math.min(16, scrollY * 0.035);
 
   return (
-    <div className="min-h-screen bg-[var(--surface-canvas)] flex flex-col justify-between">
-      {/* 1. Hero Section — Architectural Split with High-Resolution Visual Focal Anchor */}
-      <section className="border-b border-[var(--border-hairline)] bg-[var(--surface-elevated)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-16 lg:pt-16 lg:pb-20">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-stretch">
-            {/* Left 6 Columns: Headline, Value Proposition, Primary CTA */}
-            <div className="lg:col-span-6 flex flex-col justify-between py-2">
+    <div className="min-h-screen bg-cyanotype-table flex flex-col justify-between relative">
+      <EdgeDimensionRuler />
+
+      <div className="max-w-[1180px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-16 sm:space-y-24">
+        {/* SHEET MHR-01: UV EXPOSURE HERO */}
+        <section
+          aria-labelledby="hero-sheet-heading"
+          className="cyanotype-sheet p-6 sm:p-10 lg:p-12"
+        >
+          <RegistrationCrosses />
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start pt-2">
+            <div className="lg:col-span-6 flex flex-col justify-between space-y-6">
               <div>
-                <p className="text-xs font-mono text-[var(--accent-primary)] font-medium mb-4">
+                <p className="text-xs font-mono text-[var(--chalk)] mb-3">
                   MIHORA Tech · Candidate Registry · career.forms.mihora.tech
                 </p>
 
-                <h1 className="font-display text-4xl sm:text-5xl lg:text-[3.4rem] font-bold text-[var(--ink-primary)] leading-[1.06] tracking-[-0.03em] text-balance max-w-xl">
-                  Build Your Persistent Technical Dossier for MIHORA Tech.
+                <h1
+                  id="hero-sheet-heading"
+                  className="font-display text-3xl sm:text-5xl font-bold text-[var(--exposure)] leading-[1.05] text-balance"
+                >
+                  Engineering Dossiers Built With Drafting Precision.
                 </h1>
 
-                <p className="mt-6 text-base text-[var(--ink-secondary)] leading-relaxed max-w-lg">
-                  A structured talent portal for engineers, site leads, and technical specialists. Record your qualifications once, calibrate commute and on-site deployment thresholds, and update your availability any time.
+                <p className="mt-5 text-sm sm:text-[15px] text-[var(--chalk)] leading-relaxed max-w-xl">
+                  A structured PostgreSQL talent registry for software engineers, civil leads, electrical specialists, and QA inspectors. Enter your record once, calibrate site commute tolerances, and export your verified A4 PDF dossier.
                 </p>
 
-                <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
+                <div className="mt-7 flex flex-col sm:flex-row sm:items-center gap-4">
                   <button
                     type="button"
                     onClick={() => onNavigate('register')}
-                    className="px-6 py-3.5 text-sm font-semibold text-white bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] rounded-[var(--radius-md)] transition-colors inline-flex items-center justify-center gap-2 group cursor-pointer whitespace-nowrap shrink-0"
+                    className="px-6 py-3 text-xs font-mono font-semibold text-[var(--edge)] bg-[var(--exposure)] hover:bg-white rounded-[var(--radius-xs)] transition-colors inline-flex items-center justify-center gap-2 group cursor-pointer whitespace-nowrap"
                   >
                     <span>Create Candidate Account</span>
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
@@ -88,128 +99,132 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
                   <button
                     type="button"
                     onClick={() => onNavigate('signin')}
-                    className="px-5 py-3.5 text-sm font-semibold text-[var(--ink-primary)] hover:text-[var(--accent-primary)] transition-colors inline-flex items-center justify-center cursor-pointer whitespace-nowrap shrink-0"
+                    className="px-3 py-2 text-xs font-mono font-medium text-[var(--exposure)] hover:text-white pencil-link cursor-pointer whitespace-nowrap"
                   >
-                    Sign in to existing profile →
+                    Sign in to existing dossier →
                   </button>
                 </div>
               </div>
 
-              <div className="mt-10 pt-6 border-t border-[var(--border-hairline)] flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-[var(--ink-muted)] font-mono">
-                <span>PostgreSQL Relational Persistence</span>
+              <div className="pt-5 border-t border-[var(--rule-hairline)] flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs font-mono text-[var(--chalk)]">
+                <span>7 Structured Modules</span>
                 <span aria-hidden="true">·</span>
-                <span>PDF Dossier Export</span>
+                <span>PostgreSQL Verified</span>
                 <span aria-hidden="true">·</span>
-                <span>Direct Engineering Review</span>
+                <span>Instant PDF Output</span>
               </div>
             </div>
 
-            {/* Right 6 Columns: Full-Height Studio Image with Measured Contrast Scrim */}
-            <div className="lg:col-span-6 flex">
-              <ArchitecturalMedia
-                src={heroStudioImg}
-                alt="MIHORA engineering design studio with structural blueprints and daylight architecture"
-                fallbackTitle="MIHORA Engineering Registry"
-                className="w-full rounded-[var(--radius-lg)] border border-[var(--border-hairline)] min-h-[340px] lg:min-h-[450px]"
-                imgClassName="w-full h-full object-cover object-center transition-transform duration-300"
-              >
-                <div
-                  className="absolute inset-0 bg-gradient-to-t from-[#0B1324]/85 via-[#0B1324]/25 to-transparent flex flex-col justify-end p-6 sm:p-8"
-                  style={{ transform: `translate3d(0, ${-subtleParallax * 0.25}px, 0)` }}
-                >
-                  <div className="text-xs font-mono text-slate-300 mb-1.5">
-                    7-Module Structured Intake · Auto-Scored Completeness
-                  </div>
-                  <p className="font-display text-lg sm:text-xl font-semibold text-white max-w-md leading-snug">
-                    One permanent record connecting field engineers and software specialists directly to MIHORA deployment teams.
-                  </p>
-                </div>
-              </ArchitecturalMedia>
+            <div className="lg:col-span-6 space-y-4">
+              <BlueprintHeroSchematic />
+              <div className="flex justify-end">
+                <TitleBlock drawingNo="MHR-01" scale="1:50" date="2026-11" drawnBy="MIH" checkedBy="ENG" />
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* 2. Mechanism & Operational Architecture (Asymmetric Photo + Editorial Ledger) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24 w-full">
+        {/* SHEET MHR-02: DEPLOYMENT & COMMUTE CALIBRATION */}
         <Reveal>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-            <div className="lg:col-span-5">
-              <p className="text-xs font-mono text-[var(--ink-muted)] mb-2">
-                Operational Architecture
-              </p>
-              <h2 className="font-display text-2xl sm:text-3xl font-bold text-[var(--ink-primary)] text-balance mb-6">
-                Structured for engineering staffing, not generic job forms.
-              </h2>
+          <section
+            aria-labelledby="calibration-sheet-heading"
+            className="cyanotype-sheet p-6 sm:p-10 lg:p-12"
+          >
+            <RegistrationCrosses />
 
-              <ArchitecturalMedia
-                src={fieldSiteImg}
-                alt="Civil and structural engineers reviewing project schematics on site"
-                fallbackTitle="Field Supervision & Deployment"
-                className="rounded-[var(--radius-lg)] border border-[var(--border-hairline)] aspect-[4/3]"
-              />
-              <p className="mt-3 text-xs text-[var(--ink-muted)] leading-relaxed">
-                On-site readiness, commute tolerances, and accommodation criteria captured upfront for practical project assignment.
-              </p>
-            </div>
-
-            <div className="lg:col-span-7 divide-y divide-[var(--border-hairline)] border-t border-b border-[var(--border-hairline)]">
-              <div className="py-7">
-                <span className="font-mono text-xs font-semibold text-[var(--accent-primary)]">
-                  01.
-                </span>
-                <h3 className="font-display text-lg font-bold text-[var(--ink-primary)] mt-1">
-                  Persistent Technical Identity
-                </h3>
-                <p className="text-sm text-[var(--ink-secondary)] mt-2 leading-relaxed max-w-2xl">
-                  Rather than filling out throwaway applications, maintain one verified PostgreSQL dossier with structured employment history, academic degrees, and calibrated skill proficiencies.
-                </p>
-              </div>
-
-              <div className="py-7">
-                <span className="font-mono text-xs font-semibold text-[var(--accent-primary)]">
-                  02.
-                </span>
-                <h3 className="font-display text-lg font-bold text-[var(--ink-primary)] mt-1">
-                  Commute &amp; Deployment Calibration
-                </h3>
-                <p className="text-sm text-[var(--ink-secondary)] mt-2 leading-relaxed max-w-2xl">
-                  Define your maximum commute distance in kilometers, travel time threshold, transport arrangement, and relocation or housing conditions so leads match you only to viable sites.
-                </p>
-              </div>
-
-              <div className="py-7">
-                <span className="font-mono text-xs font-semibold text-[var(--accent-primary)]">
-                  03.
-                </span>
-                <h3 className="font-display text-lg font-bold text-[var(--ink-primary)] mt-1">
-                  Real-Time Administrative Review &amp; PDF Export
-                </h3>
-                <p className="text-sm text-[var(--ink-secondary)] mt-2 leading-relaxed max-w-2xl">
-                  Every update receives a unique reference code and syncs immediately to MIHORA engineering directors, with instant A4 PDF dossier generation available for your own records.
-                </p>
-              </div>
-            </div>
-          </div>
-        </Reveal>
-      </section>
-
-      {/* 3. Interactive Dossier Schema Explorer + Disciplines */}
-      <section className="border-t border-[var(--border-hairline)] bg-[var(--surface-elevated)] py-16 lg:py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
-          <Reveal>
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch">
-              <div className="lg:col-span-7 flex flex-col justify-between">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start pt-2">
+              <div className="lg:col-span-5 space-y-5">
                 <div>
-                  <p className="text-xs font-mono text-[var(--ink-muted)] mb-2">
-                    Dossier Schema Blueprint
+                  <p className="text-xs font-mono text-[var(--chalk)] mb-1.5">
+                    Operational Specification · Sheet MHR-02
                   </p>
-                  <h2 className="font-display text-2xl sm:text-3xl font-bold text-[var(--ink-primary)] text-balance mb-6">
-                    Seven structured modules from intake to deployment readiness.
+                  <h2
+                    id="calibration-sheet-heading"
+                    className="font-display text-2xl sm:text-3xl font-bold text-[var(--exposure)] text-balance"
+                  >
+                    Measured for field deployment, not throwaway resumes.
                   </h2>
                 </div>
 
-                <div className="border border-[var(--border-hairline)] rounded-[var(--radius-lg)] divide-y divide-[var(--border-hairline)] overflow-hidden">
+                <CommuteCalibrationDiagram />
+              </div>
+
+              <div className="lg:col-span-7 flex flex-col justify-between h-full space-y-8">
+                <div className="divide-y divide-[var(--rule-hairline)] border-t border-b border-[var(--rule-hairline)]">
+                  <div className="py-6">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-mono text-xs text-[var(--chalk)]">01 · PERSISTENCE</span>
+                      <span className="font-mono text-xs text-[var(--exposure)]">MIH-CND ID</span>
+                    </div>
+                    <h3 className="font-display text-lg font-bold text-[var(--exposure)] mt-1.5">
+                      Persistent Relational Engineering Record
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[var(--chalk)] mt-2 leading-relaxed">
+                      Every candidate receives an immutable reference code linking experience history, accredited degrees, and domain proficiencies directly inside MIHORA’s PostgreSQL registry.
+                    </p>
+                  </div>
+
+                  <div className="py-6">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-mono text-xs text-[var(--chalk)]">02 · CALIBRATION</span>
+                      <div className="relative inline-flex items-center">
+                        <span className="font-mono text-xs text-[var(--exposure)] font-semibold">
+                          KM / MIN THRESHOLD
+                        </span>
+                        <SingleRedMark variant="tick" className="ml-1.5 -mt-1" />
+                      </div>
+                    </div>
+                    <h3 className="font-display text-lg font-bold text-[var(--exposure)] mt-1.5">
+                      Explicit Commute &amp; Housing Boundaries
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[var(--chalk)] mt-2 leading-relaxed">
+                      Declare maximum comfortable travel kilometers, minutes, transport setup, and distance-triggered accommodation rules so project directors match you accurately to active sites.
+                    </p>
+                  </div>
+
+                  <div className="py-6">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-mono text-xs text-[var(--chalk)]">03 · REVIEW</span>
+                      <span className="font-mono text-xs text-[var(--exposure)]">LIVE SSE SYNC</span>
+                    </div>
+                    <h3 className="font-display text-lg font-bold text-[var(--exposure)] mt-1.5">
+                      Real-Time Director Console &amp; PDF Dossier
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[var(--chalk)] mt-2 leading-relaxed">
+                      Profile updates calculate real relational completeness immediately, synchronize to MIHORA engineering directors, and generate a clean A4 dossier PDF anytime.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex justify-end">
+                  <TitleBlock drawingNo="MHR-02" scale="1:100" date="2026-11" drawnBy="MIH" checkedBy="OPS" />
+                </div>
+              </div>
+            </div>
+          </section>
+        </Reveal>
+
+        {/* SHEET MHR-03: INTERACTIVE 7-MODULE DOSSIER SCHEMA */}
+        <Reveal>
+          <section
+            aria-labelledby="schema-sheet-heading"
+            className="cyanotype-sheet p-6 sm:p-10 lg:p-12"
+          >
+            <RegistrationCrosses />
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start pt-2">
+              <div className="lg:col-span-7">
+                <p className="text-xs font-mono text-[var(--chalk)] mb-1.5">
+                  Dossier Schema Blueprint · Sheet MHR-03
+                </p>
+                <h2
+                  id="schema-sheet-heading"
+                  className="font-display text-2xl sm:text-3xl font-bold text-[var(--exposure)] text-balance mb-6"
+                >
+                  Seven structured modules from intake to deployment.
+                </h2>
+
+                <div className="border border-[var(--rule-hairline)] divide-y divide-[var(--rule-hairline)]">
                   {DOSSIER_INDEX.map((item, idx) => {
                     const active = selectedModule === idx;
                     return (
@@ -217,33 +232,29 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
                         key={item.code}
                         type="button"
                         onClick={() => setSelectedModule(idx)}
-                        className={`w-full text-left px-5 py-3.5 flex items-baseline justify-between gap-4 transition-colors cursor-pointer ${
+                        className={`w-full text-left px-4 sm:px-5 py-3.5 flex items-baseline justify-between gap-4 transition-colors cursor-pointer ${
                           active
-                            ? 'bg-[var(--accent-primary-soft)]'
-                            : 'bg-[var(--surface-elevated)] hover:bg-[var(--surface-subtle)]'
+                            ? 'bg-[var(--prussian-raise)] text-[var(--exposure)]'
+                            : 'bg-[var(--prussian)] hover:bg-[var(--prussian-raise)]/65 text-[var(--chalk)]'
                         }`}
                       >
                         <div className="min-w-0">
                           <div className="flex items-baseline gap-3">
-                            <span
-                              className={`font-mono text-xs font-semibold shrink-0 ${
-                                active ? 'text-[var(--accent-primary)]' : 'text-[var(--ink-muted)]'
-                              }`}
-                            >
+                            <span className="font-mono text-xs font-semibold text-[var(--exposure)] shrink-0">
                               {item.code}.
                             </span>
-                            <span className="text-sm font-semibold text-[var(--ink-primary)]">
+                            <span className="text-xs sm:text-sm font-semibold text-[var(--exposure)]">
                               {item.label}
                             </span>
                           </div>
                           {active && (
-                            <p className="text-xs text-[var(--ink-secondary)] mt-1 pl-7">
+                            <p className="text-xs text-[var(--chalk)] mt-1.5 pl-7 leading-relaxed">
                               {item.detail}
                             </p>
                           )}
                         </div>
-                        <span className="font-mono text-[11px] text-[var(--ink-muted)] shrink-0">
-                          {active ? 'Selected' : 'Inspect'}
+                        <span className="font-mono text-[11px] shrink-0 text-[var(--chalk)]">
+                          {active ? 'ACTIVE' : 'INSPECT'}
                         </span>
                       </button>
                     );
@@ -251,107 +262,180 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
                 </div>
               </div>
 
-              <div className="lg:col-span-5 flex flex-col justify-between gap-6">
-                <ArchitecturalMedia
-                  src={systemsDeskImg}
-                  alt="Dual-monitor structural CAD and systems engineering workstation"
-                  fallbackTitle="Systems & CAD Disciplines"
-                  className="rounded-[var(--radius-lg)] border border-[var(--border-hairline)] aspect-[4/3]"
-                />
+              <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
+                <DossierLayerDiagram activeIndex={selectedModule} />
 
-                <div className="border border-[var(--border-hairline)] rounded-[var(--radius-lg)] p-6 bg-[var(--surface-canvas)]">
-                  <h3 className="font-display text-base font-bold text-[var(--ink-primary)] mb-1">
-                    Ready to create your record?
-                  </h3>
-                  <p className="text-xs text-[var(--ink-secondary)] leading-relaxed mb-4">
-                    Registration takes under one minute and saves your progress automatically at every section.
+                <div className="border border-[var(--rule-hairline)] bg-[var(--edge)]/80 p-5 space-y-3">
+                  <div className="flex items-center justify-between text-xs font-mono text-[var(--chalk)]">
+                    <span>READY TO FILE</span>
+                    <span className="text-[var(--exposure)] font-semibold">01 — 07 COMPLETE</span>
+                  </div>
+                  <p className="text-xs text-[var(--chalk)] leading-relaxed">
+                    Create your candidate account in under a minute. Each section auto-saves to PostgreSQL as you progress.
                   </p>
                   <button
                     type="button"
                     onClick={() => onNavigate('register')}
-                    className="w-full py-2.5 px-4 text-xs font-semibold text-white bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] rounded-[var(--radius-md)] transition-colors inline-flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-2.5 px-4 text-xs font-mono font-semibold text-[var(--edge)] bg-[var(--exposure)] hover:bg-white rounded-[var(--radius-xs)] transition-colors inline-flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <span>Start Candidate Dossier</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
+
+                <div className="flex justify-end">
+                  <TitleBlock drawingNo="MHR-03" scale="NTS" date="2026-11" drawnBy="MIH" checkedBy="ARC" />
+                </div>
               </div>
             </div>
-          </Reveal>
+          </section>
+        </Reveal>
 
-          {/* Active Disciplines Ledger */}
-          <Reveal delayMs={60}>
-            <div>
-              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
+        {/* SHEET MHR-04: ENGINEERING DISCIPLINES SCHEDULE TABLE (Theme 064 §6.13) */}
+        <Reveal>
+          <section
+            aria-labelledby="schedule-sheet-heading"
+            className="cyanotype-sheet p-6 sm:p-10 lg:p-12"
+          >
+            <RegistrationCrosses />
+
+            <div className="pt-2 space-y-6">
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                 <div>
-                  <p className="text-xs font-mono text-[var(--ink-muted)] mb-1">
-                    Engineering Tracks
+                  <p className="text-xs font-mono text-[var(--chalk)] mb-1.5">
+                    Target Disciplines Schedule · Sheet MHR-04
                   </p>
-                  <h2 className="font-display text-xl sm:text-2xl font-bold text-[var(--ink-primary)]">
-                    Target Disciplines Across MIHORA Projects
+                  <h2
+                    id="schedule-sheet-heading"
+                    className="font-display text-2xl sm:text-3xl font-bold text-[var(--exposure)]"
+                  >
+                    Active Engineering Tracks Across MIHORA Projects
                   </h2>
+                </div>
+                <div className="flex items-center gap-2 font-mono text-xs text-[var(--exposure)] shrink-0">
+                  <span>4 CORE TRACKS VERIFIED</span>
+                  <SingleRedMark variant="tick" />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border border-[var(--border-hairline)] rounded-[var(--radius-lg)] divide-y sm:divide-y-0 sm:divide-x divide-[var(--border-hairline)] overflow-hidden">
-                {DISCIPLINES.map((disc) => {
-                  const Icon = disc.icon;
-                  return (
-                    <div key={disc.index} className="p-6 flex flex-col justify-between gap-4 bg-[var(--surface-elevated)]">
-                      <div className="flex items-center justify-between">
-                        <span className="font-mono text-xs text-[var(--ink-muted)]">
-                          {disc.index}.
-                        </span>
-                        <Icon className="w-4 h-4 text-[var(--accent-primary)]" />
-                      </div>
-                      <div>
-                        <h3 className="font-display text-sm font-bold text-[var(--ink-primary)]">
-                          {disc.title}
-                        </h3>
-                        <p className="text-xs text-[var(--ink-muted)] mt-1.5 leading-relaxed">
-                          {disc.summary}
-                        </p>
-                      </div>
+              {/* Desktop Semantic Schedule Table (Stacked Cards on Mobile per §6.13) */}
+              <div className="hidden md:block">
+                <table className="w-full text-left border-collapse font-mono text-xs">
+                  <caption className="sr-only">
+                    MIHORA active engineering tracks specification schedule — Sheet MHR-04
+                  </caption>
+                  <thead>
+                    <tr className="border-b border-[var(--rule-strong)] text-[var(--chalk)]">
+                      <th scope="col" className="py-3 pr-4 font-medium">Track Code</th>
+                      <th scope="col" className="py-3 px-4 font-medium">Discipline</th>
+                      <th scope="col" className="py-3 px-4 font-medium">Technical Scope</th>
+                      <th scope="col" className="py-3 pl-4 text-right font-medium">Deployment Mode</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[var(--rule-hairline)]">
+                    {DISCIPLINES_SCHEDULE.map((row) => (
+                      <tr
+                        key={row.code}
+                        className="group hover:bg-[var(--prussian-raise)]/65 transition-colors"
+                      >
+                        <td className="py-4 pr-4 font-semibold text-[var(--exposure)] whitespace-nowrap">
+                          {row.code}
+                        </td>
+                        <td className="py-4 px-4 font-semibold text-[var(--exposure)] whitespace-nowrap">
+                          <span className="pencil-link">{row.title}</span>
+                        </td>
+                        <td className="py-4 px-4 text-[var(--chalk)] leading-relaxed">
+                          {row.scope}
+                        </td>
+                        <td className="py-4 pl-4 text-right text-[var(--exposure)] whitespace-nowrap">
+                          {row.mode}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                  <tfoot>
+                    <tr className="double-exposure-rule text-[var(--exposure)] font-semibold">
+                      <td colSpan={3} className="py-4 pr-4">
+                        TOTAL ENGINEERING TRACKS REGISTERED IN PORTAL
+                      </td>
+                      <td className="py-4 pl-4 text-right tabular-nums">
+                        04 TRACKS · OPEN INTAKE
+                      </td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+
+              {/* Mobile Stacked Schedule (Zero horizontal table panning) */}
+              <div className="md:hidden divide-y divide-[var(--rule-hairline)] border-t border-b border-[var(--rule-hairline)]">
+                {DISCIPLINES_SCHEDULE.map((row) => (
+                  <div key={row.code} className="py-4 space-y-1.5 font-mono text-xs">
+                    <div className="flex items-center justify-between text-[var(--chalk)]">
+                      <span className="font-semibold text-[var(--exposure)]">{row.code}</span>
+                      <span>{row.mode}</span>
                     </div>
-                  );
-                })}
+                    <div className="text-sm font-display font-bold text-[var(--exposure)]">
+                      {row.title}
+                    </div>
+                    <p className="text-xs text-[var(--chalk)] leading-relaxed">{row.scope}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex justify-end pt-2">
+                <TitleBlock drawingNo="MHR-04" scale="1:1" date="2026-11" drawnBy="MIH" checkedBy="ENG" />
               </div>
             </div>
-          </Reveal>
-        </div>
-      </section>
+          </section>
+        </Reveal>
+      </div>
 
-      {/* Quiet Footer */}
-      <footer className="border-t border-[var(--border-hairline)] bg-[var(--surface-canvas)] py-7 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--ink-muted)]">
-          <div className="flex items-center gap-2.5">
-            <MihoraLogo size="sm" variant="mark" />
-            <span className="font-semibold text-[var(--ink-primary)]">MIHORA Tech</span>
-            <span aria-hidden="true">·</span>
-            <span>Candidate Profile Portal</span>
+      {/* VAULT COLOPHON FOOTER (Theme 064 §6.16) */}
+      <footer className="bg-[var(--edge)] double-exposure-rule py-10 px-4 sm:px-6 lg:px-8 mt-8">
+        <div className="max-w-[1180px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-xs font-mono">
+          <div className="space-y-2 text-[var(--chalk)]">
+            <div className="text-[var(--exposure)] font-semibold">VAULT SPECIFICATION</div>
+            <p>4 Drawn Sheets (MHR-01 — MHR-04)</p>
+            <p>7 Relational Candidate Dossier Modules</p>
+            <p>PostgreSQL Persistence · Verified Output</p>
           </div>
 
-          <div className="font-mono">
-            © {new Date().getFullYear()} MIHORA Tech · career.forms.mihora.tech
+          <div className="space-y-2.5">
+            <MihoraLogo size="sm" variant="full" theme="dark" />
+            <p className="text-[var(--chalk)]">
+              MIHORA Tech Careers · career.forms.mihora.tech
+            </p>
+            <p className="text-[var(--chalk-dim)]">
+              DRN MIH · CHK ENG · © {new Date().getFullYear()} MIHORA Tech
+            </p>
           </div>
 
-          <div className="flex items-center gap-5">
+          <div className="flex flex-col md:items-end justify-between gap-3 text-[var(--exposure)]">
+            <div className="flex flex-wrap items-center gap-5">
+              <button
+                type="button"
+                onClick={() => onNavigate('admin_login')}
+                className="pencil-link cursor-pointer"
+              >
+                Admin Access
+              </button>
+              <a
+                href="https://mihora.tech"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pencil-link inline-flex items-center gap-1"
+              >
+                <span>mihora.tech</span>
+                <ArrowUpRight className="w-3 h-3" />
+              </a>
+            </div>
             <button
               type="button"
-              onClick={() => onNavigate('admin_login')}
-              className="hover:text-[var(--ink-primary)] transition-colors cursor-pointer"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="text-[var(--chalk)] hover:text-[var(--exposure)] pencil-link cursor-pointer"
             >
-              Admin Access
+              Back to Sheet MHR-01 ↑
             </button>
-            <a
-              href="https://mihora.tech"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-[var(--accent-primary)] inline-flex items-center gap-1 transition-colors"
-            >
-              <span>mihora.tech</span>
-              <ArrowUpRight className="w-3 h-3" />
-            </a>
           </div>
         </div>
       </footer>

@@ -73,14 +73,14 @@
 
   <!-- Brand Typography -->
   <g id="mihora-typography">
-    <!-- MIORA Wordmark -->
+    <!-- MIHORA Wordmark -->
     <text x="500" y="715" 
-          font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" 
+          font-family="'Archivo', system-ui, -apple-system, sans-serif" 
           font-size="94" 
           font-weight="700" 
           letter-spacing="9" 
           fill="#0A1C38" 
-          text-anchor="middle">MIORA</text>
+          text-anchor="middle">MIHORA</text>
 
     <!-- Accent Lines and TECH subtext -->
     <line x1="130" y1="770" x2="270" y2="770" stroke="#1877F2" stroke-width="3.5" stroke-linecap="round" />

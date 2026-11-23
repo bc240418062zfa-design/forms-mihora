@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { MihoraLogo } from '../components/brand/MihoraLogo';
-import { ArchitecturalMedia } from '../components/ui/ArchitecturalMedia';
-import systemsDeskImg from '../assets/images/precision_systems_workstation_1795454842890.jpg';
+import {
+  RegistrationCrosses,
+  SingleRedMark,
+  TitleBlock,
+} from '../components/cyanotype/BlueprintApparatus';
 import { Lock, Mail, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react';
 
 interface RegisterPageProps {
@@ -61,187 +64,234 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] grid grid-cols-1 lg:grid-cols-12">
-      {/* Left Architectural Panel (Desktop) */}
-      <div className="hidden lg:flex lg:col-span-5 relative bg-[var(--surface-ink)]">
-        <ArchitecturalMedia
-          src={systemsDeskImg}
-          alt="MIHORA technical workstation"
-          className="w-full h-full"
-          imgClassName="w-full h-full object-cover opacity-55"
-        >
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0B1324] via-[#0B1324]/70 to-[#0B1324]/45 p-12 flex flex-col justify-between">
+    <div className="min-h-[calc(100vh-4rem)] bg-cyanotype-table py-10 sm:py-14 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+      <div className="max-w-5xl w-full cyanotype-sheet p-6 sm:p-10 lg:p-12">
+        <RegistrationCrosses />
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
+          {/* Left Cyanotype New Dossier Schematic */}
+          <div className="hidden lg:flex lg:col-span-5 flex-col justify-between border border-[var(--rule-hairline)] bg-[var(--edge)]/80 p-7">
             <div>
-              <p className="text-xs font-mono text-blue-300">
-                MIHORA Tech · New Dossier Intake
+              <p className="text-[11px] font-mono text-[var(--chalk)] tracking-wider">
+                SHEET MHR-NEW · DOSSIER INITIALIZATION
               </p>
-            </div>
-            <div>
-              <h2 className="font-display text-3xl font-bold text-white leading-tight text-balance">
+              <h2 className="font-display text-2xl font-bold text-[var(--exposure)] leading-tight mt-3">
                 Create one structured profile across all engineering tracks.
               </h2>
-              <p className="mt-4 text-sm text-slate-300 leading-relaxed max-w-md">
-                Once registered, you receive a unique reference ID and step-by-step guidance to complete all 7 modules cleanly.
+              <p className="mt-3 text-xs font-mono text-[var(--chalk)] leading-relaxed">
+                Upon registration you receive a permanent MIHORA reference code (`MIH-CND-…`) and guided 7-module builder with PostgreSQL persistence.
               </p>
-              <div className="mt-6 pt-6 border-t border-white/15 flex items-center gap-3 text-xs font-mono text-slate-300">
-                <span>Step Auto-Save</span>
-                <span aria-hidden="true">·</span>
-                <span>Zero Third-Party Tracking</span>
-              </div>
             </div>
-          </div>
-        </ArchitecturalMedia>
-      </div>
 
-      {/* Right Registration Form */}
-      <div className="lg:col-span-7 flex flex-col justify-center py-12 px-4 sm:px-8 lg:px-16 bg-[var(--surface-canvas)]">
-        <div className="mx-auto w-full max-w-md">
-          <div className="mb-7">
-            <div className="lg:hidden mb-4">
-              <MihoraLogo size="md" variant="full" />
-            </div>
-            <p className="text-xs font-mono text-[var(--accent-primary)] font-medium mb-1">
-              New Account Setup
-            </p>
-            <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[var(--ink-primary)]">
-              Create Candidate Account
-            </h1>
-            <p className="mt-1.5 text-xs sm:text-sm text-[var(--ink-muted)]">
-              Register with MIHORA Tech to initialize your persistent technical profile.
-            </p>
-          </div>
-
-          <div className="bg-[var(--surface-elevated)] py-8 px-6 sm:px-8 border border-[var(--border-hairline)] rounded-[var(--radius-lg)] shadow-[var(--shadow-card)]">
-            {error && (
-              <div
-                role="alert"
-                className="mb-5 p-3 rounded-[var(--radius-sm)] bg-[var(--status-danger-soft)] border border-rose-200 text-[var(--status-danger)] text-xs flex items-start gap-2"
+            {/* Inline Vector Dossier Calibration Blueprint (Zero AI Photos) */}
+            <div className="my-6 border border-[rgba(185,204,224,0.22)] bg-[var(--table)]/60 p-4">
+              <svg
+                role="img"
+                aria-label="New candidate dossier initialization blueprint showing 7 modular tables"
+                viewBox="0 0 280 156"
+                className="w-full h-auto block"
               >
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                <span>{error}</span>
-              </div>
-            )}
+                {[
+                  { y: 16, code: '01', name: 'IDENTITY & REGION' },
+                  { y: 42, code: '02–05', name: 'ROLE · EXP · EDU · SKILLS' },
+                  { y: 68, code: '06', name: 'COMMUTE & SITE CALIBRATION' },
+                  { y: 94, code: '07', name: 'COMPENSATION & NOTICE' },
+                  { y: 120, code: 'PDF', name: 'EXPORTABLE A4 DOSSIER' },
+                ].map((row, idx) => (
+                  <g key={row.code}>
+                    <rect
+                      x="18"
+                      y={row.y}
+                      width="244"
+                      height="20"
+                      fill={idx === 4 ? '#F4F7F5' : '#1B3A5C'}
+                      stroke="#F4F7F5"
+                      strokeOpacity={idx === 4 ? 1 : 0.55}
+                      strokeWidth="1"
+                    />
+                    <text
+                      x="26"
+                      y={row.y + 13}
+                      fill={idx === 4 ? '#0F2740' : '#B9CCE0'}
+                      fontSize="8.5"
+                      fontFamily="IBM Plex Mono, monospace"
+                      fontWeight="600"
+                    >
+                      {row.code}
+                    </text>
+                    <text
+                      x="68"
+                      y={row.y + 13}
+                      fill={idx === 4 ? '#0F2740' : '#F4F7F5'}
+                      fontSize="8.5"
+                      fontFamily="IBM Plex Mono, monospace"
+                    >
+                      {row.name}
+                    </text>
+                  </g>
+                ))}
+              </svg>
+            </div>
 
-            <form className="space-y-4" onSubmit={handleSubmit}>
-              <div>
-                <label
-                  htmlFor="reg-email"
-                  className="block text-xs font-semibold text-[var(--ink-secondary)] mb-1.5"
-                >
-                  Work or Personal Email <span className="text-[var(--status-danger)]">*</span>
-                </label>
-                <div className="relative">
-                  <Mail className="w-4 h-4 text-[var(--ink-faint)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                  <input
-                    id="reg-email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    value={email}
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                      if (error) setError(null);
-                    }}
-                    placeholder="your.email@domain.com"
-                    className="field-input field-input-icon"
-                  />
+            <div className="pt-4 border-t border-[var(--rule-hairline)] flex items-center justify-between text-[11px] font-mono text-[var(--chalk)]">
+              <span>Step Auto-Save · Zero Tracking</span>
+              <SingleRedMark variant="tick" className="w-5 h-4" />
+            </div>
+          </div>
+
+          {/* Right Registration Form */}
+          <div className="lg:col-span-7 flex flex-col justify-between">
+            <div>
+              <div className="mb-7">
+                <div className="lg:hidden mb-4">
+                  <MihoraLogo size="md" variant="full" theme="dark" />
                 </div>
+                <p className="text-[11px] font-mono text-[var(--chalk)] tracking-wider mb-1">
+                  NEW CANDIDATE REGISTRATION
+                </p>
+                <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[var(--exposure)]">
+                  Create Candidate Account
+                </h1>
+                <p className="mt-1.5 text-xs font-mono text-[var(--chalk)]">
+                  Register with MIHORA Tech to initialize your persistent engineering dossier.
+                </p>
               </div>
 
-              <div>
-                <label
-                  htmlFor="reg-password"
-                  className="block text-xs font-semibold text-[var(--ink-secondary)] mb-1.5"
+              {error && (
+                <div
+                  role="alert"
+                  className="mb-5 p-3.5 rounded-[var(--radius-xs)] bg-[var(--status-notice-bg)] border border-[var(--status-notice-border)] text-[var(--exposure)] text-xs font-mono flex items-start gap-2.5"
                 >
-                  Create Secure Password <span className="text-[var(--status-danger)]">*</span>
-                </label>
-                <div className="relative">
-                  <Lock className="w-4 h-4 text-[var(--ink-faint)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                  <input
-                    id="reg-password"
-                    type={showPassword ? 'text' : 'password'}
-                    autoComplete="new-password"
-                    required
-                    value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                      if (error) setError(null);
-                    }}
-                    placeholder="Minimum 8 characters"
-                    className="field-input field-input-icon pr-10"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-[var(--ink-muted)] hover:text-[var(--ink-primary)] cursor-pointer"
+                  <AlertCircle className="w-4 h-4 text-[var(--status-warn)] shrink-0 mt-0.5" />
+                  <span>{error}</span>
+                </div>
+              )}
+
+              <form className="space-y-4" onSubmit={handleSubmit}>
+                <div>
+                  <label
+                    htmlFor="reg-email"
+                    className="block text-[11px] font-mono font-semibold text-[var(--chalk)] tracking-wider mb-1.5"
                   >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
+                    WORK OR PERSONAL EMAIL <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                  </label>
+                  <div className="relative">
+                    <Mail className="w-4 h-4 text-[var(--chalk-dim)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      id="reg-email"
+                      type="email"
+                      autoComplete="email"
+                      required
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        if (error) setError(null);
+                      }}
+                      placeholder="your.email@domain.com"
+                      className="field-input field-input-icon"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              <div>
-                <label
-                  htmlFor="reg-confirm"
-                  className="block text-xs font-semibold text-[var(--ink-secondary)] mb-1.5"
+                <div>
+                  <label
+                    htmlFor="reg-password"
+                    className="block text-[11px] font-mono font-semibold text-[var(--chalk)] tracking-wider mb-1.5"
+                  >
+                    CREATE SECURE PASSWORD <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                  </label>
+                  <div className="relative">
+                    <Lock className="w-4 h-4 text-[var(--chalk-dim)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      id="reg-password"
+                      type={showPassword ? 'text' : 'password'}
+                      autoComplete="new-password"
+                      required
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        if (error) setError(null);
+                      }}
+                      placeholder="Minimum 8 characters"
+                      className="field-input field-input-icon pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-[var(--chalk)] hover:text-[var(--exposure)] cursor-pointer"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="reg-confirm"
+                    className="block text-[11px] font-mono font-semibold text-[var(--chalk)] tracking-wider mb-1.5"
+                  >
+                    CONFIRM PASSWORD <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                  </label>
+                  <div className="relative">
+                    <Lock className="w-4 h-4 text-[var(--chalk-dim)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      id="reg-confirm"
+                      type={showPassword ? 'text' : 'password'}
+                      autoComplete="new-password"
+                      required
+                      value={confirmPassword}
+                      onChange={(e) => {
+                        setConfirmPassword(e.target.value);
+                        if (error) setError(null);
+                      }}
+                      placeholder="Repeat password"
+                      className="field-input field-input-icon"
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-1">
+                  <label className="flex items-start gap-2.5 text-xs font-mono text-[var(--chalk)] cursor-pointer leading-relaxed">
+                    <input
+                      type="checkbox"
+                      checked={acceptTerms}
+                      onChange={(e) => {
+                        setAcceptTerms(e.target.checked);
+                        if (error) setError(null);
+                      }}
+                      className="mt-0.5 rounded-[var(--radius-xs)] border-[var(--rule-strong)] bg-[var(--prussian-raise)] text-[var(--exposure)]"
+                    />
+                    <span>
+                      I consent to MIHORA Tech securely processing and storing my professional qualifications for recruitment evaluation.
+                    </span>
+                  </label>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full mt-2 py-3 px-5 text-xs font-mono font-semibold text-[var(--edge)] bg-[var(--exposure)] hover:bg-white rounded-[var(--radius-xs)] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
                 >
-                  Confirm Password <span className="text-[var(--status-danger)]">*</span>
-                </label>
-                <div className="relative">
-                  <Lock className="w-4 h-4 text-[var(--ink-faint)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                  <input
-                    id="reg-confirm"
-                    type={showPassword ? 'text' : 'password'}
-                    autoComplete="new-password"
-                    required
-                    value={confirmPassword}
-                    onChange={(e) => {
-                      setConfirmPassword(e.target.value);
-                      if (error) setError(null);
-                    }}
-                    placeholder="Repeat password"
-                    className="field-input field-input-icon"
-                  />
-                </div>
+                  <span>{isLoading ? 'Creating Account & Dossier...' : 'Create Candidate Account'}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </form>
+
+              <div className="mt-6 pt-5 border-t border-[var(--rule-hairline)] flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-mono text-[var(--chalk)]">
+                <span>Already registered?</span>
+                <button
+                  type="button"
+                  onClick={() => onNavigate('signin')}
+                  className="pencil-link font-semibold text-[var(--exposure)] cursor-pointer"
+                >
+                  Sign In Instead
+                </button>
               </div>
+            </div>
 
-              <div className="pt-1">
-                <label className="flex items-start gap-2.5 text-xs text-[var(--ink-secondary)] cursor-pointer leading-relaxed">
-                  <input
-                    type="checkbox"
-                    checked={acceptTerms}
-                    onChange={(e) => {
-                      setAcceptTerms(e.target.checked);
-                      if (error) setError(null);
-                    }}
-                    className="mt-0.5 rounded border-[var(--border-strong)] text-[var(--accent-primary)] focus:ring-[var(--accent-primary)]"
-                  />
-                  <span>
-                    I consent to MIHORA Tech securely processing and storing my professional qualifications for recruitment evaluation.
-                  </span>
-                </label>
-              </div>
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full mt-2 py-2.5 px-4 text-xs font-semibold text-white bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] rounded-[var(--radius-md)] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
-              >
-                <span>{isLoading ? 'Creating Account & Dossier...' : 'Create Candidate Account'}</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </form>
-
-            <div className="mt-6 pt-5 border-t border-[var(--border-hairline)] flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-[var(--ink-muted)]">
-              <span>Already registered?</span>
-              <button
-                type="button"
-                onClick={() => onNavigate('signin')}
-                className="font-semibold text-[var(--accent-primary)] hover:text-[var(--accent-primary-hover)] cursor-pointer"
-              >
-                Sign In Instead
-              </button>
+            <div className="mt-6 pt-5 border-t border-[var(--rule-hairline)] flex justify-end">
+              <TitleBlock drawingNo="MHR-NEW" scale="1:1" drawnBy="INTAKE" checkedBy="PG16" />
             </div>
           </div>
         </div>

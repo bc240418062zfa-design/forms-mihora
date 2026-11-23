@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { MihoraLogo } from '../components/brand/MihoraLogo';
-import { ArchitecturalMedia } from '../components/ui/ArchitecturalMedia';
-import heroStudioImg from '../assets/images/hero_engineering_studio_1795454842220.jpg';
+import {
+  RegistrationCrosses,
+  SingleRedMark,
+  TitleBlock,
+} from '../components/cyanotype/BlueprintApparatus';
 import { Lock, Mail, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react';
 
 interface SignInPageProps {
@@ -42,145 +45,221 @@ export const SignInPage: React.FC<SignInPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] grid grid-cols-1 lg:grid-cols-12">
-      {/* Left Architectural Panel (Desktop) */}
-      <div className="hidden lg:flex lg:col-span-5 relative bg-[var(--surface-ink)]">
-        <ArchitecturalMedia
-          src={heroStudioImg}
-          alt="MIHORA engineering studio"
-          className="w-full h-full"
-          imgClassName="w-full h-full object-cover opacity-55"
-        >
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0B1324] via-[#0B1324]/70 to-[#0B1324]/45 p-12 flex flex-col justify-between">
+    <div className="min-h-[calc(100vh-4rem)] bg-cyanotype-table py-10 sm:py-14 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+      <div className="max-w-5xl w-full cyanotype-sheet p-6 sm:p-10 lg:p-12">
+        <RegistrationCrosses />
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
+          {/* Left Cyanotype Vault Keyway Schematic */}
+          <div className="hidden lg:flex lg:col-span-5 flex-col justify-between border border-[var(--rule-hairline)] bg-[var(--edge)]/80 p-7">
             <div>
-              <p className="text-xs font-mono text-blue-300">
-                MIHORA Tech · Candidate Registry
+              <p className="text-[11px] font-mono text-[var(--chalk)] tracking-wider">
+                SHEET MHR-AUTH · CANDIDATE ACCESS
               </p>
-            </div>
-            <div>
-              <h2 className="font-display text-3xl font-bold text-white leading-tight text-balance">
+              <h2 className="font-display text-2xl font-bold text-[var(--exposure)] leading-tight mt-3">
                 Keep your technical dossier accurate and deployment-ready.
               </h2>
-              <p className="mt-4 text-sm text-slate-300 leading-relaxed max-w-md">
-                Update project experience, adjust commute parameters, and export your structured A4 PDF record anytime.
+              <p className="mt-3 text-xs font-mono text-[var(--chalk)] leading-relaxed">
+                Update project experience, calibrate site commute thresholds, and export your structured A4 PDF record anytime.
               </p>
-              <div className="mt-6 pt-6 border-t border-white/15 flex items-center gap-3 text-xs font-mono text-slate-300">
-                <span>Encrypted Auth</span>
-                <span aria-hidden="true">·</span>
-                <span>PostgreSQL Persistence</span>
-              </div>
             </div>
-          </div>
-        </ArchitecturalMedia>
-      </div>
 
-      {/* Right Sign-In Form */}
-      <div className="lg:col-span-7 flex flex-col justify-center py-12 px-4 sm:px-8 lg:px-16 bg-[var(--surface-canvas)]">
-        <div className="mx-auto w-full max-w-md">
-          <div className="mb-7">
-            <div className="lg:hidden mb-4">
-              <MihoraLogo size="md" variant="full" />
-            </div>
-            <p className="text-xs font-mono text-[var(--accent-primary)] font-medium mb-1">
-              Candidate Access
-            </p>
-            <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[var(--ink-primary)]">
-              Sign In to Your Profile
-            </h1>
-            <p className="mt-1.5 text-xs sm:text-sm text-[var(--ink-muted)]">
-              Access your engineering dossier, update deployment availability, or export your PDF record.
-            </p>
-          </div>
-
-          <div className="bg-[var(--surface-elevated)] py-8 px-6 sm:px-8 border border-[var(--border-hairline)] rounded-[var(--radius-lg)] shadow-[var(--shadow-card)]">
-            {error && (
-              <div
-                role="alert"
-                className="mb-5 p-3 rounded-[var(--radius-sm)] bg-[var(--status-danger-soft)] border border-rose-200 text-[var(--status-danger)] text-xs flex items-start gap-2"
+            {/* Inline Vector Blueprint Keyway Diagram (Zero AI Photos) */}
+            <div className="my-6 border border-[rgba(185,204,224,0.22)] bg-[var(--table)]/60 p-4">
+              <svg
+                role="img"
+                aria-label="Cyanotype candidate credential verification schematic"
+                viewBox="0 0 280 150"
+                className="w-full h-auto block"
               >
-                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                <span>{error}</span>
-              </div>
-            )}
-
-            <form className="space-y-4" onSubmit={handleSubmit}>
-              <div>
-                <label
-                  htmlFor="signin-email"
-                  className="block text-xs font-semibold text-[var(--ink-secondary)] mb-1.5"
+                <rect
+                  x="12"
+                  y="12"
+                  width="256"
+                  height="126"
+                  fill="none"
+                  stroke="#B9CCE0"
+                  strokeOpacity="0.3"
+                  strokeDasharray="3 4"
+                />
+                <circle
+                  cx="92"
+                  cy="75"
+                  r="38"
+                  fill="none"
+                  stroke="#F4F7F5"
+                  strokeWidth="1.4"
+                />
+                <circle
+                  cx="92"
+                  cy="75"
+                  r="24"
+                  fill="none"
+                  stroke="#B9CCE0"
+                  strokeOpacity="0.6"
+                  strokeDasharray="4 3"
+                />
+                <circle cx="92" cy="75" r="7" fill="#F4F7F5" />
+                <line x1="130" y1="75" x2="236" y2="75" stroke="#F4F7F5" strokeWidth="1.4" />
+                <rect
+                  x="176"
+                  y="54"
+                  width="68"
+                  height="42"
+                  fill="#1B3A5C"
+                  stroke="#F4F7F5"
+                  strokeWidth="1.2"
+                />
+                <text
+                  x="210"
+                  y="73"
+                  textAnchor="middle"
+                  fill="#B9CCE0"
+                  fontSize="8.5"
+                  fontFamily="IBM Plex Mono, monospace"
                 >
-                  Email Address
-                </label>
-                <div className="relative">
-                  <Mail className="w-4 h-4 text-[var(--ink-faint)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                  <input
-                    id="signin-email"
-                    type="email"
-                    autoComplete="email"
-                    required
-                    value={email}
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                      if (error) setError(null);
-                    }}
-                    placeholder="your.email@example.com"
-                    className="field-input field-input-icon"
-                  />
+                  JWT VAULT
+                </text>
+                <text
+                  x="210"
+                  y="86"
+                  textAnchor="middle"
+                  fill="#F4F7F5"
+                  fontSize="9"
+                  fontWeight="600"
+                  fontFamily="IBM Plex Mono, monospace"
+                >
+                  PG-PERSIST
+                </text>
+              </svg>
+            </div>
+
+            <div className="pt-4 border-t border-[var(--rule-hairline)] flex items-center justify-between text-[11px] font-mono text-[var(--chalk)]">
+              <span>Encrypted Session</span>
+              <SingleRedMark variant="tick" className="w-5 h-4" />
+            </div>
+          </div>
+
+          {/* Right Ruled Sign-In Form */}
+          <div className="lg:col-span-7 flex flex-col justify-between">
+            <div>
+              <div className="flex flex-wrap items-start justify-between gap-4 mb-7">
+                <div>
+                  <div className="lg:hidden mb-4">
+                    <MihoraLogo size="md" variant="full" theme="dark" />
+                  </div>
+                  <p className="text-[11px] font-mono text-[var(--chalk)] tracking-wider mb-1">
+                    CANDIDATE VAULT · SECTION 00
+                  </p>
+                  <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[var(--exposure)]">
+                    Sign In to Your Dossier
+                  </h1>
+                  <p className="mt-1.5 text-xs font-mono text-[var(--chalk)]">
+                    Access your engineering profile, update deployment availability, or download PDF records.
+                  </p>
                 </div>
               </div>
 
-              <div>
-                <label
-                  htmlFor="signin-password"
-                  className="block text-xs font-semibold text-[var(--ink-secondary)] mb-1.5"
+              {error && (
+                <div
+                  role="alert"
+                  className="mb-5 p-3.5 rounded-[var(--radius-xs)] bg-[var(--status-notice-bg)] border border-[var(--status-notice-border)] text-[var(--exposure)] text-xs font-mono flex items-start gap-2.5"
                 >
-                  Password
-                </label>
-                <div className="relative">
-                  <Lock className="w-4 h-4 text-[var(--ink-faint)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                  <input
-                    id="signin-password"
-                    type={showPassword ? 'text' : 'password'}
-                    autoComplete="current-password"
-                    required
-                    value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                      if (error) setError(null);
-                    }}
-                    placeholder="Enter your password"
-                    className="field-input field-input-icon pr-10"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                    aria-label={showPassword ? 'Hide password' : 'Show password'}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-[var(--ink-muted)] hover:text-[var(--ink-primary)] cursor-pointer"
+                  <AlertCircle className="w-4 h-4 text-[var(--status-warn)] shrink-0 mt-0.5" />
+                  <span>{error}</span>
+                </div>
+              )}
+
+              <form className="space-y-4" onSubmit={handleSubmit}>
+                <div>
+                  <label
+                    htmlFor="signin-email"
+                    className="block text-[11px] font-mono font-semibold text-[var(--chalk)] tracking-wider mb-1.5"
                   >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
+                    EMAIL ADDRESS
+                  </label>
+                  <div className="relative">
+                    <Mail className="w-4 h-4 text-[var(--chalk-dim)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      id="signin-email"
+                      type="email"
+                      autoComplete="email"
+                      required
+                      value={email}
+                      onChange={(e) => {
+                        setEmail(e.target.value);
+                        if (error) setError(null);
+                      }}
+                      placeholder="your.email@example.com"
+                      className="field-input field-input-icon"
+                    />
+                  </div>
                 </div>
+
+                <div>
+                  <label
+                    htmlFor="signin-password"
+                    className="block text-[11px] font-mono font-semibold text-[var(--chalk)] tracking-wider mb-1.5"
+                  >
+                    PASSWORD
+                  </label>
+                  <div className="relative">
+                    <Lock className="w-4 h-4 text-[var(--chalk-dim)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <input
+                      id="signin-password"
+                      type={showPassword ? 'text' : 'password'}
+                      autoComplete="current-password"
+                      required
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        if (error) setError(null);
+                      }}
+                      placeholder="Enter your password"
+                      className="field-input field-input-icon pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((prev) => !prev)}
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-[var(--chalk)] hover:text-[var(--exposure)] cursor-pointer"
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full mt-2 py-3 px-5 text-xs font-mono font-semibold text-[var(--edge)] bg-[var(--exposure)] hover:bg-white rounded-[var(--radius-xs)] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                >
+                  <span>{isLoading ? 'Verifying Credentials...' : 'Sign In to Dossier'}</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </form>
+
+              <div className="mt-6 pt-5 border-t border-[var(--rule-hairline)] flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-mono text-[var(--chalk)]">
+                <span>New to MIHORA Careers?</span>
+                <button
+                  type="button"
+                  onClick={() => onNavigate('register')}
+                  className="pencil-link font-semibold text-[var(--exposure)] cursor-pointer"
+                >
+                  Create Candidate Account
+                </button>
               </div>
+            </div>
 
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full mt-2 py-2.5 px-4 text-xs font-semibold text-white bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] rounded-[var(--radius-md)] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
-              >
-                <span>{isLoading ? 'Verifying Credentials...' : 'Sign In to Profile'}</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </form>
-
-            <div className="mt-6 pt-5 border-t border-[var(--border-hairline)] flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-[var(--ink-muted)]">
-              <span>New to MIHORA Careers?</span>
+            <div className="mt-6 pt-5 border-t border-[var(--rule-hairline)] flex flex-col sm:flex-row sm:items-end justify-between gap-4">
               <button
                 type="button"
-                onClick={() => onNavigate('register')}
-                className="font-semibold text-[var(--accent-primary)] hover:text-[var(--accent-primary-hover)] cursor-pointer"
+                onClick={() => onNavigate('admin_login')}
+                className="pencil-link text-xs font-mono text-[var(--chalk)] hover:text-[var(--exposure)] transition-colors cursor-pointer self-start"
               >
-                Create Candidate Account
+                MIHORA Administrator? Open Admin Console →
               </button>
+              <TitleBlock drawingNo="MHR-AUTH" scale="1:1" drawnBy="AUTH" checkedBy="TLS" />
             </div>
           </div>
         </div>

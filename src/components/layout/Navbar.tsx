@@ -10,6 +10,25 @@ interface NavbarProps {
   onNavigate?: (view: string) => void;
 }
 
+function resolveSheetMirror(currentView?: string): string {
+  switch (currentView) {
+    case 'signin':
+      return 'DRG MHR-AUTH';
+    case 'register':
+      return 'DRG MHR-NEW';
+    case 'dashboard':
+      return 'DRG MHR-CAD';
+    case 'profile':
+      return 'DRG MHR-EDIT';
+    case 'admin_login':
+      return 'DRG MHR-SEC';
+    case 'admin':
+      return 'DRG MHR-REG';
+    default:
+      return 'DRG MHR-01';
+  }
+}
+
 export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
   const { isAuthenticated, isAdmin, logout } = useAuth();
   const { isScrolled } = useScrollProgress();
@@ -27,39 +46,51 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
   }, [currentView]);
 
   const navLinkClass = (active: boolean) =>
-    `text-sm whitespace-nowrap shrink-0 transition-colors py-1 border-b-2 cursor-pointer ${
+    `text-xs font-mono whitespace-nowrap shrink-0 transition-colors py-1.5 border-b-2 cursor-pointer pencil-link ${
       active
-        ? 'text-[var(--ink-primary)] font-semibold border-[var(--accent-primary)]'
-        : 'text-[var(--ink-muted)] font-medium border-transparent hover:text-[var(--ink-primary)]'
+        ? 'text-[var(--exposure)] font-semibold border-[var(--red)]'
+        : 'text-[var(--chalk)] font-medium border-transparent hover:text-[var(--exposure)]'
     }`;
+
+  const activeSheetCode = resolveSheetMirror(currentView);
 
   return (
     <header
-      className={`sticky top-0 z-40 transition-colors duration-200 border-b ${
+      className={`sticky top-0 z-40 transition-colors duration-200 border-b border-[var(--rule-hairline)] ${
         isScrolled
-          ? 'bg-[var(--surface-elevated)]/95 backdrop-blur-md border-[var(--border-hairline)] shadow-[0_1px_3px_rgba(11,19,36,0.05)]'
-          : 'bg-[var(--surface-elevated)] border-[var(--border-hairline)]'
+          ? 'bg-[var(--edge)]/95 backdrop-blur-md shadow-[0_8px_24px_rgba(4,11,22,0.45)]'
+          : 'bg-[var(--edge)]'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-8 relative">
-        {/* Zone 1: Single-line Brand Title */}
-        <button
-          type="button"
-          onClick={() => handleNav('landing')}
-          className="cursor-pointer transition-opacity hover:opacity-85 flex items-center shrink-0 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-4 rounded-sm"
-          aria-label="MIHORA Tech Home"
-        >
-          <MihoraLogo size="sm" variant="full" />
-        </button>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-6 relative">
+        {/* Zone 1: Brand + Active Sheet Title-Block Mirror */}
+        <div className="flex items-center gap-4 min-w-0 shrink-0">
+          <button
+            type="button"
+            onClick={() => handleNav('landing')}
+            className="cursor-pointer transition-opacity hover:opacity-85 flex items-center shrink-0 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-4 rounded-xs"
+            aria-label="MIHORA Tech Home"
+          >
+            <MihoraLogo size="sm" variant="full" theme="dark" />
+          </button>
+
+          <span
+            aria-hidden="true"
+            className="hidden xl:inline-flex items-center px-2.5 py-1 border border-[var(--rule-hairline)] bg-[var(--table)]/60 text-[11px] font-mono text-[var(--chalk)] whitespace-nowrap"
+          >
+            {activeSheetCode} · 1:50
+          </span>
+        </div>
 
         {/* Zone 2: Concise Single-Line Navigation Links */}
         <nav
           aria-label="Primary Navigation"
-          className="hidden md:flex items-center gap-7"
+          className="hidden md:flex items-center gap-6"
         >
           <button
             type="button"
             onClick={() => handleNav('landing')}
+            aria-current={currentView === 'landing' ? 'page' : undefined}
             className={navLinkClass(currentView === 'landing')}
           >
             Overview
@@ -70,6 +101,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
               <button
                 type="button"
                 onClick={() => handleNav('dashboard')}
+                aria-current={currentView === 'dashboard' ? 'page' : undefined}
                 className={navLinkClass(currentView === 'dashboard')}
               >
                 Dashboard
@@ -77,6 +109,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
               <button
                 type="button"
                 onClick={() => handleNav('profile')}
+                aria-current={currentView === 'profile' ? 'page' : undefined}
                 className={navLinkClass(currentView === 'profile')}
               >
                 Edit Profile
@@ -88,6 +121,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             <button
               type="button"
               onClick={() => handleNav('admin')}
+              aria-current={currentView === 'admin' ? 'page' : undefined}
               className={navLinkClass(currentView === 'admin')}
             >
               Console
@@ -95,20 +129,31 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
           )}
 
           {!isAuthenticated && (
-            <button
-              type="button"
-              onClick={() => handleNav('signin')}
-              className={navLinkClass(currentView === 'signin')}
-            >
-              Sign In
-            </button>
+            <>
+              <button
+                type="button"
+                onClick={() => handleNav('signin')}
+                aria-current={currentView === 'signin' ? 'page' : undefined}
+                className={navLinkClass(currentView === 'signin')}
+              >
+                Sign In
+              </button>
+              <button
+                type="button"
+                onClick={() => handleNav('admin_login')}
+                aria-current={currentView === 'admin_login' ? 'page' : undefined}
+                className={navLinkClass(currentView === 'admin_login' || currentView === 'admin')}
+              >
+                Admin
+              </button>
+            </>
           )}
 
           {isAuthenticated && (
             <button
               type="button"
               onClick={() => logout()}
-              className="text-sm font-medium text-[var(--ink-muted)] hover:text-[var(--status-danger)] whitespace-nowrap shrink-0 transition-colors py-1 border-b-2 border-transparent cursor-pointer"
+              className="text-xs font-mono font-medium text-[var(--chalk)] hover:text-[var(--exposure)] whitespace-nowrap shrink-0 transition-colors py-1.5 border-b-2 border-transparent cursor-pointer pencil-link"
             >
               Sign Out
             </button>
@@ -118,20 +163,20 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             href="https://mihora.tech"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-[var(--ink-muted)] hover:text-[var(--ink-primary)] whitespace-nowrap shrink-0 py-1 border-b-2 border-transparent transition-colors"
+            className="text-xs font-mono font-medium text-[var(--chalk)] hover:text-[var(--exposure)] whitespace-nowrap shrink-0 py-1.5 border-b-2 border-transparent transition-colors pencil-link"
           >
             MIHORA Site
           </a>
         </nav>
 
-        {/* Zone 3: Single Primary Action */}
+        {/* Zone 3: Single High-Contrast Primary Action */}
         <div className="flex items-center gap-3 shrink-0">
           {isAuthenticated ? (
             isAdmin ? (
               <button
                 type="button"
                 onClick={() => handleNav('admin')}
-                className="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-semibold text-white bg-[var(--surface-ink)] hover:bg-slate-800 rounded-[var(--radius-sm)] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                className="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-mono font-semibold text-[var(--edge)] bg-[var(--exposure)] hover:bg-white rounded-[var(--radius-xs)] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
               >
                 Admin Console
               </button>
@@ -139,7 +184,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
               <button
                 type="button"
                 onClick={() => handleNav(currentView === 'profile' ? 'dashboard' : 'profile')}
-                className="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-semibold text-white bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] rounded-[var(--radius-sm)] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+                className="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-mono font-semibold text-[var(--edge)] bg-[var(--exposure)] hover:bg-white rounded-[var(--radius-xs)] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
               >
                 {currentView === 'profile' ? 'View Dossier' : 'Edit Profile'}
               </button>
@@ -148,7 +193,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             <button
               type="button"
               onClick={() => handleNav('register')}
-              className="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-semibold text-white bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] rounded-[var(--radius-sm)] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              className="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-mono font-semibold text-[var(--edge)] bg-[var(--exposure)] hover:bg-white rounded-[var(--radius-xs)] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
             >
               Create Profile
             </button>
@@ -159,7 +204,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             onClick={() => setMobileOpen((prev) => !prev)}
             aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={mobileOpen}
-            className="md:hidden inline-flex items-center justify-center w-10 h-10 text-[var(--ink-secondary)] hover:text-[var(--ink-primary)] hover:bg-[var(--surface-subtle)] rounded-[var(--radius-sm)] transition-colors cursor-pointer"
+            className="md:hidden inline-flex items-center justify-center w-10 h-10 text-[var(--chalk)] hover:text-[var(--exposure)] hover:bg-[var(--prussian)] rounded-[var(--radius-xs)] transition-colors cursor-pointer"
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -169,11 +214,16 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
       <ScrollProgressBar />
 
       {mobileOpen && (
-        <div className="md:hidden border-t border-[var(--border-hairline)] bg-[var(--surface-elevated)] px-4 py-4 space-y-1.5">
+        <div className="md:hidden border-t border-[var(--rule-hairline)] bg-[var(--edge)] px-4 py-4 space-y-1.5 font-mono">
+          <div className="px-3 pb-2 mb-2 border-b border-[var(--rule-hairline)] text-[11px] text-[var(--chalk-dim)] flex items-center justify-between">
+            <span>ACTIVE SHEET</span>
+            <span className="text-[var(--exposure)] font-semibold">{activeSheetCode}</span>
+          </div>
+
           <button
             type="button"
             onClick={() => handleNav('landing')}
-            className="w-full text-left px-3 py-2.5 text-sm font-medium text-[var(--ink-primary)] hover:bg-[var(--surface-subtle)] rounded-[var(--radius-sm)]"
+            className="w-full text-left px-3 py-2.5 text-xs font-medium text-[var(--exposure)] hover:bg-[var(--prussian)] rounded-[var(--radius-xs)]"
           >
             Overview
           </button>
@@ -183,14 +233,14 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
               <button
                 type="button"
                 onClick={() => handleNav('dashboard')}
-                className="w-full text-left px-3 py-2.5 text-sm font-medium text-[var(--ink-primary)] hover:bg-[var(--surface-subtle)] rounded-[var(--radius-sm)]"
+                className="w-full text-left px-3 py-2.5 text-xs font-medium text-[var(--exposure)] hover:bg-[var(--prussian)] rounded-[var(--radius-xs)]"
               >
                 Dashboard
               </button>
               <button
                 type="button"
                 onClick={() => handleNav('profile')}
-                className="w-full text-left px-3 py-2.5 text-sm font-semibold text-[var(--accent-primary)] hover:bg-[var(--surface-subtle)] rounded-[var(--radius-sm)]"
+                className="w-full text-left px-3 py-2.5 text-xs font-semibold text-[var(--exposure)] hover:bg-[var(--prussian)] rounded-[var(--radius-xs)]"
               >
                 Edit Profile
               </button>
@@ -201,9 +251,19 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             <button
               type="button"
               onClick={() => handleNav('admin')}
-              className="w-full text-left px-3 py-2.5 text-sm font-semibold text-[var(--ink-primary)] hover:bg-[var(--surface-subtle)] rounded-[var(--radius-sm)]"
+              className="w-full text-left px-3 py-2.5 text-xs font-semibold text-[var(--exposure)] hover:bg-[var(--prussian)] rounded-[var(--radius-xs)]"
             >
               Admin Console
+            </button>
+          )}
+
+          {!isAuthenticated && (
+            <button
+              type="button"
+              onClick={() => handleNav('admin_login')}
+              className="w-full text-left px-3 py-2.5 text-xs font-medium text-[var(--exposure)] hover:bg-[var(--prussian)] rounded-[var(--radius-xs)]"
+            >
+              Admin Portal
             </button>
           )}
 
@@ -211,7 +271,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             href="https://mihora.tech"
             target="_blank"
             rel="noopener noreferrer"
-            className="block px-3 py-2.5 text-sm font-medium text-[var(--ink-muted)] hover:bg-[var(--surface-subtle)] rounded-[var(--radius-sm)]"
+            className="block px-3 py-2.5 text-xs font-medium text-[var(--chalk)] hover:bg-[var(--prussian)] rounded-[var(--radius-xs)]"
           >
             MIHORA Main Site
           </a>
@@ -220,23 +280,23 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             <button
               type="button"
               onClick={() => logout()}
-              className="w-full text-left px-3 py-2.5 text-sm font-medium text-[var(--status-danger)] hover:bg-[var(--surface-subtle)] rounded-[var(--radius-sm)]"
+              className="w-full text-left px-3 py-2.5 text-xs font-medium text-[var(--chalk)] hover:bg-[var(--prussian)] rounded-[var(--radius-xs)]"
             >
               Sign Out
             </button>
           ) : (
-            <div className="pt-2 border-t border-[var(--border-hairline)] grid grid-cols-2 gap-2">
+            <div className="pt-2 border-t border-[var(--rule-hairline)] grid grid-cols-2 gap-2">
               <button
                 type="button"
                 onClick={() => handleNav('signin')}
-                className="px-3 py-2.5 text-xs font-semibold text-[var(--ink-primary)] border border-[var(--border-strong)] rounded-[var(--radius-sm)]"
+                className="px-3 py-2.5 text-xs font-semibold text-[var(--exposure)] border border-[var(--rule-strong)] rounded-[var(--radius-xs)]"
               >
                 Sign In
               </button>
               <button
                 type="button"
                 onClick={() => handleNav('register')}
-                className="px-3 py-2.5 text-xs font-semibold text-white bg-[var(--accent-primary)] rounded-[var(--radius-sm)]"
+                className="px-3 py-2.5 text-xs font-semibold text-[var(--edge)] bg-[var(--exposure)] rounded-[var(--radius-xs)]"
               >
                 Create Profile
               </button>

@@ -109,11 +109,11 @@ const AppContent: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[var(--surface-canvas)] flex items-center justify-center px-4">
-        <div className="text-center">
-          <div className="w-8 h-8 border-2 border-[var(--accent-primary)] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-xs text-[var(--ink-muted)] font-mono tracking-tight">
-            Initializing MIHORA Tech Portal
+      <div className="min-h-screen bg-cyanotype-table flex items-center justify-center px-4">
+        <div className="cyanotype-sheet px-8 py-6 text-center max-w-xs w-full">
+          <div className="w-7 h-7 border-2 border-[var(--exposure)] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-xs text-[var(--chalk)] font-mono tracking-wider">
+            EXPOSING MIHORA VAULT...
           </p>
         </div>
       </div>
@@ -121,7 +121,7 @@ const AppContent: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--surface-canvas)] text-[var(--ink-primary)] flex flex-col font-sans">
+    <div className="min-h-screen bg-cyanotype-table text-[var(--exposure)] flex flex-col font-mono">
       <Navbar currentView={currentView} onNavigate={handleNavigate} />
 
       <main className="grow">
