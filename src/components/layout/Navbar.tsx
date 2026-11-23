@@ -3,7 +3,7 @@ import { MihoraLogo } from '../brand/MihoraLogo';
 import { useAuth } from '../../context/AuthContext';
 import { useScrollProgress } from '../../utils/useScrollProgress';
 import { ScrollProgressBar } from '../ui/MotionPrimitives';
-import { LogOut, Shield, Briefcase, Menu, X, ArrowUpRight } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 interface NavbarProps {
   currentView?: string;
@@ -27,7 +27,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
   }, [currentView]);
 
   const navLinkClass = (active: boolean) =>
-    `text-sm whitespace-nowrap transition-colors py-1 border-b-2 cursor-pointer ${
+    `text-sm whitespace-nowrap shrink-0 transition-colors py-1 border-b-2 cursor-pointer ${
       active
         ? 'text-[var(--ink-primary)] font-semibold border-[var(--accent-primary)]'
         : 'text-[var(--ink-muted)] font-medium border-transparent hover:text-[var(--ink-primary)]'
@@ -41,18 +41,18 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
           : 'bg-[var(--surface-elevated)] border-[var(--border-hairline)]'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4 relative">
-        {/* Zone 1: Semantic Brand Trigger */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-8 relative">
+        {/* Zone 1: Single-line Brand Title */}
         <button
           type="button"
           onClick={() => handleNav('landing')}
-          className="cursor-pointer transition-opacity hover:opacity-85 flex items-center shrink-0 focus-visible:outline-2 focus-visible:outline-offset-4 rounded-sm"
-          aria-label="MIHORA Tech Careers Home"
+          className="cursor-pointer transition-opacity hover:opacity-85 flex items-center shrink-0 whitespace-nowrap focus-visible:outline-2 focus-visible:outline-offset-4 rounded-sm"
+          aria-label="MIHORA Tech Home"
         >
-          <MihoraLogo size="md" variant="full" />
+          <MihoraLogo size="sm" variant="full" />
         </button>
 
-        {/* Zone 2: Desktop Navigation Links */}
+        {/* Zone 2: Concise Single-Line Navigation Links */}
         <nav
           aria-label="Primary Navigation"
           className="hidden md:flex items-center gap-7"
@@ -90,7 +90,27 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
               onClick={() => handleNav('admin')}
               className={navLinkClass(currentView === 'admin')}
             >
-              Admin Console
+              Console
+            </button>
+          )}
+
+          {!isAuthenticated && (
+            <button
+              type="button"
+              onClick={() => handleNav('signin')}
+              className={navLinkClass(currentView === 'signin')}
+            >
+              Sign In
+            </button>
+          )}
+
+          {isAuthenticated && (
+            <button
+              type="button"
+              onClick={() => logout()}
+              className="text-sm font-medium text-[var(--ink-muted)] hover:text-[var(--status-danger)] whitespace-nowrap shrink-0 transition-colors py-1 border-b-2 border-transparent cursor-pointer"
+            >
+              Sign Out
             </button>
           )}
 
@@ -98,68 +118,42 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             href="https://mihora.tech"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-medium text-[var(--ink-muted)] hover:text-[var(--ink-primary)] whitespace-nowrap inline-flex items-center gap-1 py-1 border-b-2 border-transparent transition-colors"
+            className="text-sm font-medium text-[var(--ink-muted)] hover:text-[var(--ink-primary)] whitespace-nowrap shrink-0 py-1 border-b-2 border-transparent transition-colors"
           >
-            <span>MIHORA Tech</span>
-            <ArrowUpRight className="w-3.5 h-3.5 opacity-70" />
+            MIHORA Site
           </a>
         </nav>
 
-        {/* Zone 3: Actions */}
-        <div className="flex items-center gap-2.5 shrink-0">
+        {/* Zone 3: Single Primary Action */}
+        <div className="flex items-center gap-3 shrink-0">
           {isAuthenticated ? (
-            <div className="flex items-center gap-2">
-              {isAdmin ? (
-                <button
-                  type="button"
-                  onClick={() => handleNav('admin')}
-                  className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-[var(--surface-ink)] hover:bg-slate-800 rounded-[var(--radius-sm)] transition-colors whitespace-nowrap cursor-pointer"
-                >
-                  <Shield className="w-3.5 h-3.5" />
-                  <span>Console</span>
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => handleNav(currentView === 'profile' ? 'dashboard' : 'profile')}
-                  className="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] rounded-[var(--radius-sm)] transition-colors whitespace-nowrap cursor-pointer"
-                >
-                  <Briefcase className="w-3.5 h-3.5" />
-                  <span>{currentView === 'profile' ? 'Overview' : 'Edit Profile'}</span>
-                </button>
-              )}
-
+            isAdmin ? (
               <button
                 type="button"
-                onClick={() => logout()}
-                title="Sign Out"
-                aria-label="Sign Out"
-                className="inline-flex items-center gap-1.5 px-2.5 py-2 text-xs font-medium text-[var(--ink-muted)] hover:text-[var(--status-danger)] hover:bg-[var(--surface-subtle)] rounded-[var(--radius-sm)] transition-colors whitespace-nowrap cursor-pointer"
+                onClick={() => handleNav('admin')}
+                className="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-semibold text-white bg-[var(--surface-ink)] hover:bg-slate-800 rounded-[var(--radius-sm)] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
               >
-                <LogOut className="w-4 h-4" />
-                <span className="hidden lg:inline">Sign Out</span>
+                Admin Console
               </button>
-            </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => handleNav(currentView === 'profile' ? 'dashboard' : 'profile')}
+                className="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-semibold text-white bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] rounded-[var(--radius-sm)] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+              >
+                {currentView === 'profile' ? 'View Dossier' : 'Edit Profile'}
+              </button>
+            )
           ) : (
-            <div className="hidden sm:flex items-center gap-2">
-              <button
-                type="button"
-                onClick={() => handleNav('signin')}
-                className="px-3.5 py-2 text-xs font-semibold text-[var(--ink-secondary)] hover:text-[var(--ink-primary)] hover:bg-[var(--surface-subtle)] rounded-[var(--radius-sm)] transition-colors whitespace-nowrap cursor-pointer"
-              >
-                Sign In
-              </button>
-              <button
-                type="button"
-                onClick={() => handleNav('register')}
-                className="px-4 py-2 text-xs font-semibold text-white bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] rounded-[var(--radius-sm)] transition-colors whitespace-nowrap cursor-pointer"
-              >
-                Create Profile
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={() => handleNav('register')}
+              className="hidden sm:inline-flex items-center justify-center px-4 py-2 text-xs font-semibold text-white bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] rounded-[var(--radius-sm)] transition-colors whitespace-nowrap shrink-0 cursor-pointer"
+            >
+              Create Profile
+            </button>
           )}
 
-          {/* Mobile Menu Toggle */}
           <button
             type="button"
             onClick={() => setMobileOpen((prev) => !prev)}
@@ -172,18 +166,16 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
         </div>
       </div>
 
-      {/* Scroll Reading Hairline */}
       <ScrollProgressBar />
 
-      {/* Mobile Navigation Drawer */}
       {mobileOpen && (
-        <div className="md:hidden border-t border-[var(--border-hairline)] bg-[var(--surface-elevated)] px-4 py-4 space-y-2">
+        <div className="md:hidden border-t border-[var(--border-hairline)] bg-[var(--surface-elevated)] px-4 py-4 space-y-1.5">
           <button
             type="button"
             onClick={() => handleNav('landing')}
             className="w-full text-left px-3 py-2.5 text-sm font-medium text-[var(--ink-primary)] hover:bg-[var(--surface-subtle)] rounded-[var(--radius-sm)]"
           >
-            Careers Overview
+            Overview
           </button>
 
           {isAuthenticated && !isAdmin && (
@@ -193,12 +185,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
                 onClick={() => handleNav('dashboard')}
                 className="w-full text-left px-3 py-2.5 text-sm font-medium text-[var(--ink-primary)] hover:bg-[var(--surface-subtle)] rounded-[var(--radius-sm)]"
               >
-                Candidate Dashboard
+                Dashboard
               </button>
               <button
                 type="button"
                 onClick={() => handleNav('profile')}
-                className="w-full text-left px-3 py-2.5 text-sm font-medium text-[var(--accent-primary)] hover:bg-[var(--surface-subtle)] rounded-[var(--radius-sm)]"
+                className="w-full text-left px-3 py-2.5 text-sm font-semibold text-[var(--accent-primary)] hover:bg-[var(--surface-subtle)] rounded-[var(--radius-sm)]"
               >
                 Edit Profile
               </button>
@@ -219,13 +211,20 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
             href="https://mihora.tech"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-between px-3 py-2.5 text-sm font-medium text-[var(--ink-muted)] hover:bg-[var(--surface-subtle)] rounded-[var(--radius-sm)]"
+            className="block px-3 py-2.5 text-sm font-medium text-[var(--ink-muted)] hover:bg-[var(--surface-subtle)] rounded-[var(--radius-sm)]"
           >
-            <span>MIHORA Tech Main Site</span>
-            <ArrowUpRight className="w-4 h-4" />
+            MIHORA Main Site
           </a>
 
-          {!isAuthenticated && (
+          {isAuthenticated ? (
+            <button
+              type="button"
+              onClick={() => logout()}
+              className="w-full text-left px-3 py-2.5 text-sm font-medium text-[var(--status-danger)] hover:bg-[var(--surface-subtle)] rounded-[var(--radius-sm)]"
+            >
+              Sign Out
+            </button>
+          ) : (
             <div className="pt-2 border-t border-[var(--border-hairline)] grid grid-cols-2 gap-2">
               <button
                 type="button"

@@ -106,9 +106,9 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
           <div className="inline-block mb-4">
             <MihoraLogo size="lg" variant="full" />
           </div>
-          <div className="text-[11px] font-mono uppercase tracking-[0.14em] text-[var(--ink-primary)] mb-1.5">
-            RESTRICTED ACCESS · ADMINISTRATIVE CONSOLE
-          </div>
+          <p className="text-xs font-mono text-[var(--ink-secondary)] mb-1">
+            Restricted Access · Administrative Console
+          </p>
           <h1 className="font-display text-2xl font-bold tracking-tight text-[var(--ink-primary)]">
             {isSettingUp ? 'Initialize Primary Administrator' : 'Administrator Console Sign In'}
           </h1>
@@ -230,7 +230,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
                 disabled={isLoading}
                 className="w-full mt-2 py-2.5 px-4 text-xs font-semibold text-white bg-[var(--surface-ink)] hover:bg-slate-800 rounded-[var(--radius-md)] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
               >
-                <span>{isLoading ? 'Configuring Administrator...' : 'Bootstrap Primary Administrator'}</span>
+                <span>{isLoading ? 'Configuring Administrator...' : 'Initialize Primary Administrator'}</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </button>
 

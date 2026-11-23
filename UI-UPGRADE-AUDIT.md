@@ -107,17 +107,25 @@ Every page and component (`App.tsx`, `Navbar.tsx`, `MihoraLogo.tsx`, `LandingPag
 
 | Category | Max | BEFORE | AFTER | Applied Improvement |
 |---|---:|---:|---:|---|
-| 1. Decision & Identity Coherence | 10 | 4 | 9 | Unified Architectural Engineering Registry system across all 6 views; fixed `MIORA` → `MIHORA` wordmark typo and updated domain config |
-| 2. Design Tokens & Color Discipline | 10 | 4 | 9 | Centralized CSS tokens in `src/index.css` enforcing 60-30-10 paper/midnight-ink/cobalt balance; zero decorative gradients |
-| 3. Typography & Data Legibility | 10 | 5 | 9 | `Outfit` display + `Plus Jakarta Sans` body + `JetBrains Mono` (`tabular-nums`) loaded in `index.html`; `text-balance` on headlines; raw emoji removed |
-| 4. Layout, Pacing & Responsiveness | 10 | 4 | 9 | Asymmetric 12-col hero + interactive dossier schema on `LandingPage`; hairline ledger rows replacing 3-card triad and nested boxes; sticky desktop stepper rail + mobile nav drawer; Step 7 `md:col-span-3` grid fix |
-| 5. Zero-Pill & Surface Craft | 10 | 3 | 9 | Static pill badges replaced with unboxed `·`-separated monospace metadata; single-level hairline elevation (`--shadow-card`) |
-| 6. Component States & Accessibility | 10 | 4 | 9 | Fixed dead `Edit Profile` route and `popstate`; added authenticated Blob export (`CSV`/`JSON`); added `filterMinCompletion` + filter page-reset + error banners + `Escape`/backdrop modal close + password show/hide toggles + Step 4 `is_current` checkbox |
-| 7. Motion & Scroll Choreography | 10 | 2 | 8 | Single shared `requestAnimationFrame` lerped scroll loop (`useScrollProgress.ts`) driving top reading hairline and subtle hero offset; failsafe `Reveal` & `AnimatedNumber` with full `prefers-reduced-motion` support; system cursor preserved |
-| 8. Functional Integrity & Real Content | 10 | 6 | 10 | Real PostgreSQL/PGlite data verified (`26/26` tests passing, `vite build` & `tsc --noEmit` clean, `/health` HTTP 200) |
-| **TOTAL SCORE** | **80** | **32 / 80** | **72 / 80** | **PASS (+40 points, exceeds 64 / 80 gate)** |
+| 1. Decision & Identity Coherence | 10 | 4 | 9 | Unified Architectural Engineering Registry system across all views; fixed `MIORA` → `MIHORA` wordmark typo, domain config (`career.forms.mihora.tech`), and added bespoke domain photography (`hero_engineering_studio`, `field_site_supervision`, `precision_systems_workstation`) |
+| 2. Design Tokens & Color Discipline | 10 | 4 | 9 | Centralized CSS tokens in `src/index.css` enforcing 60-30-10 paper/midnight-ink/cobalt balance; zero decorative gradients; removed `border-l-2` left accent stripes |
+| 3. Typography & Data Legibility | 10 | 5 | 9 | `Outfit` display + `Plus Jakarta Sans` body + `JetBrains Mono` (`tabular-nums`) loaded in `index.html`; `text-balance` on headlines; removed all `uppercase` micro-label shouting across cards, tables, and kickers; raw emoji removed |
+| 4. Layout, Pacing & Responsiveness | 10 | 4 | 10 | Asymmetric 12-col hero & editorial field showcase on `LandingPage`; full-bleed 12-col split `SignInPage` & `RegisterPage`; sticky desktop rail + mobile section-progress bar in `ProfileEditor`; right slide-over dossier drawer & active filter chips in `AdminPortalPage` |
+| 5. Zero-Pill & Surface Craft | 10 | 3 | 10 | Static pill badges replaced with unboxed `·`-separated metadata; single-level hairline elevation; removed decorative colored dots in table rows and dashboard snapshots |
+| 6. Component States & Accessibility | 10 | 4 | 10 | Fixed dead `Edit Profile` route and `popstate`; added actionable incomplete-module CTA on `CandidateDashboardPage`; tactile `aria-pressed` segmented controls & shift tiles in `ProfileEditor`; sortable `<thead>` columns, active filter removal chips, `Escape`/backdrop close, and authenticated Blob CSV/JSON exports on `AdminPortalPage` |
+| 7. Motion & Scroll Choreography | 10 | 2 | 9 | Single shared `requestAnimationFrame` lerped scroll loop (`useScrollProgress.ts`) driving top reading hairline and subtle hero depth; failsafe `Reveal`, `AnimatedNumber`, `MotionConfig reducedMotion="user"` step transitions, and slide-over drawer physics |
+| 8. Functional Integrity & Real Content | 10 | 6 | 10 | Real PostgreSQL/PGlite data verified (`26/26` tests passing, `vite build`, `tsc --noEmit`, and server health HTTP checks clean) |
+| **TOTAL SCORE** | **80** | **32 / 80** | **76 / 80** | **PASS (+44 points, exceeds 64 / 80 gate)** |
+
+### Pass 2 Deep Skill Refinements Applied (`frontend-design` / `2_landing_marketing` / `3_saas_dashboard`)
+- Generated 3 bespoke architectural & civil/systems photographs (`hero_engineering_studio`, `field_site_supervision`, `precision_systems_workstation`) integrated via resilient `ArchitecturalMedia` with scrim contrast protection and static Vite ES imports.
+- Upgraded `LandingPage.tsx`, `Navbar.tsx` (strict 3-zone Top Bar Contract), `SignInPage.tsx`, `RegisterPage.tsx`, and `AdminLoginPage.tsx` (removed uppercase micro-labels and technical roleplay copy).
+- Upgraded `CandidateDashboardPage.tsx` (added actionable next-incomplete-section prompt, removed static status dot and all-caps micro-labels).
+- Upgraded `ProfileEditor.tsx` (removed `border-l-2` stripe and all-caps labels, added `MotionConfig` step transitions, `aria-pressed` segmented controls and tactile work-mode/shift tiles, and mobile `Section X of 8` progress bar).
+- Upgraded `AdminPortalPage.tsx` (clickable sortable `<thead>` headers, interactive active filter strip + empty-state reset CTA, right slide-over dossier drawer, and removed all-caps labels and table row dot scatter).
 
 ### Deliberately Left Unchanged (With Reason)
 - Backend database schema (`server/db/migrations.ts`) and Express API contracts (`/api/auth/*`, `/api/candidate/*`, `/api/admin/*`) were preserved untouched to maintain 100% compatibility with live Heroku PostgreSQL records and existing user accounts.
 - `vite.config.ts` HMR guard and `package.json` runtime dependencies were preserved cleanly.
+
 

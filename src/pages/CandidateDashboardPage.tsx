@@ -137,8 +137,8 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
             <span>Return to Dashboard Overview</span>
           </button>
 
-          <span className="text-[11px] font-mono text-[var(--ink-muted)]">
-            POSTGRESQL PERSISTENCE · STEP AUTO-SAVE
+          <span className="text-xs font-mono text-[var(--ink-muted)]">
+            PostgreSQL persistence · Step auto-save
           </span>
         </div>
 
@@ -170,14 +170,16 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
     { label: 'Compensation', done: completeness.compensationAvailability, step: 7 },
   ];
 
+  const incompleteModules = checklistModules.filter((m) => !m.done);
+  const nextIncompleteModule = incompleteModules[0];
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-      {/* Dossier Header & Calibration Gauge */}
       <Reveal>
         <div className="bg-[var(--surface-elevated)] rounded-[var(--radius-lg)] border border-[var(--border-hairline)] p-6 sm:p-8 shadow-[var(--shadow-card)]">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[11px] font-mono text-[var(--ink-muted)] mb-2">
+              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs font-mono text-[var(--ink-muted)] mb-2">
                 <span className="font-semibold text-[var(--accent-primary)]">
                   {candidate.reference_code}
                 </span>
@@ -222,14 +224,13 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
             </div>
           </div>
 
-          {/* Profile Completeness Calibration */}
           <div className="mt-7 pt-6 border-t border-[var(--border-hairline)]">
             <div className="flex items-baseline justify-between gap-4 mb-2.5">
               <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
                 <span className="text-xs font-semibold text-[var(--ink-primary)]">
                   Dossier Completeness
                 </span>
-                <span className="text-[11px] font-mono text-[var(--status-success)]">
+                <span className="text-xs font-mono text-[var(--status-success)]">
                   · PostgreSQL Verified
                 </span>
               </div>
@@ -245,7 +246,6 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
               />
             </div>
 
-            {/* Interactive Module Checklist */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 mt-5">
               {checklistModules.map((sec) => (
                 <button
@@ -267,16 +267,47 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
                 </button>
               ))}
             </div>
+
+            {completeness.percentage < 100 && (
+              <div className="mt-4 pt-4 border-t border-[var(--border-hairline)] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div className="text-xs text-[var(--ink-secondary)]">
+                  {nextIncompleteModule ? (
+                    <>
+                      Next incomplete section:{' '}
+                      <span className="font-semibold text-[var(--ink-primary)]">
+                        {nextIncompleteModule.label}
+                      </span>{' '}
+                      <span className="font-mono text-[var(--ink-muted)]">
+                        ({incompleteModules.length} remaining)
+                      </span>
+                    </>
+                  ) : (
+                    <span>Final dossier review ready for confirmation.</span>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => enterEditMode(nextIncompleteModule ? nextIncompleteModule.step : 8)}
+                  className="self-start sm:self-auto px-3.5 py-2 text-xs font-semibold text-[var(--accent-primary)] bg-[var(--accent-primary-soft)] hover:bg-blue-100/70 rounded-[var(--radius-sm)] transition-colors inline-flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
+                >
+                  <span>
+                    {nextIncompleteModule
+                      ? `Complete ${nextIncompleteModule.label}`
+                      : 'Review Complete Dossier'}
+                  </span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </Reveal>
 
-      {/* Hairline-Divided Metric Snapshot Strip */}
       <Reveal delayMs={60}>
         <div className="bg-[var(--surface-elevated)] rounded-[var(--radius-lg)] border border-[var(--border-hairline)] shadow-[var(--shadow-card)] grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[var(--border-hairline)]">
           <div className="p-6 flex flex-col justify-between">
             <div>
-              <div className="text-[11px] font-mono uppercase tracking-[0.1em] text-[var(--ink-muted)] mb-1.5">
+              <div className="text-xs font-mono font-medium text-[var(--ink-muted)] mb-1.5">
                 Current Designation
               </div>
               <div className="font-display text-lg font-bold text-[var(--ink-primary)]">
@@ -297,20 +328,17 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
 
           <div className="p-6 flex flex-col justify-between">
             <div>
-              <div className="text-[11px] font-mono uppercase tracking-[0.1em] text-[var(--ink-muted)] mb-1.5">
+              <div className="text-xs font-mono font-medium text-[var(--ink-muted)] mb-1.5">
                 Deployment &amp; Commute
               </div>
-              <div className="font-display text-lg font-bold text-[var(--ink-primary)] flex items-center gap-2">
-                <span
-                  className={`inline-block w-2 h-2 rounded-full ${
-                    candidate.willing_onsite_deployment
-                      ? 'bg-[var(--status-success)]'
-                      : 'bg-[var(--ink-faint)]'
-                  }`}
-                />
-                <span>
-                  {candidate.willing_onsite_deployment ? 'On-Site Ready' : 'Remote Only'}
-                </span>
+              <div
+                className={`font-display text-lg font-bold ${
+                  candidate.willing_onsite_deployment
+                    ? 'text-[var(--status-success)]'
+                    : 'text-[var(--ink-primary)]'
+                }`}
+              >
+                {candidate.willing_onsite_deployment ? 'On-Site Ready' : 'Remote Only'}
               </div>
               <div className="text-xs text-[var(--ink-muted)] mt-0.5 font-mono">
                 Max {candidate.max_commute_distance_km ? `${candidate.max_commute_distance_km} km` : 'Flexible'} ·{' '}
@@ -334,7 +362,7 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
 
           <div className="p-6 flex flex-col justify-between">
             <div>
-              <div className="text-[11px] font-mono uppercase tracking-[0.1em] text-[var(--ink-muted)] mb-1.5">
+              <div className="text-xs font-mono font-medium text-[var(--ink-muted)] mb-1.5">
                 Status &amp; Compensation
               </div>
               <div className="font-display text-lg font-bold text-[var(--ink-primary)] capitalize">
@@ -359,7 +387,6 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
         </div>
       </Reveal>
 
-      {/* Complete Structured Record — Hairline Ledger (Zero Nested Cards) */}
       <Reveal delayMs={100}>
         <div className="bg-[var(--surface-elevated)] rounded-[var(--radius-lg)] border border-[var(--border-hairline)] shadow-[var(--shadow-card)] divide-y divide-[var(--border-hairline)]">
           <div className="px-6 py-4 flex items-center justify-between">
@@ -375,10 +402,9 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
             </button>
           </div>
 
-          {/* Experience Ledger */}
           <div className="p-6">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-[11px] font-mono uppercase tracking-[0.1em] text-[var(--ink-muted)]">
+              <h3 className="text-xs font-mono font-semibold text-[var(--ink-muted)]">
                 Career Experience ({experiences.length})
               </h3>
               <button
@@ -404,7 +430,7 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
                           · {exp.company_name}
                         </span>
                       </div>
-                      <span className="font-mono text-[11px] text-[var(--ink-muted)]">
+                      <span className="font-mono text-xs text-[var(--ink-muted)]">
                         {exp.start_date || 'Start'} — {exp.is_current ? 'Present' : exp.end_date || 'N/A'}
                       </span>
                     </div>
@@ -419,10 +445,9 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
             )}
           </div>
 
-          {/* Education Ledger */}
           <div className="p-6">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-[11px] font-mono uppercase tracking-[0.1em] text-[var(--ink-muted)]">
+              <h3 className="text-xs font-mono font-semibold text-[var(--ink-muted)]">
                 Education &amp; Academics ({education.length})
               </h3>
               <button
@@ -450,7 +475,7 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
                         · {edu.institution}
                       </span>
                     </div>
-                    <span className="font-mono text-[11px] text-[var(--ink-muted)]">
+                    <span className="font-mono text-xs text-[var(--ink-muted)]">
                       {edu.start_year || ''} — {edu.is_current ? 'Present' : edu.completion_year || 'Present'}
                     </span>
                   </div>
@@ -459,10 +484,9 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
             )}
           </div>
 
-          {/* Skills Ledger */}
           <div className="p-6">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="text-[11px] font-mono uppercase tracking-[0.1em] text-[var(--ink-muted)]">
+              <h3 className="text-xs font-mono font-semibold text-[var(--ink-muted)]">
                 Verified Skills ({skills.length})
               </h3>
               <button
@@ -485,7 +509,7 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
                     <span className="font-semibold text-[var(--ink-primary)] truncate">
                       {s.skill_name}
                     </span>
-                    <span className="font-mono text-[11px] text-[var(--ink-muted)] shrink-0">
+                    <span className="font-mono text-xs text-[var(--ink-muted)] shrink-0">
                       {s.proficiency_level} · {s.years_of_experience || 1}y
                     </span>
                   </div>
