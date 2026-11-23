@@ -1,11 +1,141 @@
 @import "tailwindcss";
 
+:root {
+  /* 60% Canvas & Elevated Surfaces */
+  --surface-canvas: #F7F8FA;
+  --surface-elevated: #FFFFFF;
+  --surface-subtle: #F1F4F8;
+  --surface-inset: #ECEFF4;
+  --surface-ink: #0B1324;
+
+  /* 30% Ink & Structural Hairlines */
+  --ink-primary: #0B1324;
+  --ink-secondary: #334155;
+  --ink-muted: #64748B;
+  --ink-faint: #94A3B8;
+  --border-hairline: #E2E6EE;
+  --border-strong: #CBD5E1;
+
+  /* 10% Signal Accent & Semantic Status */
+  --accent-primary: #0052CC;
+  --accent-primary-hover: #003E9E;
+  --accent-primary-soft: rgba(0, 82, 204, 0.08);
+  --accent-ring: rgba(0, 82, 204, 0.22);
+
+  --status-success: #0F766E;
+  --status-success-soft: rgba(15, 118, 110, 0.08);
+  --status-warning: #B45309;
+  --status-warning-soft: rgba(180, 83, 9, 0.08);
+  --status-danger: #BE123C;
+  --status-danger-soft: rgba(190, 18, 60, 0.08);
+
+  /* Radii & Elevation (Single-level crisp hairlines) */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --shadow-card: 0 1px 2px rgba(11, 19, 36, 0.04), 0 1px 1px rgba(11, 19, 36, 0.02);
+  --shadow-popover: 0 12px 32px -8px rgba(11, 19, 36, 0.14), 0 2px 6px rgba(11, 19, 36, 0.06);
+
+  /* Motion Timing */
+  --ease-instrument: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 150ms;
+  --duration-base: 240ms;
+  --duration-slow: 420ms;
+}
+
 @layer base {
-  body {
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  html {
+    scroll-behavior: smooth;
+    color: var(--ink-primary);
+    background-color: var(--surface-canvas);
   }
-  
+
+  body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--ink-primary);
+    background-color: var(--surface-canvas);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .font-display {
+    font-family: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+    letter-spacing: -0.025em;
+  }
+
   .font-mono {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  button, a, input, select, textarea {
+    outline-color: var(--accent-primary);
+  }
+}
+
+/* Precision Architectural Grid Backdrop */
+.bg-instrument-grid {
+  background-image:
+    linear-gradient(to right, rgba(11, 19, 36, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(11, 19, 36, 0.035) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Shared Field Control Styling */
+.field-input {
+  width: 100%;
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 0.5625rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  color: var(--ink-primary);
+  transition: border-color var(--duration-fast) var(--ease-instrument),
+              box-shadow var(--duration-fast) var(--ease-instrument),
+              background-color var(--duration-fast) var(--ease-instrument);
+}
+
+.field-input::placeholder {
+  color: var(--ink-faint);
+}
+
+.field-input:hover:not(:disabled) {
+  border-color: var(--ink-muted);
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px var(--accent-ring);
+}
+
+.field-input:disabled {
+  background-color: var(--surface-subtle);
+  color: var(--ink-muted);
+  cursor: not-allowed;
+}
+
+.field-input-icon {
+  padding-left: 2.375rem;
+}
+
+/* Hide scrollbars cleanly where horizontal overflow is intentional */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Strict Reduced-Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

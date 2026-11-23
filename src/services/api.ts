@@ -211,4 +211,37 @@ export const api = {
   getExportJsonUrl(): string {
     return `/api/admin/exports/json`;
   },
+
+  async downloadAdminExport(format: 'csv' | 'json'): Promise<void> {
+    const endpoint = format === 'csv' ? '/api/admin/exports/csv' : '/api/admin/exports/json';
+    const token = getStoredToken();
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    const response = await fetch(endpoint, { headers });
+    if (!response.ok) {
+      let errorMessage = `Export failed (${response.status})`;
+      try {
+        const errData = await response.json();
+        if (errData?.error) errorMessage = errData.error;
+      } catch {
+        // non-json response
+      }
+      throw new Error(errorMessage);
+    }
+
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    const dateStamp = new Date().toISOString().slice(0, 10);
+    link.download = `mihora_candidates_${dateStamp}.${format}`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+  },
 };
+

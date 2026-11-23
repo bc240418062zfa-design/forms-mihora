@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Navbar } from './components/layout/Navbar';
 import { LandingPage } from './pages/LandingPage';
@@ -8,74 +8,132 @@ import { CandidateDashboardPage } from './pages/CandidateDashboardPage';
 import { AdminLoginPage } from './pages/AdminLoginPage';
 import { AdminPortalPage } from './pages/AdminPortalPage';
 
-const AppContent: React.FC = () => {
-  const { user, isLoading, isAuthenticated, isAdmin } = useAuth();
-  const [currentView, setCurrentView] = useState<string>('landing');
+export type AppView =
+  | 'landing'
+  | 'signin'
+  | 'register'
+  | 'dashboard'
+  | 'profile'
+  | 'admin_login'
+  | 'admin';
 
-  // Handle URL path initialization (e.g. /admin, /sign-in, /register)
+function resolveViewFromPath(pathname: string): AppView {
+  const path = pathname.toLowerCase();
+  if (path.startsWith('/admin/login')) return 'admin_login';
+  if (path.startsWith('/admin')) return 'admin';
+  if (path.startsWith('/sign-in') || path.startsWith('/login')) return 'signin';
+  if (path.startsWith('/register')) return 'register';
+  if (path.startsWith('/profile')) return 'profile';
+  if (path.startsWith('/dashboard')) return 'dashboard';
+  return 'landing';
+}
+
+function resolvePathFromView(view: AppView): string {
+  switch (view) {
+    case 'signin':
+      return '/sign-in';
+    case 'register':
+      return '/register';
+    case 'dashboard':
+      return '/dashboard';
+    case 'profile':
+      return '/profile';
+    case 'admin_login':
+      return '/admin/login';
+    case 'admin':
+      return '/admin';
+    default:
+      return '/';
+  }
+}
+
+const AppContent: React.FC = () => {
+  const { isLoading, isAuthenticated, isAdmin } = useAuth();
+  const [currentView, setCurrentView] = useState<AppView>(() =>
+    resolveViewFromPath(window.location.pathname)
+  );
+
+  // Sync on browser back/forward navigation
   useEffect(() => {
-    const path = window.location.pathname.toLowerCase();
-    if (path.startsWith('/admin/login')) {
-      setCurrentView('admin_login');
-    } else if (path.startsWith('/admin')) {
-      setCurrentView('admin');
-    } else if (path.startsWith('/sign-in') || path.startsWith('/login')) {
-      setCurrentView('signin');
-    } else if (path.startsWith('/register')) {
-      setCurrentView('register');
-    } else if (path.startsWith('/dashboard') || path.startsWith('/profile')) {
-      setCurrentView('dashboard');
-    }
+    const handlePopState = () => {
+      setCurrentView(resolveViewFromPath(window.location.pathname));
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
-  // Sync state with path
-  const handleNavigate = (view: string) => {
-    setCurrentView(view);
-    let targetPath = '/';
-    if (view === 'signin') targetPath = '/sign-in';
-    else if (view === 'register') targetPath = '/register';
-    else if (view === 'dashboard') targetPath = '/dashboard';
-    else if (view === 'admin_login') targetPath = '/admin/login';
-    else if (view === 'admin') targetPath = '/admin';
+  const handleNavigate = useCallback((nextView: string) => {
+    const validViews: AppView[] = [
+      'landing',
+      'signin',
+      'register',
+      'dashboard',
+      'profile',
+      'admin_login',
+      'admin',
+    ];
+    const resolved: AppView = validViews.includes(nextView as AppView)
+      ? (nextView as AppView)
+      : 'landing';
+    setCurrentView(resolved);
+    const targetPath = resolvePathFromView(resolved);
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({}, '', targetPath);
+    }
+    window.scrollTo({ top: 0, behavior: 'auto' });
+  }, []);
 
-    window.history.pushState({}, '', targetPath);
-  };
-
-  // Redirect guard
+  // Auth redirect guard with URL replacement
   useEffect(() => {
-    if (!isLoading) {
-      if (currentView === 'dashboard' && !isAuthenticated) {
-        setCurrentView('signin');
-      } else if (currentView === 'admin' && !isAdmin) {
-        setCurrentView('admin_login');
-      } else if (currentView === 'admin_login' && isAuthenticated && isAdmin) {
-        setCurrentView('admin');
-      } else if (currentView === 'signin' && isAuthenticated) {
-        setCurrentView(isAdmin ? 'admin' : 'dashboard');
+    if (isLoading) return;
+
+    let redirected: AppView | null = null;
+    if ((currentView === 'dashboard' || currentView === 'profile') && !isAuthenticated) {
+      redirected = 'signin';
+    } else if (currentView === 'admin' && !isAdmin) {
+      redirected = 'admin_login';
+    } else if (currentView === 'admin_login' && isAuthenticated && isAdmin) {
+      redirected = 'admin';
+    } else if ((currentView === 'signin' || currentView === 'register') && isAuthenticated) {
+      redirected = isAdmin ? 'admin' : 'dashboard';
+    }
+
+    if (redirected && redirected !== currentView) {
+      setCurrentView(redirected);
+      const targetPath = resolvePathFromView(redirected);
+      if (window.location.pathname !== targetPath) {
+        window.history.replaceState({}, '', targetPath);
       }
     }
   }, [currentView, isAuthenticated, isAdmin, isLoading]);
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--surface-canvas)] flex items-center justify-center px-4">
         <div className="text-center">
-          <div className="w-9 h-9 border-3 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-xs text-slate-500 font-mono">Initializing MIHORA Tech Portal...</p>
+          <div className="w-8 h-8 border-2 border-[var(--accent-primary)] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-xs text-[var(--ink-muted)] font-mono tracking-tight">
+            Initializing MIHORA Tech Portal
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans">
+    <div className="min-h-screen bg-[var(--surface-canvas)] text-[var(--ink-primary)] flex flex-col font-sans">
       <Navbar currentView={currentView} onNavigate={handleNavigate} />
 
       <main className="grow">
         {currentView === 'landing' && <LandingPage onNavigate={handleNavigate} />}
         {currentView === 'signin' && <SignInPage onNavigate={handleNavigate} />}
         {currentView === 'register' && <RegisterPage onNavigate={handleNavigate} />}
-        {currentView === 'dashboard' && <CandidateDashboardPage />}
+        {(currentView === 'dashboard' || currentView === 'profile') && (
+          <CandidateDashboardPage
+            initialEditing={currentView === 'profile'}
+            onViewModeChange={(editing) => handleNavigate(editing ? 'profile' : 'dashboard')}
+          />
+        )}
         {currentView === 'admin_login' && <AdminLoginPage onNavigate={handleNavigate} />}
         {currentView === 'admin' && <AdminPortalPage />}
       </main>

@@ -17,18 +17,17 @@ export const MihoraLogo: React.FC<MihoraLogoProps> = ({
   const [imageError, setImageError] = useState(false);
 
   const heights = {
-    sm: variant === 'full' ? 32 : 26,
-    md: variant === 'full' ? 44 : 36,
-    lg: variant === 'full' ? 60 : 50,
-    xl: variant === 'full' ? 84 : 70,
+    sm: variant === 'full' ? 28 : 24,
+    md: variant === 'full' ? 36 : 32,
+    lg: variant === 'full' ? 52 : 44,
+    xl: variant === 'full' ? 72 : 60,
   };
 
   const currentHeight = heights[size];
 
-  // Try serving the official branding SVG asset first
   if (!imageError) {
     return (
-      <div className={`inline-flex items-center gap-3 select-none ${className}`}>
+      <span className={`inline-flex items-center gap-2.5 select-none ${className}`}>
         <img
           src={BRANDING.logoSvgPath}
           alt={BRANDING.companyName}
@@ -36,28 +35,26 @@ export const MihoraLogo: React.FC<MihoraLogoProps> = ({
           className="object-contain"
           onError={() => setImageError(true)}
         />
-      </div>
+      </span>
     );
   }
 
-  // Fallback vector matching mihora-tech-detailed.svg
   return (
-    <div className={`inline-flex items-center gap-3 select-none ${className}`}>
+    <span className={`inline-flex items-center gap-2.5 select-none ${className}`}>
       {variant !== 'wordmark' && (
         <svg
           viewBox="0 0 1000 1000"
           style={{ height: `${currentHeight}px`, width: `${currentHeight}px` }}
           className="shrink-0"
+          aria-hidden="true"
         >
-          <polygon points="270,195 500,385 435,435 270,285" fill="#1877F2" />
-          <polygon points="730,195 500,385 565,435 730,285" fill="#1877F2" />
-          <polygon points="500,385 435,435 500,515 565,435" fill="#1877F2" />
-          <polygon points="270,285 365,355 365,580 270,510" fill="#0A1C38" />
-          <polygon points="365,355 435,435 500,515 365,445" fill="#0E2344" />
-          <polygon points="730,285 635,355 635,580 730,510" fill="#0A1C38" />
-          <polygon points="635,355 565,435 500,515 635,445" fill="#0E2344" />
-
-          {/* Lines */}
+          <polygon points="270,195 500,385 435,435 270,285" fill="#0052CC" />
+          <polygon points="730,195 500,385 565,435 730,285" fill="#0052CC" />
+          <polygon points="500,385 435,435 500,515 565,435" fill="#0052CC" />
+          <polygon points="270,285 365,355 365,580 270,510" fill="#0B1324" />
+          <polygon points="365,355 435,435 500,515 365,445" fill="#172542" />
+          <polygon points="730,285 635,355 635,580 730,510" fill="#0B1324" />
+          <polygon points="635,355 565,435 500,515 635,445" fill="#172542" />
           <g stroke="#FFFFFF" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
             <line x1="335" y1="377" x2="400" y2="352" />
             <line x1="335" y1="377" x2="440" y2="434" />
@@ -72,8 +69,6 @@ export const MihoraLogo: React.FC<MihoraLogoProps> = ({
             <line x1="597" y1="385" x2="687" y2="416" />
             <line x1="651" y1="309" x2="687" y2="416" />
           </g>
-
-          {/* Nodes */}
           <g fill="#FFFFFF">
             <circle cx="335" cy="377" r="10" />
             <circle cx="400" cy="352" r="11" />
@@ -88,23 +83,19 @@ export const MihoraLogo: React.FC<MihoraLogoProps> = ({
       )}
 
       {variant !== 'mark' && (
-        <div className="flex flex-col justify-center leading-none">
+        <span className="flex flex-col justify-center leading-none">
           <span
-            className={`font-black tracking-widest text-lg ${
-              theme === 'dark' ? 'text-white' : 'text-slate-900'
+            className={`font-display font-extrabold tracking-widest text-lg ${
+              theme === 'dark' ? 'text-white' : 'text-[var(--ink-primary)]'
             }`}
           >
-            MIORA
+            MIHORA
           </span>
-          <div className="flex items-center gap-1.5 mt-1">
-            <span className="h-0.5 w-3 bg-[#1877F2] rounded-full" />
-            <span className="text-[10px] font-extrabold tracking-[0.25em] text-[#1877F2] uppercase">
-              TECH
-            </span>
-            <span className="h-0.5 w-3 bg-[#1877F2] rounded-full" />
-          </div>
-        </div>
+          <span className="text-[10px] font-mono font-semibold tracking-[0.26em] text-[var(--accent-primary)] uppercase mt-0.5">
+            TECH
+          </span>
+        </span>
       )}
-    </div>
+    </span>
   );
 };

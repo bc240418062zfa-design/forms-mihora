@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { MihoraLogo } from '../components/brand/MihoraLogo';
-import { Lock, Mail, ArrowRight, AlertCircle, ShieldCheck } from 'lucide-react';
+import { Lock, Mail, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react';
 
 interface RegisterPageProps {
   onNavigate: (view: string) => void;
@@ -12,6 +12,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +21,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate }) => {
     e.preventDefault();
 
     if (!email.trim() || !password) {
-      setError('Please provide your email and desired password.');
+      setError('Please provide your email address and desired password.');
       return;
     }
 
@@ -35,7 +36,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate }) => {
     }
 
     if (!acceptTerms) {
-      setError('You must accept the terms of data processing to register.');
+      setError('Please accept the data processing terms to create your account.');
       return;
     }
 
@@ -44,12 +45,12 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate }) => {
 
     try {
       await register({
-        email,
+        email: email.trim(),
         password,
         confirmPassword,
         acceptTerms,
       });
-      onNavigate('dashboard');
+      onNavigate('profile');
     } catch (err: any) {
       setError(err.message || 'Account registration failed. Please try again.');
     } finally {
@@ -58,90 +59,131 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="min-h-[85vh] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
-        <div className="inline-block mb-3">
-          <MihoraLogo size="lg" variant="full" />
+    <div className="min-h-[calc(100vh-4rem)] bg-instrument-grid flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="text-center mb-7">
+          <div className="inline-block mb-4">
+            <MihoraLogo size="lg" variant="full" />
+          </div>
+          <div className="text-[11px] font-mono uppercase tracking-[0.14em] text-[var(--accent-primary)] mb-1.5">
+            NEW DOSSIER INITIALIZATION
+          </div>
+          <h1 className="font-display text-2xl font-bold tracking-tight text-[var(--ink-primary)]">
+            Create Candidate Account
+          </h1>
+          <p className="mt-1.5 text-xs text-[var(--ink-muted)] leading-relaxed">
+            Register once with MIHORA Tech to maintain your structured engineering profile across deployments.
+          </p>
         </div>
-        <h2 className="text-xl font-bold tracking-tight text-slate-900">
-          Create Candidate Profile Account
-        </h2>
-        <p className="mt-1 text-xs text-slate-600">
-          Register with MIHORA Tech to maintain a persistent candidate profile and apply across engineering tracks.
-        </p>
-      </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-6 shadow-sm border border-slate-200 rounded-xl sm:px-10">
+        <div className="bg-[var(--surface-elevated)] py-8 px-6 sm:px-9 border border-[var(--border-hairline)] rounded-[var(--radius-lg)] shadow-[var(--shadow-card)]">
           {error && (
-            <div className="mb-5 p-3 rounded-lg bg-red-50 border border-red-200 text-red-800 text-xs flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+            <div
+              role="alert"
+              className="mb-5 p-3 rounded-[var(--radius-sm)] bg-[var(--status-danger-soft)] border border-rose-200 text-[var(--status-danger)] text-xs flex items-start gap-2"
+            >
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
 
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                Work or Personal Email *
+              <label
+                htmlFor="reg-email"
+                className="block text-xs font-semibold text-[var(--ink-secondary)] mb-1.5"
+              >
+                Work or Personal Email <span className="text-[var(--status-danger)]">*</span>
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3 pointer-events-none" />
+                <Mail className="w-4 h-4 text-[var(--ink-faint)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
+                  id="reg-email"
                   type="email"
+                  autoComplete="email"
                   required
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (error) setError(null);
+                  }}
                   placeholder="your.email@domain.com"
-                  className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  className="field-input field-input-icon"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                Create Secure Password *
+              <label
+                htmlFor="reg-password"
+                className="block text-xs font-semibold text-[var(--ink-secondary)] mb-1.5"
+              >
+                Create Secure Password <span className="text-[var(--status-danger)]">*</span>
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3 pointer-events-none" />
+                <Lock className="w-4 h-4 text-[var(--ink-faint)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
-                  type="password"
+                  id="reg-password"
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="new-password"
                   required
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                    if (error) setError(null);
+                  }}
                   placeholder="Minimum 8 characters"
-                  className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  className="field-input field-input-icon pr-10"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-[var(--ink-muted)] hover:text-[var(--ink-primary)] cursor-pointer"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                Confirm Password *
+              <label
+                htmlFor="reg-confirm"
+                className="block text-xs font-semibold text-[var(--ink-secondary)] mb-1.5"
+              >
+                Confirm Password <span className="text-[var(--status-danger)]">*</span>
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3 pointer-events-none" />
+                <Lock className="w-4 h-4 text-[var(--ink-faint)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
-                  type="password"
+                  id="reg-confirm"
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="new-password"
                   required
                   value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                    if (error) setError(null);
+                  }}
                   placeholder="Repeat password"
-                  className="w-full pl-9 pr-3 py-2 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+                  className="field-input field-input-icon"
                 />
               </div>
             </div>
 
             <div className="pt-1">
-              <label className="flex items-start gap-2.5 text-xs text-slate-600 cursor-pointer">
+              <label className="flex items-start gap-2.5 text-xs text-[var(--ink-secondary)] cursor-pointer leading-relaxed">
                 <input
                   type="checkbox"
                   checked={acceptTerms}
-                  onChange={(e) => setAcceptTerms(e.target.checked)}
-                  className="mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                  onChange={(e) => {
+                    setAcceptTerms(e.target.checked);
+                    if (error) setError(null);
+                  }}
+                  className="mt-0.5 rounded border-[var(--border-strong)] text-[var(--accent-primary)] focus:ring-[var(--accent-primary)]"
                 />
                 <span>
-                  I consent to MIHORA Tech securely processing and storing my professional qualifications in compliance with data privacy standards.
+                  I consent to MIHORA Tech securely processing and storing my professional qualifications for recruitment evaluation.
                 </span>
               </label>
             </div>
@@ -149,23 +191,22 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate }) => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full mt-3 py-2.5 px-4 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors shadow-xs flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full mt-2 py-2.5 px-4 text-xs font-semibold text-white bg-[var(--accent-primary)] hover:bg-[var(--accent-primary-hover)] rounded-[var(--radius-md)] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
             >
-              <span>{isLoading ? 'Creating Account & Initializing Profile...' : 'Create Account'}</span>
+              <span>{isLoading ? 'Creating Account & Dossier...' : 'Create Candidate Account'}</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </form>
 
-          <div className="mt-6 pt-5 border-t border-slate-100 text-center">
-            <p className="text-xs text-slate-600">
-              Already have an account?{' '}
-              <button
-                onClick={() => onNavigate('signin')}
-                className="font-semibold text-blue-600 hover:text-blue-700"
-              >
-                Sign in
-              </button>
-            </p>
+          <div className="mt-6 pt-5 border-t border-[var(--border-hairline)] flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-[var(--ink-muted)]">
+            <span>Already registered?</span>
+            <button
+              type="button"
+              onClick={() => onNavigate('signin')}
+              className="font-semibold text-[var(--accent-primary)] hover:text-[var(--accent-primary-hover)] cursor-pointer"
+            >
+              Sign In Instead
+            </button>
           </div>
         </div>
       </div>
