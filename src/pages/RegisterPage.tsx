@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { MihoraLogo } from '../components/brand/MihoraLogo';
+import { ArchitecturalFrame } from '../components/ui/ArchitecturalFrame';
+import engineeringCampusImg from '../assets/images/model_engineering_campus_1795489145677.jpg';
 import {
   RegistrationCrosses,
   SingleRedMark,
@@ -69,72 +71,55 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate }) => {
         <RegistrationCrosses />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
-          {/* Left Cyanotype New Dossier Schematic */}
-          <div className="hidden lg:flex lg:col-span-5 flex-col justify-between border border-[var(--rule-hairline)] bg-[var(--edge)]/80 p-7">
-            <div>
+          {/* Left Campus Architectural Showcase */}
+          <div className="hidden lg:flex lg:col-span-5 flex-col justify-between border border-[var(--rule-hairline)] bg-[var(--edge)]/85 overflow-hidden">
+            <div className="p-7 pb-5">
               <p className="text-[11px] font-mono text-[var(--chalk)] tracking-wider">
-                SHEET MHR-NEW · DOSSIER INITIALIZATION
+                MIHORA CAREERS · NEW CANDIDATE
               </p>
               <h2 className="font-display text-2xl font-bold text-[var(--exposure)] leading-tight mt-3">
-                Create one structured profile across all engineering tracks.
+                Create one comprehensive profile across all engineering disciplines.
               </h2>
               <p className="mt-3 text-xs font-mono text-[var(--chalk)] leading-relaxed">
-                Upon registration you receive a permanent MIHORA reference code (`MIH-CND-…`) and guided 7-module builder with PostgreSQL persistence.
+                Receive an official MIHORA candidate reference ID (`MIH-CND-…`) to present your academic qualifications, engineering leadership, and site preferences.
               </p>
             </div>
 
-            {/* Inline Vector Dossier Calibration Blueprint (Zero AI Photos) */}
-            <div className="my-6 border border-[rgba(185,204,224,0.22)] bg-[var(--table)]/60 p-4">
-              <svg
-                role="img"
-                aria-label="New candidate dossier initialization blueprint showing 7 modular tables"
-                viewBox="0 0 280 156"
-                className="w-full h-auto block"
+            <div className="px-7 space-y-4">
+              <ArchitecturalFrame
+                src={engineeringCampusImg}
+                alt="MIHORA architectural scale model of modern engineering and academic campus pavilion"
+                className="h-52"
               >
-                {[
-                  { y: 16, code: '01', name: 'IDENTITY & REGION' },
-                  { y: 42, code: '02–05', name: 'ROLE · EXP · EDU · SKILLS' },
-                  { y: 68, code: '06', name: 'COMMUTE & SITE CALIBRATION' },
-                  { y: 94, code: '07', name: 'COMPENSATION & NOTICE' },
-                  { y: 120, code: 'PDF', name: 'EXPORTABLE A4 DOSSIER' },
-                ].map((row, idx) => (
-                  <g key={row.code}>
-                    <rect
-                      x="18"
-                      y={row.y}
-                      width="244"
-                      height="20"
-                      fill={idx === 4 ? '#F4F7F5' : '#1B3A5C'}
-                      stroke="#F4F7F5"
-                      strokeOpacity={idx === 4 ? 1 : 0.55}
-                      strokeWidth="1"
-                    />
-                    <text
-                      x="26"
-                      y={row.y + 13}
-                      fill={idx === 4 ? '#0F2740' : '#B9CCE0'}
-                      fontSize="8.5"
-                      fontFamily="IBM Plex Mono, monospace"
-                      fontWeight="600"
-                    >
-                      {row.code}
-                    </text>
-                    <text
-                      x="68"
-                      y={row.y + 13}
-                      fill={idx === 4 ? '#0F2740' : '#F4F7F5'}
-                      fontSize="8.5"
-                      fontFamily="IBM Plex Mono, monospace"
-                    >
-                      {row.name}
-                    </text>
-                  </g>
-                ))}
-              </svg>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A1B2E]/88 via-transparent to-transparent pointer-events-none" />
+                <div className="absolute bottom-3 left-3.5 right-3.5 flex items-center justify-between text-[10px] font-mono text-[var(--exposure)]">
+                  <span>04 ENGINEERING TRACKS</span>
+                  <span className="text-[var(--status-verified)] font-semibold">OPEN INTAKE</span>
+                </div>
+              </ArchitecturalFrame>
+
+              <div className="grid grid-cols-2 gap-2 text-[10px] font-mono text-[var(--chalk)]">
+                <div className="border border-[var(--rule-hairline)] px-2.5 py-2 bg-[var(--table)]/60">
+                  <span className="text-[var(--exposure)] font-semibold block">01 · ACADEMICS</span>
+                  Degrees &amp; Honors
+                </div>
+                <div className="border border-[var(--rule-hairline)] px-2.5 py-2 bg-[var(--table)]/60">
+                  <span className="text-[var(--exposure)] font-semibold block">02 · LEADERSHIP</span>
+                  Engineering Roles
+                </div>
+                <div className="border border-[var(--rule-hairline)] px-2.5 py-2 bg-[var(--table)]/60">
+                  <span className="text-[var(--exposure)] font-semibold block">03 · MOBILITY</span>
+                  Site Calibration
+                </div>
+                <div className="border border-[var(--rule-hairline)] px-2.5 py-2 bg-[var(--table)]/60">
+                  <span className="text-[var(--exposure)] font-semibold block">04 · PORTFOLIO</span>
+                  Instant A4 PDF
+                </div>
+              </div>
             </div>
 
-            <div className="pt-4 border-t border-[var(--rule-hairline)] flex items-center justify-between text-[11px] font-mono text-[var(--chalk)]">
-              <span>Step Auto-Save · Zero Tracking</span>
+            <div className="px-7 py-4 mt-5 border-t border-[var(--rule-hairline)] flex items-center justify-between text-[11px] font-mono text-[var(--chalk)]">
+              <span>Guided Onboarding · Confidential Record</span>
               <SingleRedMark variant="tick" className="w-5 h-4" />
             </div>
           </div>
@@ -291,7 +276,7 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ onNavigate }) => {
             </div>
 
             <div className="mt-6 pt-5 border-t border-[var(--rule-hairline)] flex justify-end">
-              <TitleBlock drawingNo="MHR-NEW" scale="1:1" drawnBy="INTAKE" checkedBy="PG16" />
+              <TitleBlock drawingNo="REGISTRATION" scale="OPEN" date="2026" drawnBy="TALENT" checkedBy="DIRECT" />
             </div>
           </div>
         </div>

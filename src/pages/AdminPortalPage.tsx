@@ -306,7 +306,7 @@ export const AdminPortalPage: React.FC = () => {
   return (
     <MotionConfig reducedMotion="user">
       <div className="min-h-[calc(100vh-4rem)] bg-cyanotype-table py-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto space-y-6">
+        <div className="max-w-[1360px] mx-auto space-y-6">
           {actionError && (
             <div
               role="alert"
@@ -343,31 +343,31 @@ export const AdminPortalPage: React.FC = () => {
           )}
 
           {/* Admin Portal Master Header Sheet */}
-          <section className="cyanotype-sheet p-6 sm:p-7">
+          <section className="cyanotype-sheet p-6 sm:p-8">
             <RegistrationCrosses />
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
               <div>
                 <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs font-mono text-[var(--chalk)] mb-1.5">
                   <span className="font-semibold text-[var(--exposure)]">
-                    MIHORA ADMINISTRATIVE VAULT
+                    MIHORA TALENT ADMINISTRATION
                   </span>
                   <span aria-hidden="true">·</span>
                   <span className="text-[var(--status-verified)] inline-flex items-center gap-1.5 font-medium">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--status-verified)] inline-block" />
-                    Live SSE Stream Active
+                    <Radio className="w-3.5 h-3.5" />
+                    <span>Real-Time Directory</span>
                   </span>
                 </div>
                 <h1 className="font-display text-2xl sm:text-3xl font-bold text-[var(--exposure)] tracking-tight">
                   Candidate Profiles &amp; Engineering Registry
                 </h1>
                 <p className="text-xs sm:text-sm font-mono text-[var(--chalk)] mt-1">
-                  PostgreSQL-backed candidate intake, verified competencies, and filed exposure slip exports.
+                  Manage candidate applications, verified academic credentials, and executive profile exports.
                 </p>
 
                 <div className="flex flex-wrap items-center gap-2 mt-5">
                   <button type="button" onClick={openAuditLogsModal} className={actionBtnClass}>
                     <Clock className="w-3.5 h-3.5 text-[var(--chalk)]" />
-                    <span>Audit Logs</span>
+                    <span>Activity Log</span>
                   </button>
 
                   <button
@@ -398,8 +398,8 @@ export const AdminPortalPage: React.FC = () => {
                       loadCandidates();
                     }}
                     className="p-2 text-[var(--chalk)] bg-[var(--edge)] border border-[var(--rule-strong)] rounded-[var(--radius-xs)] hover:bg-[var(--prussian-raise)] hover:text-[var(--exposure)] transition-colors cursor-pointer"
-                    title="Refresh records"
-                    aria-label="Refresh database records"
+                    title="Refresh candidate directory"
+                    aria-label="Refresh candidate directory"
                   >
                     <RefreshCw className="w-4 h-4" />
                   </button>
@@ -408,10 +408,11 @@ export const AdminPortalPage: React.FC = () => {
 
               <div className="shrink-0">
                 <TitleBlock
-                  drawingNo="MHR-ADM"
-                  scale="1:1"
-                  drawnBy="DIR"
-                  checkedBy="SSE"
+                  drawingNo="TALENT DIRECTORY"
+                  scale="LIVE"
+                  date="2026"
+                  drawnBy="MIHORA"
+                  checkedBy="ADMIN"
                 />
               </div>
             </div>
@@ -427,7 +428,7 @@ export const AdminPortalPage: React.FC = () => {
                 {metricsLoading ? '—' : <AnimatedNumber value={metrics?.totalCandidates ?? 0} />}
               </div>
               <div className="text-xs font-mono text-[var(--chalk-dim)] mt-1">
-                Total database records
+                Active talent profiles
               </div>
             </div>
 
@@ -659,7 +660,7 @@ export const AdminPortalPage: React.FC = () => {
           <section className="cyanotype-sheet overflow-hidden">
             {isTableLoading ? (
               <div className="p-6" aria-busy="true">
-                <BlankSheetLoader label="QUERYING CANDIDATE VAULT SCHEDULE..." />
+                <BlankSheetLoader label="LOADING CANDIDATE DIRECTORY..." />
               </div>
             ) : candidates.length === 0 ? (
               <div className="py-20 text-center px-4">
@@ -722,7 +723,7 @@ export const AdminPortalPage: React.FC = () => {
                         </button>
                       </th>
                       <th className="py-3.5 px-4">DEPLOYMENT</th>
-                      <th className="py-3.5 px-4 text-right">DOSSIER</th>
+                      <th className="py-3.5 px-4 text-right">PROFILE</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[var(--rule-hairline)] text-xs font-mono text-[var(--chalk)]">
@@ -821,7 +822,7 @@ export const AdminPortalPage: React.FC = () => {
                               className="px-2.5 py-1.5 text-xs font-semibold text-[var(--edge)] bg-[var(--exposure)] hover:bg-white rounded-[var(--radius-xs)] transition-colors inline-flex items-center gap-1 cursor-pointer"
                             >
                               <Eye className="w-3.5 h-3.5" />
-                              <span>Slip</span>
+                              <span>View</span>
                             </button>
                           </td>
                         </tr>
@@ -887,7 +888,7 @@ export const AdminPortalPage: React.FC = () => {
                 transition={{ duration: 0.18 }}
                 role="dialog"
                 aria-modal="true"
-                aria-label="Candidate Filed Exposure Slip"
+                aria-label="Candidate Profile Summary"
                 onClick={() => setSelectedCandidateId(null)}
                 className="fixed inset-0 z-50 bg-[var(--table)]/75 backdrop-blur-xs flex justify-end"
               >
@@ -913,7 +914,7 @@ export const AdminPortalPage: React.FC = () => {
                     <div className="py-12">
                       <BlankSheetLoader
                         lightPaper
-                        label="PULLING FILED EXPOSURE SLIP..."
+                        label="LOADING CANDIDATE PROFILE..."
                       />
                     </div>
                   ) : (
@@ -1199,10 +1200,10 @@ export const AdminPortalPage: React.FC = () => {
                   </button>
 
                   <h2 className="font-display text-lg font-bold text-[var(--exposure)] mb-1">
-                    Administrative Audit Logs
+                    Administrative Activity Log
                   </h2>
                   <p className="text-xs font-mono text-[var(--chalk)] mb-5">
-                    Immutable PostgreSQL audit trail of registrations, profile saves, and data exports.
+                    Complete record of candidate registrations, profile updates, and administrative exports.
                   </p>
 
                   {auditLogsLoading ? (

@@ -89,7 +89,7 @@ interface BlankSheetLoaderProps {
  * Replaces generic circular spinners with a ruled cyanotype sheet swept by a UV light band.
  */
 export const BlankSheetLoader: React.FC<BlankSheetLoaderProps> = ({
-  label = 'PULLING SHEET FROM VAULT...',
+  label = 'LOADING RECORD...',
   compact = false,
   lightPaper = false,
   className = '',

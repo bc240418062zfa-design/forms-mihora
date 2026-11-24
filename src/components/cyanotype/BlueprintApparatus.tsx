@@ -1,5 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useScrollProgress } from '../../utils/useScrollProgress';
+import { ArchitecturalFrame } from '../ui/ArchitecturalFrame';
+import mobilityCorridorImg from '../../assets/images/model_mobility_corridor_1795489146410.jpg';
+import structuralElevationImg from '../../assets/images/model_structural_elevation_1795489146878.jpg';
 
 /**
  * Ambient Darkroom Light-Table Dust Motes (Theme 064 §5)
@@ -123,11 +126,11 @@ export const TitleBlock: React.FC<TitleBlockProps> = ({
       className={`border border-[rgba(244,247,245,0.36)] bg-[var(--edge)]/92 font-mono text-[11px] leading-tight grid grid-cols-3 sm:w-[300px] ${className}`}
     >
       <div className="col-span-2 px-2.5 py-2 border-b border-r border-[rgba(185,204,224,0.24)]">
-        <dt className="text-[var(--chalk-dim)] text-[10px]">DRG NO.</dt>
+        <dt className="text-[var(--chalk-dim)] text-[10px]">RECORD</dt>
         <dd className="text-[var(--exposure)] font-semibold tracking-wider mt-0.5">{drawingNo}</dd>
       </div>
       <div className="px-2.5 py-2 border-b border-[rgba(185,204,224,0.24)]">
-        <dt className="text-[var(--chalk-dim)] text-[10px]">SCALE</dt>
+        <dt className="text-[var(--chalk-dim)] text-[10px]">STATUS</dt>
         <dd className="text-[var(--exposure)] font-semibold mt-0.5 flex items-center gap-1 tabular-nums">
           <span>{scale}</span>
           {scaleTick && (
@@ -149,15 +152,15 @@ export const TitleBlock: React.FC<TitleBlockProps> = ({
         </dd>
       </div>
       <div className="px-2.5 py-2 border-r border-[rgba(185,204,224,0.24)]">
-        <dt className="text-[var(--chalk-dim)] text-[10px]">DATE</dt>
+        <dt className="text-[var(--chalk-dim)] text-[10px]">CYCLE</dt>
         <dd className="text-[var(--chalk)] mt-0.5">{date}</dd>
       </div>
       <div className="px-2.5 py-2 border-r border-[rgba(185,204,224,0.24)]">
-        <dt className="text-[var(--chalk-dim)] text-[10px]">DRN</dt>
+        <dt className="text-[var(--chalk-dim)] text-[10px]">UNIT</dt>
         <dd className="text-[var(--chalk)] mt-0.5">{drawnBy}</dd>
       </div>
       <div className="px-2.5 py-2">
-        <dt className="text-[var(--chalk-dim)] text-[10px]">CHK</dt>
+        <dt className="text-[var(--chalk-dim)] text-[10px]">REVIEW</dt>
         <dd className="text-[var(--exposure)] font-semibold mt-0.5">{checkedBy}</dd>
       </div>
     </dl>
@@ -317,18 +320,44 @@ export const SingleRedMark: React.FC<{ variant?: 'circle' | 'tick'; className?: 
   );
 };
 
-const HERO_NODES = [
-  { x: 112, y: 84, code: '01', label: 'IDENTITY', note: 'Legal identity, calling code, city & sector' },
-  { x: 232, y: 84, code: '02', label: 'ROLE TRACK', note: 'Primary discipline, seniority tier & multi-role' },
-  { x: 360, y: 84, code: '03', label: 'EXPERIENCE', note: 'Employment ledger, tooling & deliverables' },
-  { x: 112, y: 136, code: '04', label: 'ACADEMICS', note: 'Degrees, institutions, enrollment status' },
-  { x: 232, y: 136, code: '05', label: 'SKILLS', note: 'Domain proficiencies & verified years' },
-  { x: 360, y: 136, code: '06', label: 'COMMUTE', note: 'On-site deployment, km/min limits & housing' },
+const HERO_TRACKS = [
+  {
+    x: 112,
+    y: 84,
+    w: 158,
+    code: '01',
+    label: 'SOFTWARE & CLOUD',
+    note: 'Enterprise platforms, cloud infrastructure & distributed engineering',
+  },
+  {
+    x: 290,
+    y: 84,
+    w: 158,
+    code: '02',
+    label: 'CIVIL & STRUCTURAL',
+    note: 'Structural analysis, CAD/BIM coordination & field site delivery',
+  },
+  {
+    x: 112,
+    y: 130,
+    w: 158,
+    code: '03',
+    label: 'ELECTRICAL & POWER',
+    note: 'Grid distribution, substation controls & industrial commissioning',
+  },
+  {
+    x: 290,
+    y: 130,
+    w: 158,
+    code: '04',
+    label: 'QA/QC & SUPERVISION',
+    note: 'Accredited inspection protocols, compliance & quality leadership',
+  },
 ];
 
 /**
- * Hero Architectural Cyanotype Elevation & UV Light Sweep (Theme 064 §6.1 & §6.6)
- * Pure inline architectural vector diagram + 1600ms UV sweep + scale stepping + 3000ms watchdog.
+ * Hero Architectural Engineering Elevation & UV Light Sweep
+ * Pure inline architectural vector diagram + 1600ms UV sweep + readiness stepping + 3000ms watchdog.
  */
 export const BlueprintHeroSchematic: React.FC<{
   onScaleChange?: (scale: string, settled: boolean) => void;
@@ -340,7 +369,7 @@ export const BlueprintHeroSchematic: React.FC<{
   const [exposed, setExposed] = useState<boolean>(reducedMotion);
   const [sweeping, setSweeping] = useState<boolean>(!reducedMotion);
   const [redMarkDrawn, setRedMarkDrawn] = useState<boolean>(reducedMotion);
-  const [activeNodeCode, setActiveNodeCode] = useState<string>('01');
+  const [activeTrackCode, setActiveTrackCode] = useState<string>('01');
   const timersRef = useRef<number[]>([]);
 
   const clearTimers = () => {
@@ -354,21 +383,21 @@ export const BlueprintHeroSchematic: React.FC<{
       setExposed(true);
       setSweeping(false);
       setRedMarkDrawn(true);
-      onScaleChange?.('1:50', true);
+      onScaleChange?.('OPEN', true);
       return;
     }
 
     setExposed(false);
     setSweeping(true);
     setRedMarkDrawn(false);
-    onScaleChange?.('1:200', false);
+    onScaleChange?.('2026', false);
 
     timersRef.current.push(
       window.setTimeout(() => {
-        onScaleChange?.('1:100', false);
+        onScaleChange?.('ACTIVE', false);
       }, 650),
       window.setTimeout(() => {
-        onScaleChange?.('1:50', true);
+        onScaleChange?.('OPEN', true);
       }, 1300),
       window.setTimeout(() => {
         setExposed(true);
@@ -380,7 +409,7 @@ export const BlueprintHeroSchematic: React.FC<{
         setExposed(true);
         setSweeping(false);
         setRedMarkDrawn(true);
-        onScaleChange?.('1:50', true);
+        onScaleChange?.('OPEN', true);
       }, 3000)
     );
   };
@@ -391,7 +420,8 @@ export const BlueprintHeroSchematic: React.FC<{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const inspectedNode = HERO_NODES.find((n) => n.code === activeNodeCode) || HERO_NODES[0];
+  const inspectedTrack =
+    HERO_TRACKS.find((t) => t.code === activeTrackCode) || HERO_TRACKS[0];
 
   return (
     <div className="relative border border-[rgba(244,247,245,0.3)] bg-[var(--edge)]/75 p-4 sm:p-6 overflow-hidden">
@@ -408,17 +438,17 @@ export const BlueprintHeroSchematic: React.FC<{
       )}
 
       <div className="flex items-center justify-between gap-2 text-[11px] font-mono text-[var(--chalk)] mb-3">
-        <span>SHEET MHR-01 · STRUCTURAL &amp; SYSTEMS ELEVATION</span>
+        <span>MIHORA ENGINEERING &amp; ACADEMIC DIVISIONS</span>
         <button
           type="button"
           onClick={runExposureCycle}
           className="pencil-link text-[11px] font-mono text-[var(--exposure)] hover:text-white cursor-pointer shrink-0"
         >
-          Re-expose
+          Refresh View
         </button>
       </div>
 
-      {/* Inline Vector Cyanotype Blueprint (Zero AI Stock Photos) */}
+      {/* Inline Vector Structural & Engineering Division Elevation */}
       <div
         className={`transition-[opacity,filter] duration-700 ${
           exposed ? 'opacity-100 blur-0' : 'opacity-45 blur-[2px]'
@@ -427,11 +457,11 @@ export const BlueprintHeroSchematic: React.FC<{
       >
         <svg
           role="img"
-          aria-label="MIHORA engineering structural frame and 7-module candidate dossier blueprint schematic drawn at 1:50 scale"
+          aria-label="MIHORA engineering structural frame highlighting four active engineering career tracks"
           viewBox="0 0 560 280"
           className="w-full h-auto block"
         >
-          {/* Outer Drafting Frame */}
+          {/* Outer Architectural Frame */}
           <rect
             x="16"
             y="14"
@@ -456,8 +486,7 @@ export const BlueprintHeroSchematic: React.FC<{
           {/* Portal Structural Truss & Bay Frame */}
           <g stroke="#F4F7F5" strokeWidth="1.5" fill="none">
             <line x1="96" y1="48" x2="96" y2="196" />
-            <line x1="216" y1="48" x2="216" y2="196" />
-            <line x1="344" y1="48" x2="344" y2="196" />
+            <line x1="280" y1="66" x2="280" y2="196" strokeOpacity="0.45" />
             <line x1="464" y1="48" x2="464" y2="196" />
 
             <polygon points="82,48 280,26 478,48 478,66 82,66" />
@@ -471,22 +500,22 @@ export const BlueprintHeroSchematic: React.FC<{
             <line x1="58" y1="196" x2="502" y2="196" strokeWidth="2" />
           </g>
 
-          {/* Interactive 7-Module Dossier Architecture Nodes Inside Frame */}
+          {/* Interactive 4 Career Discipline Bays */}
           <g>
-            {HERO_NODES.map((node) => {
-              const isSelected = activeNodeCode === node.code;
+            {HERO_TRACKS.map((track) => {
+              const isSelected = activeTrackCode === track.code;
               return (
                 <g
-                  key={node.code}
-                  onMouseEnter={() => setActiveNodeCode(node.code)}
-                  onClick={() => setActiveNodeCode(node.code)}
+                  key={track.code}
+                  onMouseEnter={() => setActiveTrackCode(track.code)}
+                  onClick={() => setActiveTrackCode(track.code)}
                   className="cursor-pointer"
                 >
                   <rect
-                    x={node.x}
-                    y={node.y}
-                    width="96"
-                    height="34"
+                    x={track.x}
+                    y={track.y}
+                    width={track.w}
+                    height="36"
                     fill={isSelected ? '#F4F7F5' : '#1B3A5C'}
                     stroke="#F4F7F5"
                     strokeOpacity={isSelected ? 1 : 0.72}
@@ -494,33 +523,33 @@ export const BlueprintHeroSchematic: React.FC<{
                     className="transition-colors duration-150"
                   />
                   <text
-                    x={node.x + 8}
-                    y={node.y + 14}
+                    x={track.x + 10}
+                    y={track.y + 14}
                     fill={isSelected ? '#0F2740' : '#B9CCE0'}
                     fontSize="8.5"
                     fontFamily="IBM Plex Mono, monospace"
                   >
-                    MOD {node.code}
+                    TRACK {track.code}
                   </text>
                   <text
-                    x={node.x + 8}
-                    y={node.y + 26}
+                    x={track.x + 10}
+                    y={track.y + 27}
                     fill={isSelected ? '#0F2740' : '#F4F7F5'}
                     fontSize="9.5"
                     fontWeight="600"
                     fontFamily="IBM Plex Mono, monospace"
                   >
-                    {node.label}
+                    {track.label}
                   </text>
                 </g>
               );
             })}
 
-            {/* Module 07 Output Bus */}
+            {/* Foundation Placement Bar */}
             <rect
-              x="166"
+              x="146"
               y="180"
-              width="228"
+              width="268"
               height="32"
               fill="#0F2740"
               stroke="#F4F7F5"
@@ -535,11 +564,11 @@ export const BlueprintHeroSchematic: React.FC<{
               fontWeight="600"
               fontFamily="IBM Plex Mono, monospace"
             >
-              07 · REMUNERATION &amp; PDF DOSSIER
+              MIHORA GLOBAL TALENT &amp; PLACEMENT
             </text>
           </g>
 
-          {/* Witness Ticks & Exterior Dimension Line (24px outside frame) */}
+          {/* Witness Ticks & Exterior Span Line */}
           <g stroke="#B9CCE0" strokeWidth="1" fill="none">
             <line x1="96" y1="240" x2="96" y2="262" />
             <line x1="464" y1="240" x2="464" y2="262" />
@@ -547,7 +576,7 @@ export const BlueprintHeroSchematic: React.FC<{
             <polygon points="96,252 104,249 104,255" fill="#B9CCE0" />
             <polygon points="464,252 456,249 456,255" fill="#B9CCE0" />
           </g>
-          <rect x="210" y="242" width="140" height="18" fill="#0F2740" />
+          <rect x="206" y="242" width="148" height="18" fill="#0F2740" />
           <text
             x="280"
             y="255"
@@ -557,13 +586,13 @@ export const BlueprintHeroSchematic: React.FC<{
             fontWeight="600"
             fontFamily="IBM Plex Mono, monospace"
           >
-            7 MODULES · 100%
+            4 TRACKS · OPEN
           </text>
 
-          {/* Single Red Checker's Pencil Circle Around Total Datum (Theme 064 §6.2) */}
+          {/* Single Red Checker's Pencil Circle Around Total Datum */}
           {redMarkDrawn && (
             <path
-              d="M214 251 C214 240, 246 237, 282 238 C326 239, 349 243, 347 253 C344 263, 306 266, 272 265 C235 264, 212 259, 215 249"
+              d="M210 251 C210 240, 246 237, 282 238 C326 239, 353 243, 351 253 C348 263, 306 266, 272 265 C235 264, 208 259, 211 249"
               fill="none"
               stroke="#C0392B"
               strokeWidth="2"
@@ -576,19 +605,20 @@ export const BlueprintHeroSchematic: React.FC<{
         </svg>
       </div>
 
-      {/* Live Inspected Node Annotation Footer */}
+      {/* Live Inspected Discipline Annotation Footer */}
       <div className="mt-3 pt-2.5 border-t border-[rgba(185,204,224,0.2)] flex flex-wrap items-center justify-between gap-2 text-[11px] font-mono">
         <span className="text-[var(--exposure)] font-semibold">
-          MOD {inspectedNode.code} · {inspectedNode.label}
+          TRACK {inspectedTrack.code} · {inspectedTrack.label}
         </span>
-        <span className="text-[var(--chalk)]">{inspectedNode.note}</span>
+        <span className="text-[var(--chalk)]">{inspectedTrack.note}</span>
       </div>
     </div>
   );
 };
 
 /**
- * Interactive Site & Commute Triangulation Blueprint (Sheet MHR-02)
+ * Interactive Site & Commute Triangulation Model (Sheet MHR-02)
+ * Merges bespoke isometric corridor diorama render with live calibrated radius ring overlay.
  */
 export const CommuteCalibrationDiagram: React.FC = () => {
   const [selectedRadius, setSelectedRadius] = useState<'25' | '50' | 'relocate'>('25');
@@ -596,100 +626,113 @@ export const CommuteCalibrationDiagram: React.FC = () => {
   const config = {
     '25': {
       label: '25 km · 45 min Local Site Threshold',
-      circleRadius: 56,
+      circleRadius: 46,
       housingNote: 'Local Daily Commute — Housing Not Required',
       metric: '25 km MAX',
     },
     '50': {
       label: '50 km+ · Extended Regional Corridor',
-      circleRadius: 84,
+      circleRadius: 72,
       housingNote: 'Accommodation Triggered Beyond 50 km',
       metric: '50 km LIMIT',
     },
     relocate: {
       label: 'Multi-Region · Project Site Deployment',
-      circleRadius: 102,
+      circleRadius: 96,
       housingNote: 'Full Relocation & Company Transport Calibration',
       metric: 'MULTI-REGION',
     },
   }[selectedRadius];
 
   return (
-    <div className="border border-[rgba(244,247,245,0.26)] bg-[var(--edge)]/75 p-4 sm:p-5">
-      <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-        <span className="text-[11px] font-mono text-[var(--chalk)]">
-          COMMUTE &amp; SITE RADIUS SCHEMATIC
+    <div className="border border-[rgba(244,247,245,0.28)] bg-[var(--edge)]/85 overflow-hidden">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 border-b border-[rgba(185,204,224,0.2)]">
+        <span className="text-[11px] font-mono text-[var(--chalk)] tracking-wider">
+          REGIONAL MOBILITY DIORAMA
         </span>
-        <span className="text-[11px] font-mono font-semibold text-[var(--exposure)]">
+        <span className="text-[11px] font-mono font-semibold text-[var(--exposure)] tabular-nums">
           {config.metric}
         </span>
       </div>
 
-      <svg
-        role="img"
-        aria-label={`Site commute calibration diagram showing ${config.label}`}
-        viewBox="0 0 360 230"
-        className="w-full h-auto block"
+      <ArchitecturalFrame
+        src={mobilityCorridorImg}
+        alt={`Architectural transit corridor scale model illustrating ${config.label}`}
+        className="h-[270px] sm:h-[310px] border-0"
       >
-        <line x1="20" y1="115" x2="340" y2="115" stroke="#B9CCE0" strokeOpacity="0.24" strokeDasharray="3 4" />
-        <line x1="180" y1="12" x2="180" y2="218" stroke="#B9CCE0" strokeOpacity="0.24" strokeDasharray="3 4" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A1B2E]/90 via-[#0A1B2E]/20 to-transparent pointer-events-none" />
 
-        <circle cx="180" cy="115" r="56" fill="none" stroke="#B9CCE0" strokeOpacity="0.28" strokeDasharray="4 3" />
-        <circle cx="180" cy="115" r="84" fill="none" stroke="#B9CCE0" strokeOpacity="0.22" strokeDasharray="4 3" />
-        <circle cx="180" cy="115" r="102" fill="none" stroke="#B9CCE0" strokeOpacity="0.16" strokeDasharray="2 4" />
-
-        <circle
-          cx="180"
-          cy="115"
-          r={config.circleRadius}
-          fill="rgba(244,247,245,0.06)"
-          stroke="#F4F7F5"
-          strokeWidth="1.75"
-          className="transition-all duration-300"
-        />
-
-        <circle cx="180" cy="115" r="5" fill="#F4F7F5" />
-        <text
-          x="180"
-          y="102"
-          textAnchor="middle"
-          fill="#F4F7F5"
-          fontSize="9.5"
-          fontWeight="600"
-          fontFamily="IBM Plex Mono, monospace"
+        {/* Live Calibrated Vector Radius Overlay Merged Over Model */}
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 360 220"
+          className="absolute inset-0 w-full h-full pointer-events-none"
         >
-          BASE SECTOR
-        </text>
+          <line
+            x1="36"
+            y1="110"
+            x2="324"
+            y2="110"
+            stroke="#F4F7F5"
+            strokeOpacity="0.18"
+            strokeDasharray="3 4"
+          />
+          <line
+            x1="180"
+            y1="16"
+            x2="180"
+            y2="204"
+            stroke="#F4F7F5"
+            strokeOpacity="0.18"
+            strokeDasharray="3 4"
+          />
 
-        <line
-          x1="180"
-          y1="115"
-          x2={180 + config.circleRadius * 0.82}
-          y2={115 - config.circleRadius * 0.56}
-          stroke="#F4F7F5"
-          strokeWidth="1.4"
-        />
-        <rect
-          x={180 + config.circleRadius * 0.82 - 5}
-          y={115 - config.circleRadius * 0.56 - 5}
-          width="10"
-          height="10"
-          fill="#1B3A5C"
-          stroke="#F4F7F5"
-          strokeWidth="1.5"
-        />
+          <circle
+            cx="180"
+            cy="110"
+            r={config.circleRadius}
+            fill="rgba(10, 27, 46, 0.22)"
+            stroke="#F4F7F5"
+            strokeOpacity="0.88"
+            strokeWidth="1.6"
+            className="transition-all duration-300"
+          />
+          <circle
+            cx="180"
+            cy="110"
+            r={config.circleRadius * 0.52}
+            fill="none"
+            stroke="#B9CCE0"
+            strokeOpacity="0.45"
+            strokeDasharray="4 3"
+            className="transition-all duration-300"
+          />
 
-        <circle
-          cx={180 + config.circleRadius * 0.82}
-          cy={115 - config.circleRadius * 0.56}
-          r="11"
-          fill="none"
-          stroke="#C0392B"
-          strokeWidth="1.8"
-        />
-      </svg>
+          <circle cx="180" cy="110" r="4.5" fill="#F4F7F5" />
+          <line
+            x1="180"
+            y1="110"
+            x2={180 + config.circleRadius * 0.78}
+            y2={110 - config.circleRadius * 0.52}
+            stroke="#F4F7F5"
+            strokeWidth="1.4"
+          />
+          <circle
+            cx={180 + config.circleRadius * 0.78}
+            cy={110 - config.circleRadius * 0.52}
+            r="6"
+            fill="#C0392B"
+            stroke="#F4F7F5"
+            strokeWidth="1.2"
+          />
+        </svg>
 
-      <div className="mt-3 pt-3 border-t border-[rgba(185,204,224,0.2)] space-y-2.5">
+        <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between gap-2 text-[11px] font-mono pointer-events-none">
+          <span className="text-[var(--exposure)] font-semibold">{config.label}</span>
+        </div>
+      </ArchitecturalFrame>
+
+      <div className="p-4 space-y-3">
         <div className="grid grid-cols-3 gap-2">
           {[
             { id: '25' as const, label: '25 km Local' },
@@ -701,7 +744,7 @@ export const CommuteCalibrationDiagram: React.FC = () => {
               type="button"
               aria-pressed={selectedRadius === btn.id}
               onClick={() => setSelectedRadius(btn.id)}
-              className={`py-2 px-2 text-[11px] font-mono rounded-[var(--radius-xs)] border transition-colors cursor-pointer ${
+              className={`py-2.5 px-2 text-[11px] font-mono rounded-[var(--radius-xs)] border transition-colors cursor-pointer ${
                 selectedRadius === btn.id
                   ? 'bg-[var(--exposure)] text-[var(--edge)] border-[var(--exposure)] font-semibold'
                   : 'bg-[var(--prussian)] text-[var(--chalk)] border-[rgba(185,204,224,0.28)] hover:border-[var(--exposure)]'
@@ -711,70 +754,82 @@ export const CommuteCalibrationDiagram: React.FC = () => {
             </button>
           ))}
         </div>
-        <p className="text-[11px] font-mono text-[var(--chalk)]">{config.housingNote}</p>
+        <p className="text-xs font-mono text-[var(--chalk)]">{config.housingNote}</p>
       </div>
     </div>
   );
 };
 
 /**
- * Synchronized 7-Layer Dossier Stack Blueprint (Sheet MHR-03)
+ * Upscaled Structural Cutaway & Competency Pillar Model (Sheet MHR-03)
  */
 export const DossierLayerDiagram: React.FC<{ activeIndex: number }> = ({ activeIndex }) => {
-  const layers = [
-    '01 · IDENTITY & REGION',
-    '02 · ROLE & SENIORITY',
-    '03 · WORK LEDGER',
-    '04 · ACADEMICS',
-    '05 · SKILL MATRIX',
-    '06 · SITE & COMMUTE',
-    '07 · REMUNERATION',
+  const pillars = [
+    { code: '01', name: 'Academic Credentials', metric: 'Accredited Degrees' },
+    { code: '02', name: 'Engineering Leadership', metric: 'Project Delivery' },
+    { code: '03', name: 'Domain Proficiency', metric: 'Verified Tooling' },
+    { code: '04', name: 'Regional Mobility Fit', metric: 'Site Calibration' },
+    { code: '05', name: 'Executive Portfolio', metric: 'A4 Dossier Ready' },
   ];
 
+  const current = pillars[activeIndex] || pillars[0];
+
   return (
-    <div className="border border-[rgba(244,247,245,0.28)] bg-[var(--edge)]/75 p-4 sm:p-5">
-      <div className="flex items-center justify-between text-[11px] font-mono text-[var(--chalk)] mb-3">
-        <span>RELATIONAL SCHEMA STACK</span>
-        <span className="text-[var(--exposure)] font-semibold">MODULE 0{activeIndex + 1} / 07</span>
+    <div className="border border-[rgba(244,247,245,0.28)] bg-[var(--edge)]/85 overflow-hidden">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-[rgba(185,204,224,0.2)] text-[11px] font-mono text-[var(--chalk)]">
+        <span className="tracking-wider">TECHNICAL EVALUATION ASSEMBLY</span>
+        <span className="text-[var(--exposure)] font-semibold tabular-nums">
+          PILLAR 0{Math.min(pillars.length, activeIndex + 1)} / 05
+        </span>
       </div>
 
-      <svg
-        role="img"
-        aria-label={`Dossier relational schema stack with module ${activeIndex + 1} highlighted`}
-        viewBox="0 0 360 250"
-        className="w-full h-auto block"
+      <ArchitecturalFrame
+        src={structuralElevationImg}
+        alt="Detailed architectural and electrical substation cutaway scale model representing technical engineering verification"
+        className="h-[250px] sm:h-[290px] border-0"
       >
-        {layers.map((label, idx) => {
-          const y = 14 + idx * 32;
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0A1B2E]/95 via-[#0A1B2E]/25 to-transparent pointer-events-none" />
+        <div className="absolute bottom-3.5 left-4 right-4 flex items-end justify-between gap-3 font-mono">
+          <div>
+            <div className="text-[10px] text-[var(--chalk)] tracking-wider">
+              ACTIVE STANDARD · {current.code}
+            </div>
+            <div className="font-display text-base sm:text-lg font-bold text-[var(--exposure)]">
+              {current.name}
+            </div>
+          </div>
+          <span className="text-[11px] font-semibold text-[var(--status-verified)] shrink-0">
+            {current.metric}
+          </span>
+        </div>
+      </ArchitecturalFrame>
+
+      {/* Synchronized Stepped Elevation Indicator */}
+      <div className="p-4 grid grid-cols-5 gap-1.5 bg-[var(--edge)]">
+        {pillars.map((p, idx) => {
           const isActive = idx === activeIndex;
           return (
-            <g key={label}>
-              <rect
-                x={isActive ? 22 : 34}
-                y={y}
-                width={isActive ? 316 : 292}
-                height="24"
-                fill={isActive ? '#F4F7F5' : '#1B3A5C'}
-                stroke={isActive ? '#F4F7F5' : '#B9CCE0'}
-                strokeOpacity={isActive ? 1 : 0.45}
-                strokeWidth="1.2"
-                className="transition-all duration-200"
+            <div key={p.code} className="space-y-1.5">
+              <div
+                className={`h-1.5 transition-colors duration-200 ${
+                  isActive
+                    ? 'bg-[var(--exposure)]'
+                    : idx < activeIndex
+                    ? 'bg-[var(--status-verified)]/75'
+                    : 'bg-[var(--prussian-raise)]'
+                }`}
               />
-              <text
-                x="48"
-                y={y + 15.5}
-                fill={isActive ? '#0F2740' : '#B9CCE0'}
-                fontSize="10"
-                fontWeight={isActive ? '600' : '400'}
-                fontFamily="IBM Plex Mono, monospace"
+              <div
+                className={`text-[10px] font-mono text-center tabular-nums ${
+                  isActive ? 'text-[var(--exposure)] font-semibold' : 'text-[var(--chalk-dim)]'
+                }`}
               >
-                {label}
-              </text>
-              {isActive && <circle cx="320" cy={y + 12} r="4" fill="#C0392B" />}
-            </g>
+                {p.code}
+              </div>
+            </div>
           );
         })}
-      </svg>
+      </div>
     </div>
   );
 };

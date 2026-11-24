@@ -86,7 +86,7 @@ export const MihoraLogo: React.FC<MihoraLogoProps> = ({
               isDarkSurface ? 'text-[var(--chalk)]' : 'text-[var(--prussian)]'
             }`}
           >
-            TECH VAULT
+            TECH CAREERS
           </span>
         </span>
       )}

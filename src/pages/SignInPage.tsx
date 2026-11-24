@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { MihoraLogo } from '../components/brand/MihoraLogo';
+import { ArchitecturalFrame } from '../components/ui/ArchitecturalFrame';
+import academicCredentialsImg from '../assets/images/model_academic_credentials_1795489147053.jpg';
 import {
   RegistrationCrosses,
   SingleRedMark,
@@ -50,92 +52,34 @@ export const SignInPage: React.FC<SignInPageProps> = ({ onNavigate }) => {
         <RegistrationCrosses />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
-          {/* Left Cyanotype Vault Keyway Schematic */}
-          <div className="hidden lg:flex lg:col-span-5 flex-col justify-between border border-[var(--rule-hairline)] bg-[var(--edge)]/80 p-7">
-            <div>
+          {/* Left Candidate Credentials Studio Showcase */}
+          <div className="hidden lg:flex lg:col-span-5 flex-col justify-between border border-[var(--rule-hairline)] bg-[var(--edge)]/85 overflow-hidden">
+            <div className="p-7 pb-5">
               <p className="text-[11px] font-mono text-[var(--chalk)] tracking-wider">
-                SHEET MHR-AUTH · CANDIDATE ACCESS
+                MIHORA CAREERS · CANDIDATE ACCESS
               </p>
               <h2 className="font-display text-2xl font-bold text-[var(--exposure)] leading-tight mt-3">
-                Keep your technical dossier accurate and deployment-ready.
+                Keep your professional and academic profile up to date.
               </h2>
               <p className="mt-3 text-xs font-mono text-[var(--chalk)] leading-relaxed">
-                Update project experience, calibrate site commute thresholds, and export your structured A4 PDF record anytime.
+                Update academic credentials, project experience, and site commute availability, or download your formal A4 portfolio anytime.
               </p>
             </div>
 
-            {/* Inline Vector Blueprint Keyway Diagram (Zero AI Photos) */}
-            <div className="my-6 border border-[rgba(185,204,224,0.22)] bg-[var(--table)]/60 p-4">
-              <svg
-                role="img"
-                aria-label="Cyanotype candidate credential verification schematic"
-                viewBox="0 0 280 150"
-                className="w-full h-auto block"
-              >
-                <rect
-                  x="12"
-                  y="12"
-                  width="256"
-                  height="126"
-                  fill="none"
-                  stroke="#B9CCE0"
-                  strokeOpacity="0.3"
-                  strokeDasharray="3 4"
-                />
-                <circle
-                  cx="92"
-                  cy="75"
-                  r="38"
-                  fill="none"
-                  stroke="#F4F7F5"
-                  strokeWidth="1.4"
-                />
-                <circle
-                  cx="92"
-                  cy="75"
-                  r="24"
-                  fill="none"
-                  stroke="#B9CCE0"
-                  strokeOpacity="0.6"
-                  strokeDasharray="4 3"
-                />
-                <circle cx="92" cy="75" r="7" fill="#F4F7F5" />
-                <line x1="130" y1="75" x2="236" y2="75" stroke="#F4F7F5" strokeWidth="1.4" />
-                <rect
-                  x="176"
-                  y="54"
-                  width="68"
-                  height="42"
-                  fill="#1B3A5C"
-                  stroke="#F4F7F5"
-                  strokeWidth="1.2"
-                />
-                <text
-                  x="210"
-                  y="73"
-                  textAnchor="middle"
-                  fill="#B9CCE0"
-                  fontSize="8.5"
-                  fontFamily="IBM Plex Mono, monospace"
-                >
-                  JWT VAULT
-                </text>
-                <text
-                  x="210"
-                  y="86"
-                  textAnchor="middle"
-                  fill="#F4F7F5"
-                  fontSize="9"
-                  fontWeight="600"
-                  fontFamily="IBM Plex Mono, monospace"
-                >
-                  PG-PERSIST
-                </text>
-              </svg>
-            </div>
+            <ArchitecturalFrame
+              src={academicCredentialsImg}
+              alt="Precision brushed-steel engineering instruments, glass prism, and bound academic portfolio on deep Prussian surface"
+              className="mx-7 h-56"
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0A1B2E]/85 via-transparent to-transparent pointer-events-none" />
+              <div className="absolute bottom-3 left-3.5 right-3.5 flex items-center justify-between text-[10px] font-mono text-[var(--exposure)]">
+                <span>MIHORA CAREERS</span>
+                <span className="text-[var(--status-verified)] font-semibold">VERIFIED RECORD</span>
+              </div>
+            </ArchitecturalFrame>
 
-            <div className="pt-4 border-t border-[var(--rule-hairline)] flex items-center justify-between text-[11px] font-mono text-[var(--chalk)]">
-              <span>Encrypted Session</span>
+            <div className="px-7 py-4 mt-5 border-t border-[var(--rule-hairline)] flex items-center justify-between text-[11px] font-mono text-[var(--chalk)]">
+              <span>Confidential Candidate Access</span>
               <SingleRedMark variant="tick" className="w-5 h-4" />
             </div>
           </div>
@@ -149,13 +93,13 @@ export const SignInPage: React.FC<SignInPageProps> = ({ onNavigate }) => {
                     <MihoraLogo size="md" variant="full" theme="dark" />
                   </div>
                   <p className="text-[11px] font-mono text-[var(--chalk)] tracking-wider mb-1">
-                    CANDIDATE VAULT · SECTION 00
+                    CANDIDATE PORTAL · SIGN IN
                   </p>
                   <h1 className="font-display text-2xl sm:text-3xl font-bold tracking-tight text-[var(--exposure)]">
-                    Sign In to Your Dossier
+                    Sign In to Your Profile
                   </h1>
                   <p className="mt-1.5 text-xs font-mono text-[var(--chalk)]">
-                    Access your engineering profile, update deployment availability, or download PDF records.
+                    Access your engineering dossier, update deployment availability, or download PDF records.
                   </p>
                 </div>
               </div>
@@ -259,7 +203,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({ onNavigate }) => {
               >
                 MIHORA Administrator? Open Admin Console →
               </button>
-              <TitleBlock drawingNo="MHR-AUTH" scale="1:1" drawnBy="AUTH" checkedBy="TLS" />
+              <TitleBlock drawingNo="MEMBER ACCESS" scale="ACTIVE" date="2026" drawnBy="TALENT" checkedBy="VERIFIED" />
             </div>
           </div>
         </div>

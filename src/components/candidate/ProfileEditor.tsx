@@ -190,7 +190,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
       setCandidate(res.candidate);
       setCompleteness(res.completeness);
       if (!silent) {
-        setSaveSuccess('Profile dossier saved to PostgreSQL.');
+        setSaveSuccess('Candidate profile saved successfully.');
         window.setTimeout(() => setSaveSuccess(null), 4000);
         if (onProfileUpdated) {
           onProfileUpdated();
@@ -383,17 +383,17 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                 </button>
                 <span aria-hidden="true">·</span>
                 <span className="text-[var(--status-verified)] font-medium">
-                  PostgreSQL Persisted
+                  Profile Active
                 </span>
               </div>
 
               <h1 className="font-display text-2xl sm:text-3xl font-bold text-[var(--exposure)] tracking-tight">
                 {candidate.first_name || candidate.last_name
                   ? `${candidate.first_name || ''} ${candidate.last_name || ''}`.trim()
-                  : 'Candidate Technical Dossier'}
+                  : 'Candidate Professional Profile'}
               </h1>
               <p className="text-xs sm:text-sm font-mono text-[var(--chalk)] mt-1 max-w-2xl">
-                Complete each module sequentially. Changes persist directly on save or step transition.
+                Complete each section in sequence. Your progress saves automatically as you advance.
               </p>
             </div>
 
@@ -501,7 +501,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
           <aside className="hidden lg:block lg:col-span-3 sticky top-20 space-y-4">
             <div className="cyanotype-sheet overflow-hidden">
               <div className="px-4 py-3 bg-[var(--edge)]/75 border-b border-[var(--rule-hairline)] text-[11px] font-mono font-semibold text-[var(--chalk)] tracking-wider">
-                DOSSIER SECTIONS
+                PROFILE SECTIONS
               </div>
               <nav aria-label="Profile Sections" className="divide-y divide-[var(--rule-hairline)]">
                 {steps.map((step) => {
@@ -550,10 +550,11 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
             </div>
 
             <TitleBlock
-              drawingNo={candidate.reference_code || 'MHR-EDIT'}
-              scale="1:1"
-              drawnBy="USR"
-              checkedBy={`S0${activeStep}`}
+              drawingNo={candidate.reference_code || 'PROFILE'}
+              scale={completeness.percentage >= 80 ? 'VERIFIED' : 'IN PROGRESS'}
+              date="2026"
+              drawnBy="MIHORA"
+              checkedBy={`STEP 0${activeStep}`}
               className="sm:w-full"
             />
           </aside>
@@ -2097,7 +2098,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                           </div>
                           <div>
                             <span className="text-[var(--chalk-dim)] block text-xs">
-                              Relational Score
+                              Profile Completeness
                             </span>
                             <span className="font-semibold text-[var(--status-verified)] mt-0.5 block">
                               {completeness.percentage}% Complete
@@ -2107,12 +2108,12 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
                     </div>
 
-                    {/* Theme #064 §6.14 Exposure-White Filed Slip Preview */}
+                    {/* Executive Candidate Credential Summary Card */}
                     <div className="mt-6 bg-[var(--exposure)] text-[var(--edge)] rounded-[var(--radius-xs)] border border-[var(--rule-strong)] p-5 shadow-sm">
                       <div className="flex flex-wrap items-start justify-between gap-4 pb-3 border-b border-[var(--edge)]/20">
                         <div>
                           <div className="text-[10px] font-mono font-semibold tracking-wider text-[var(--edge)]/70">
-                            MIHORA ARCHIVE · EXPOSURE-WHITE FILED SLIP
+                            MIHORA TECH CAREERS · CANDIDATE CREDENTIAL SUMMARY
                           </div>
                           <div className="font-display text-lg font-bold tracking-tight text-[var(--edge)] mt-0.5">
                             {candidate.first_name || candidate.last_name

@@ -122,7 +122,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
           <div>
             <MihoraLogo size="md" variant="full" theme="dark" />
             <p className="text-[11px] font-mono text-[var(--chalk)] tracking-wider mt-4">
-              RESTRICTED ACCESS · ADMINISTRATIVE VAULT
+              AUTHORIZED PERSONNEL · TALENT ADMINISTRATION
             </p>
             <h1 className="font-display text-2xl font-bold tracking-tight text-[var(--exposure)] mt-1">
               {isSettingUp ? 'Initialize Primary Administrator' : 'Administrator Console Sign In'}
@@ -342,7 +342,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
             >
               Return to Candidate Portal Sign In
             </button>
-            <TitleBlock drawingNo="MHR-SEC" scale="1:1" drawnBy="RBAC" checkedBy="AUDIT" />
+            <TitleBlock drawingNo="ADMINISTRATION" scale="RESTRICTED" date="2026" drawnBy="HR" checkedBy="STAFF" />
           </div>
         </div>
       </div>

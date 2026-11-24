@@ -111,7 +111,7 @@ const AppContent: React.FC = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-cyanotype-table flex items-center justify-center px-4">
-        <BlankSheetLoader label="EXPOSING MIHORA VAULT..." className="max-w-md w-full" />
+        <BlankSheetLoader label="LOADING MIHORA CAREERS..." className="max-w-md w-full" />
       </div>
     );
   }

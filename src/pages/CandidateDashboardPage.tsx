@@ -83,9 +83,9 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
   if (isLoading && !profileData) {
     return (
       <div className="min-h-[calc(100vh-4rem)] bg-cyanotype-table py-10 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto space-y-6" aria-busy="true">
-          <BlankSheetLoader label="PULLING CANDIDATE DOSSIER SHEET..." />
-          <BlankSheetLoader compact label="READING DEPLOYMENT & LEDGER TABLES..." />
+        <div className="max-w-[1360px] mx-auto space-y-6" aria-busy="true">
+          <BlankSheetLoader label="LOADING CANDIDATE PROFILE..." />
+          <BlankSheetLoader compact label="RETRIEVING ACADEMIC & CAREER RECORDS..." />
         </div>
       </div>
     );
@@ -124,7 +124,7 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
   if (isEditing) {
     return (
       <div className="min-h-screen bg-cyanotype-table pb-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-1 flex flex-wrap items-center justify-between gap-3">
+        <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-1 flex flex-wrap items-center justify-between gap-3">
           <button
             type="button"
             onClick={exitEditMode}
@@ -135,7 +135,7 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
           </button>
 
           <span className="text-[11px] font-mono text-[var(--chalk)]">
-            PostgreSQL persistence · Step auto-save active
+            Changes save automatically as you proceed
           </span>
         </div>
 
@@ -172,7 +172,7 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
 
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-cyanotype-table py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto space-y-6">
+      <div className="max-w-[1360px] mx-auto space-y-6">
         {/* Sheet 1: Primary Dossier Sheet & Completeness Calibration */}
         <Reveal>
           <section className="cyanotype-sheet p-6 sm:p-8">
@@ -226,12 +226,13 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
 
               <div className="shrink-0 flex flex-col sm:items-end gap-3">
                 <TitleBlock
-                  drawingNo={candidate.reference_code || 'MHR-CND'}
-                  scale="1:1"
+                  drawingNo={candidate.reference_code || 'CANDIDATE'}
+                  scale={completeness.percentage >= 80 ? 'VERIFIED' : 'DRAFT'}
+                  date="2026"
                   drawnBy={
                     candidate.first_name ? candidate.first_name.slice(0, 3).toUpperCase() : 'CND'
                   }
-                  checkedBy={completeness.percentage >= 80 ? 'VER' : 'DRF'}
+                  checkedBy={completeness.percentage >= 80 ? 'READY' : 'IN REVIEW'}
                 />
               </div>
             </div>
@@ -241,10 +242,10 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
               <div className="flex items-baseline justify-between gap-4 mb-2">
                 <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
                   <span className="text-xs font-mono font-semibold text-[var(--exposure)] tracking-wider">
-                    DOSSIER COMPLETENESS INDEX
+                    PROFILE COMPLETENESS
                   </span>
                   <span className="text-xs font-mono text-[var(--status-verified)]">
-                    · PostgreSQL Verified
+                    · Verified Record
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -306,7 +307,7 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
                   <div className="text-xs font-mono text-[var(--chalk)]">
                     {nextIncompleteModule ? (
                       <>
-                        Next incomplete module:{' '}
+                        Next section to complete:{' '}
                         <span className="font-semibold text-[var(--exposure)]">
                           {nextIncompleteModule.label}
                         </span>{' '}

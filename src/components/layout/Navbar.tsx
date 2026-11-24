@@ -11,28 +11,28 @@ interface NavbarProps {
 }
 
 const SHEET_META_BY_ID: Record<string, string> = {
-  'sheet-mhr-01': 'DRG MHR-01 · 1:50',
-  'sheet-mhr-02': 'DRG MHR-02 · 1:100',
-  'sheet-mhr-03': 'DRG MHR-03 · NTS',
-  'sheet-mhr-04': 'DRG MHR-04 · 1:1',
+  'sheet-mhr-01': '01 · TALENT PORTAL',
+  'sheet-mhr-02': '02 · WORKFORCE MOBILITY',
+  'sheet-mhr-03': '03 · EVALUATION',
+  'sheet-mhr-04': '04 · CAREER TRACKS',
 };
 
 function resolveSheetMirror(currentView?: string, activeLandingSheet?: string): string {
   switch (currentView) {
     case 'signin':
-      return 'DRG MHR-AUTH · 1:1';
+      return 'CANDIDATE SIGN IN';
     case 'register':
-      return 'DRG MHR-NEW · 1:1';
+      return 'CANDIDATE REGISTRATION';
     case 'dashboard':
-      return 'DRG MHR-CAD · 1:1';
+      return 'CANDIDATE PROFILE';
     case 'profile':
-      return 'DRG MHR-EDIT · 1:1';
+      return 'PROFILE EDITOR';
     case 'admin_login':
-      return 'DRG MHR-SEC · 1:1';
+      return 'ADMINISTRATION';
     case 'admin':
-      return 'DRG MHR-REG · 1:1';
+      return 'TALENT DIRECTORY';
     default:
-      return SHEET_META_BY_ID[activeLandingSheet || 'sheet-mhr-01'] || 'DRG MHR-01 · 1:50';
+      return SHEET_META_BY_ID[activeLandingSheet || 'sheet-mhr-01'] || '01 · TALENT PORTAL';
   }
 }
 
@@ -97,9 +97,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
           : 'bg-[var(--edge)]'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-6 relative">
-        {/* Zone 1: Brand + Active Sheet Title-Block Mirror */}
-        <div className="flex items-center gap-4 min-w-0 shrink-0">
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-8 relative">
+        {/* Zone 1: Clean Brand Wordmark */}
+        <div className="flex items-center min-w-0 shrink-0">
           <button
             type="button"
             onClick={() => handleNav('landing')}
@@ -108,19 +108,12 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
           >
             <MihoraLogo size="sm" variant="full" theme="dark" />
           </button>
-
-          <span
-            aria-hidden="true"
-            className="hidden xl:inline-flex items-center px-2.5 py-1 border border-[var(--rule-hairline)] bg-[var(--table)]/70 text-[11px] font-mono text-[var(--chalk)] whitespace-nowrap transition-colors duration-200"
-          >
-            {activeSheetLabel}
-          </span>
         </div>
 
         {/* Zone 2: Concise Single-Line Navigation Links */}
         <nav
           aria-label="Primary Navigation"
-          className="hidden md:flex items-center gap-6"
+          className="hidden md:flex items-center gap-7"
         >
           <button
             type="button"
@@ -251,7 +244,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
       {mobileOpen && (
         <div className="md:hidden border-t border-[var(--rule-hairline)] bg-[var(--edge)] px-4 py-4 space-y-1.5 font-mono">
           <div className="px-3 pb-2 mb-2 border-b border-[var(--rule-hairline)] text-[11px] text-[var(--chalk-dim)] flex items-center justify-between">
-            <span>ACTIVE SHEET</span>
+            <span>PORTAL SECTION</span>
             <span className="text-[var(--exposure)] font-semibold">{activeSheetLabel}</span>
           </div>
 
