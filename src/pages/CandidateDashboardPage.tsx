@@ -3,7 +3,7 @@ import { api } from '../services/api';
 import { CandidateProfileResponse } from '../types';
 import { generateCandidatePdf } from '../utils/pdfGenerator';
 import { ProfileEditor } from '../components/candidate/ProfileEditor';
-import { AnimatedNumber, Reveal } from '../components/ui/MotionPrimitives';
+import { AnimatedNumber, BlankSheetLoader, Reveal } from '../components/ui/MotionPrimitives';
 import {
   RegistrationCrosses,
   SingleRedMark,
@@ -84,17 +84,8 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
     return (
       <div className="min-h-[calc(100vh-4rem)] bg-cyanotype-table py-10 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto space-y-6" aria-busy="true">
-          <div className="cyanotype-sheet p-8">
-            <div className="h-3 w-48 bg-[var(--prussian-raise)] rounded-[var(--radius-xs)] mb-4 animate-pulse" />
-            <div className="h-8 w-72 bg-[var(--prussian-raise)] rounded-[var(--radius-xs)] mb-3 animate-pulse" />
-            <div className="h-3 w-64 bg-[var(--edge)] rounded-[var(--radius-xs)] mb-8 animate-pulse" />
-            <div className="h-2 w-full bg-[var(--edge)] rounded-[var(--radius-xs)] animate-pulse" />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[1, 2, 3].map((item) => (
-              <div key={item} className="h-36 cyanotype-sheet p-6 animate-pulse" />
-            ))}
-          </div>
+          <BlankSheetLoader label="PULLING CANDIDATE DOSSIER SHEET..." />
+          <BlankSheetLoader compact label="READING DEPLOYMENT & LEDGER TABLES..." />
         </div>
       </div>
     );
@@ -264,11 +255,20 @@ export const CandidateDashboardPage: React.FC<CandidateDashboardPageProps> = ({
                 </div>
               </div>
 
-              <div className="w-full bg-[var(--edge)] border border-[var(--rule-hairline)] rounded-[var(--radius-xs)] h-2.5 overflow-hidden">
+              <div className="relative w-full bg-[var(--edge)] border border-[var(--rule-hairline)] rounded-[var(--radius-xs)] h-3 overflow-hidden">
                 <div
                   className="bg-[var(--exposure)] h-full transition-all duration-500 ease-out"
                   style={{ width: `${completeness.percentage}%` }}
                 />
+                {/* Blueprint Witness Ticks Every 10% */}
+                <div aria-hidden="true" className="absolute inset-0 flex justify-between pointer-events-none px-[1px]">
+                  {[10, 20, 30, 40, 50, 60, 70, 80, 90].map((mark) => (
+                    <span
+                      key={mark}
+                      className="w-px h-full bg-[var(--prussian)]/55"
+                    />
+                  ))}
+                </div>
               </div>
 
               <div className="flex justify-between text-[10px] font-mono text-[var(--chalk-dim)] mt-1">

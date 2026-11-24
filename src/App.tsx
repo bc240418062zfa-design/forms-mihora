@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Navbar } from './components/layout/Navbar';
+import { BlankSheetLoader } from './components/ui/MotionPrimitives';
 import { LandingPage } from './pages/LandingPage';
 import { SignInPage } from './pages/SignInPage';
 import { RegisterPage } from './pages/RegisterPage';
@@ -110,12 +111,7 @@ const AppContent: React.FC = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-cyanotype-table flex items-center justify-center px-4">
-        <div className="cyanotype-sheet px-8 py-6 text-center max-w-xs w-full">
-          <div className="w-7 h-7 border-2 border-[var(--exposure)] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-xs text-[var(--chalk)] font-mono tracking-wider">
-            EXPOSING MIHORA VAULT...
-          </p>
-        </div>
+        <BlankSheetLoader label="EXPOSING MIHORA VAULT..." className="max-w-md w-full" />
       </div>
     );
   }

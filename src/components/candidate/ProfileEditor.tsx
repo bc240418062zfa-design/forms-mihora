@@ -406,11 +406,19 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                     <AnimatedNumber value={completeness.percentage} suffix="%" />
                   </span>
                 </div>
-                <div className="w-40 bg-[var(--edge)] border border-[var(--rule-hairline)] rounded-[var(--radius-xs)] h-2 mt-1.5 overflow-hidden">
+                <div className="relative w-44 bg-[var(--edge)] border border-[var(--rule-hairline)] rounded-[var(--radius-xs)] h-2.5 mt-1.5 overflow-hidden">
                   <div
                     className="bg-[var(--exposure)] h-full transition-all duration-400"
                     style={{ width: `${completeness.percentage}%` }}
                   />
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-0 flex justify-between px-[10%]"
+                  >
+                    {[10, 20, 30, 40, 50, 60, 70, 80, 90].map((mark) => (
+                      <span key={mark} className="w-px h-full bg-[var(--table)]/45" />
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -555,10 +563,11 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={activeStep}
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -4 }}
-                transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
+                initial={{ opacity: 0, x: 14 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                className={isSaving ? 'opacity-80 transition-opacity duration-150' : 'transition-opacity duration-150'}
               >
                 {/* STEP 1: BASIC INFORMATION */}
                 {activeStep === 1 && (
@@ -2094,6 +2103,56 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                               {completeness.percentage}% Complete
                             </span>
                           </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Theme #064 §6.14 Exposure-White Filed Slip Preview */}
+                    <div className="mt-6 bg-[var(--exposure)] text-[var(--edge)] rounded-[var(--radius-xs)] border border-[var(--rule-strong)] p-5 shadow-sm">
+                      <div className="flex flex-wrap items-start justify-between gap-4 pb-3 border-b border-[var(--edge)]/20">
+                        <div>
+                          <div className="text-[10px] font-mono font-semibold tracking-wider text-[var(--edge)]/70">
+                            MIHORA ARCHIVE · EXPOSURE-WHITE FILED SLIP
+                          </div>
+                          <div className="font-display text-lg font-bold tracking-tight text-[var(--edge)] mt-0.5">
+                            {candidate.first_name || candidate.last_name
+                              ? `${candidate.first_name || ''} ${candidate.last_name || ''}`.trim()
+                              : 'Unnamed Engineering Candidate'}
+                          </div>
+                          <div className="text-xs font-mono text-[var(--edge)]/75 mt-0.5">
+                            {candidate.reference_code} · {candidate.primary_role || 'Role Unassigned'}
+                          </div>
+                        </div>
+                        <div
+                          className={`stamp-strike px-2.5 py-1 border-2 text-[11px] font-mono font-bold tracking-wider uppercase ${
+                            completeness.percentage >= 80
+                              ? 'border-[var(--red)] text-[var(--red)]'
+                              : 'border-[var(--prussian)] text-[var(--prussian)]'
+                          }`}
+                        >
+                          {completeness.percentage >= 80
+                            ? 'FILED · VERIFIED'
+                            : `DRAFT · ${completeness.percentage}%`}
+                        </div>
+                      </div>
+                      <div className="pt-3 grid grid-cols-2 sm:grid-cols-4 gap-3 text-[11px] font-mono text-[var(--edge)]">
+                        <div>
+                          <span className="block text-[var(--edge)]/60">EXPERIENCE</span>
+                          <span className="font-semibold">{experiences.length} record(s)</span>
+                        </div>
+                        <div>
+                          <span className="block text-[var(--edge)]/60">EDUCATION</span>
+                          <span className="font-semibold">{education.length} degree(s)</span>
+                        </div>
+                        <div>
+                          <span className="block text-[var(--edge)]/60">SKILLS</span>
+                          <span className="font-semibold">{skills.length} verified</span>
+                        </div>
+                        <div>
+                          <span className="block text-[var(--edge)]/60">READINESS</span>
+                          <span className="font-semibold tabular-nums">
+                            {completeness.percentage}% Complete
+                          </span>
                         </div>
                       </div>
                     </div>

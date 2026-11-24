@@ -10,22 +10,29 @@ interface NavbarProps {
   onNavigate?: (view: string) => void;
 }
 
-function resolveSheetMirror(currentView?: string): string {
+const SHEET_META_BY_ID: Record<string, string> = {
+  'sheet-mhr-01': 'DRG MHR-01 · 1:50',
+  'sheet-mhr-02': 'DRG MHR-02 · 1:100',
+  'sheet-mhr-03': 'DRG MHR-03 · NTS',
+  'sheet-mhr-04': 'DRG MHR-04 · 1:1',
+};
+
+function resolveSheetMirror(currentView?: string, activeLandingSheet?: string): string {
   switch (currentView) {
     case 'signin':
-      return 'DRG MHR-AUTH';
+      return 'DRG MHR-AUTH · 1:1';
     case 'register':
-      return 'DRG MHR-NEW';
+      return 'DRG MHR-NEW · 1:1';
     case 'dashboard':
-      return 'DRG MHR-CAD';
+      return 'DRG MHR-CAD · 1:1';
     case 'profile':
-      return 'DRG MHR-EDIT';
+      return 'DRG MHR-EDIT · 1:1';
     case 'admin_login':
-      return 'DRG MHR-SEC';
+      return 'DRG MHR-SEC · 1:1';
     case 'admin':
-      return 'DRG MHR-REG';
+      return 'DRG MHR-REG · 1:1';
     default:
-      return 'DRG MHR-01';
+      return SHEET_META_BY_ID[activeLandingSheet || 'sheet-mhr-01'] || 'DRG MHR-01 · 1:50';
   }
 }
 
@@ -33,6 +40,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
   const { isAuthenticated, isAdmin, logout } = useAuth();
   const { isScrolled } = useScrollProgress();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [activeLandingSheet, setActiveLandingSheet] = useState<string>('sheet-mhr-01');
 
   const handleNav = (view: string) => {
     setMobileOpen(false);
@@ -45,6 +53,33 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
     setMobileOpen(false);
   }, [currentView]);
 
+  // Theme 064 §6.5 & §6.11 Live Scrollspy Title-Block Mirror on Landing Page
+  useEffect(() => {
+    if (currentView && currentView !== 'landing') return;
+    if (typeof IntersectionObserver === 'undefined') return;
+
+    const ids = ['sheet-mhr-01', 'sheet-mhr-02', 'sheet-mhr-03', 'sheet-mhr-04'];
+    const elements = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => Boolean(el));
+
+    if (elements.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setActiveLandingSheet(entry.target.id);
+          }
+        }
+      },
+      { rootMargin: '-30% 0px -50% 0px', threshold: 0.01 }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [currentView]);
+
   const navLinkClass = (active: boolean) =>
     `text-xs font-mono whitespace-nowrap shrink-0 transition-colors py-1.5 border-b-2 cursor-pointer pencil-link ${
       active
@@ -52,13 +87,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
         : 'text-[var(--chalk)] font-medium border-transparent hover:text-[var(--exposure)]'
     }`;
 
-  const activeSheetCode = resolveSheetMirror(currentView);
+  const activeSheetLabel = resolveSheetMirror(currentView, activeLandingSheet);
 
   return (
     <header
       className={`sticky top-0 z-40 transition-colors duration-200 border-b border-[var(--rule-hairline)] ${
         isScrolled
-          ? 'bg-[var(--edge)]/95 backdrop-blur-md shadow-[0_8px_24px_rgba(4,11,22,0.45)]'
+          ? 'bg-[var(--edge)]/95 backdrop-blur-md shadow-[0_8px_24px_rgba(4,11,22,0.48)]'
           : 'bg-[var(--edge)]'
       }`}
     >
@@ -76,9 +111,9 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
 
           <span
             aria-hidden="true"
-            className="hidden xl:inline-flex items-center px-2.5 py-1 border border-[var(--rule-hairline)] bg-[var(--table)]/60 text-[11px] font-mono text-[var(--chalk)] whitespace-nowrap"
+            className="hidden xl:inline-flex items-center px-2.5 py-1 border border-[var(--rule-hairline)] bg-[var(--table)]/70 text-[11px] font-mono text-[var(--chalk)] whitespace-nowrap transition-colors duration-200"
           >
-            {activeSheetCode} · 1:50
+            {activeSheetLabel}
           </span>
         </div>
 
@@ -217,7 +252,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentView, onNavigate }) => {
         <div className="md:hidden border-t border-[var(--rule-hairline)] bg-[var(--edge)] px-4 py-4 space-y-1.5 font-mono">
           <div className="px-3 pb-2 mb-2 border-b border-[var(--rule-hairline)] text-[11px] text-[var(--chalk-dim)] flex items-center justify-between">
             <span>ACTIVE SHEET</span>
-            <span className="text-[var(--exposure)] font-semibold">{activeSheetCode}</span>
+            <span className="text-[var(--exposure)] font-semibold">{activeSheetLabel}</span>
           </div>
 
           <button

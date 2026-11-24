@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { MihoraLogo } from '../components/brand/MihoraLogo';
-import { Reveal } from '../components/ui/MotionPrimitives';
+import { SheetArrival } from '../components/ui/MotionPrimitives';
 import {
+  AmbientDustField,
   RegistrationCrosses,
   TitleBlock,
   EdgeDimensionRuler,
+  ScrollDimensionRule,
   BlueprintHeroSchematic,
   CommuteCalibrationDiagram,
   DossierLayerDiagram,
@@ -55,35 +57,67 @@ const DISCIPLINES_SCHEDULE = [
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
   const [selectedModule, setSelectedModule] = useState(0);
+  const [heroScale, setHeroScale] = useState('1:50');
+  const [heroScaleSettled, setHeroScaleSettled] = useState(true);
+
+  const jumpToSheet = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
     <div className="min-h-screen bg-cyanotype-table flex flex-col justify-between relative">
+      <AmbientDustField />
       <EdgeDimensionRuler />
 
-      <div className="max-w-[1180px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-16 sm:space-y-24">
+      <div className="relative z-10 max-w-[1180px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 space-y-16 sm:space-y-24">
         {/* SHEET MHR-01: UV EXPOSURE HERO */}
         <section
+          id="sheet-mhr-01"
           aria-labelledby="hero-sheet-heading"
-          className="cyanotype-sheet p-6 sm:p-10 lg:p-12"
+          className="cyanotype-sheet p-6 sm:p-10 lg:p-12 scroll-mt-20"
         >
           <RegistrationCrosses />
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start pt-2">
+          {/* Sheet Index Quick-Jump Ribbon */}
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-5 mb-6 border-b border-[var(--rule-hairline)] text-[11px] font-mono">
+            <span className="text-[var(--chalk)]">
+              MIHORA TECH · CANDIDATE VAULT · <span className="text-[var(--exposure)]">04 SHEETS ON TABLE</span>
+            </span>
+            <div className="flex flex-wrap items-center gap-4 text-[var(--chalk)]">
+              {[
+                { id: 'sheet-mhr-01', code: 'MHR-01' },
+                { id: 'sheet-mhr-02', code: 'MHR-02' },
+                { id: 'sheet-mhr-03', code: 'MHR-03' },
+                { id: 'sheet-mhr-04', code: 'MHR-04' },
+              ].map((sheet) => (
+                <button
+                  key={sheet.id}
+                  type="button"
+                  onClick={() => jumpToSheet(sheet.id)}
+                  className="pencil-link hover:text-[var(--exposure)] cursor-pointer"
+                >
+                  {sheet.code}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
             <div className="lg:col-span-6 flex flex-col justify-between space-y-6">
               <div>
                 <p className="text-xs font-mono text-[var(--chalk)] mb-3">
-                  MIHORA Tech · Candidate Registry · career.forms.mihora.tech
+                  career.forms.mihora.tech · Persistent Relational Intake
                 </p>
 
                 <h1
                   id="hero-sheet-heading"
-                  className="font-display text-3xl sm:text-5xl font-bold text-[var(--exposure)] leading-[1.05] text-balance"
+                  className="font-display text-3xl sm:text-5xl font-bold text-[var(--exposure)] leading-[1.04] tracking-tight text-balance"
                 >
                   Engineering Dossiers Built With Drafting Precision.
                 </h1>
 
                 <p className="mt-5 text-sm sm:text-[15px] text-[var(--chalk)] leading-relaxed max-w-xl">
-                  A structured PostgreSQL talent registry for software engineers, civil leads, electrical specialists, and QA inspectors. Enter your record once, calibrate site commute tolerances, and export your verified A4 PDF dossier.
+                  A structured PostgreSQL talent registry for software engineers, civil leads, electrical specialists, and QA inspectors. Record credentials across 7 modules, calibrate commute boundaries, and export your A4 PDF dossier.
                 </p>
 
                 <div className="mt-7 flex flex-col sm:flex-row sm:items-center gap-4">
@@ -92,7 +126,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
                     onClick={() => onNavigate('register')}
                     className="px-6 py-3 text-xs font-mono font-semibold text-[var(--edge)] bg-[var(--exposure)] hover:bg-white rounded-[var(--radius-xs)] transition-colors inline-flex items-center justify-center gap-2 group cursor-pointer whitespace-nowrap"
                   >
-                    <span>Create Candidate Account</span>
+                    <span>File Candidate Dossier</span>
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                   </button>
 
@@ -101,38 +135,68 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
                     onClick={() => onNavigate('signin')}
                     className="px-3 py-2 text-xs font-mono font-medium text-[var(--exposure)] hover:text-white pencil-link cursor-pointer whitespace-nowrap"
                   >
-                    Sign in to existing dossier →
+                    Pull existing record →
                   </button>
                 </div>
               </div>
 
-              <div className="pt-5 border-t border-[var(--rule-hairline)] flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs font-mono text-[var(--chalk)]">
-                <span>7 Structured Modules</span>
-                <span aria-hidden="true">·</span>
-                <span>PostgreSQL Verified</span>
-                <span aria-hidden="true">·</span>
-                <span>Instant PDF Output</span>
+              <div className="pt-5 double-exposure-rule grid grid-cols-3 gap-4 text-xs font-mono">
+                <div>
+                  <div className="text-[var(--chalk-dim)] text-[10px]">MODULES</div>
+                  <div className="text-lg font-bold text-[var(--exposure)] tabular-nums mt-0.5">07</div>
+                </div>
+                <div>
+                  <div className="text-[var(--chalk-dim)] text-[10px]">TRACKS</div>
+                  <div className="text-lg font-bold text-[var(--exposure)] tabular-nums mt-0.5">04</div>
+                </div>
+                <div>
+                  <div className="text-[var(--chalk-dim)] text-[10px]">OUTPUT</div>
+                  <div className="text-lg font-bold text-[var(--exposure)] mt-0.5">A4 PDF</div>
+                </div>
               </div>
             </div>
 
             <div className="lg:col-span-6 space-y-4">
-              <BlueprintHeroSchematic />
+              <BlueprintHeroSchematic
+                onScaleChange={(nextScale, settled) => {
+                  setHeroScale(nextScale);
+                  setHeroScaleSettled(settled);
+                }}
+              />
               <div className="flex justify-end">
-                <TitleBlock drawingNo="MHR-01" scale="1:50" date="2026-11" drawnBy="MIH" checkedBy="ENG" />
+                <TitleBlock
+                  drawingNo="MHR-01"
+                  scale={heroScale}
+                  scaleTick={heroScaleSettled}
+                  date="2026-11"
+                  drawnBy="MIH"
+                  checkedBy="ENG"
+                />
               </div>
             </div>
           </div>
         </section>
 
         {/* SHEET MHR-02: DEPLOYMENT & COMMUTE CALIBRATION */}
-        <Reveal>
+        <SheetArrival>
           <section
+            id="sheet-mhr-02"
             aria-labelledby="calibration-sheet-heading"
-            className="cyanotype-sheet p-6 sm:p-10 lg:p-12"
+            className="cyanotype-sheet p-6 sm:p-10 lg:p-12 scroll-mt-20"
           >
             <RegistrationCrosses />
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start pt-2">
+            <div className="mb-6 pb-3 border-b border-[var(--rule-hairline)]">
+              <ScrollDimensionRule
+                label="CALIBRATED COMMUTE CORRIDOR"
+                unitSuffix="km"
+                targetNumber={50}
+                bandStart={0.05}
+                bandEnd={0.45}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
               <div className="lg:col-span-5 space-y-5">
                 <div>
                   <p className="text-xs font-mono text-[var(--chalk)] mb-1.5">
@@ -202,17 +266,28 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
               </div>
             </div>
           </section>
-        </Reveal>
+        </SheetArrival>
 
         {/* SHEET MHR-03: INTERACTIVE 7-MODULE DOSSIER SCHEMA */}
-        <Reveal>
+        <SheetArrival>
           <section
+            id="sheet-mhr-03"
             aria-labelledby="schema-sheet-heading"
-            className="cyanotype-sheet p-6 sm:p-10 lg:p-12"
+            className="cyanotype-sheet p-6 sm:p-10 lg:p-12 scroll-mt-20"
           >
             <RegistrationCrosses />
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start pt-2">
+            <div className="mb-6 pb-3 border-b border-[var(--rule-hairline)]">
+              <ScrollDimensionRule
+                label="SCHEMA COVERAGE SPAN"
+                unitSuffix="%"
+                targetNumber={100}
+                bandStart={0.35}
+                bandEnd={0.75}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
               <div className="lg:col-span-7">
                 <p className="text-xs font-mono text-[var(--chalk)] mb-1.5">
                   Dossier Schema Blueprint · Sheet MHR-03
@@ -271,7 +346,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
                     <span className="text-[var(--exposure)] font-semibold">01 — 07 COMPLETE</span>
                   </div>
                   <p className="text-xs text-[var(--chalk)] leading-relaxed">
-                    Create your candidate account in under a minute. Each section auto-saves to PostgreSQL as you progress.
+                    Initialize your candidate account in under a minute. Each section auto-saves directly to PostgreSQL.
                   </p>
                   <button
                     type="button"
@@ -289,13 +364,14 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
               </div>
             </div>
           </section>
-        </Reveal>
+        </SheetArrival>
 
         {/* SHEET MHR-04: ENGINEERING DISCIPLINES SCHEDULE TABLE (Theme 064 §6.13) */}
-        <Reveal>
+        <SheetArrival>
           <section
+            id="sheet-mhr-04"
             aria-labelledby="schedule-sheet-heading"
-            className="cyanotype-sheet p-6 sm:p-10 lg:p-12"
+            className="cyanotype-sheet p-6 sm:p-10 lg:p-12 scroll-mt-20"
           >
             <RegistrationCrosses />
 
@@ -313,7 +389,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
                   </h2>
                 </div>
                 <div className="flex items-center gap-2 font-mono text-xs text-[var(--exposure)] shrink-0">
-                  <span>4 CORE TRACKS VERIFIED</span>
+                  <span>04 CORE TRACKS VERIFIED</span>
                   <SingleRedMark variant="tick" />
                 </div>
               </div>
@@ -387,16 +463,16 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
               </div>
             </div>
           </section>
-        </Reveal>
+        </SheetArrival>
       </div>
 
       {/* VAULT COLOPHON FOOTER (Theme 064 §6.16) */}
-      <footer className="bg-[var(--edge)] double-exposure-rule py-10 px-4 sm:px-6 lg:px-8 mt-8">
+      <footer className="relative z-10 bg-[var(--edge)] double-exposure-rule py-10 px-4 sm:px-6 lg:px-8 mt-8">
         <div className="max-w-[1180px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-xs font-mono">
           <div className="space-y-2 text-[var(--chalk)]">
             <div className="text-[var(--exposure)] font-semibold">VAULT SPECIFICATION</div>
-            <p>4 Drawn Sheets (MHR-01 — MHR-04)</p>
-            <p>7 Relational Candidate Dossier Modules</p>
+            <p>04 Drawn Sheets (MHR-01 — MHR-04)</p>
+            <p>07 Relational Candidate Dossier Modules</p>
             <p>PostgreSQL Persistence · Verified Output</p>
           </div>
 

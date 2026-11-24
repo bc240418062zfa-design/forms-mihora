@@ -3,7 +3,7 @@ import { AnimatePresence, MotionConfig, motion } from 'motion/react';
 import { api, getStoredToken } from '../services/api';
 import { Candidate, AdminMetrics, AuditLog } from '../types';
 import { generateCandidatePdf } from '../utils/pdfGenerator';
-import { AnimatedNumber } from '../components/ui/MotionPrimitives';
+import { AnimatedNumber, BlankSheetLoader } from '../components/ui/MotionPrimitives';
 import {
   RegistrationCrosses,
   TitleBlock,
@@ -658,13 +658,8 @@ export const AdminPortalPage: React.FC = () => {
           {/* Candidate Directory Schedule Sheet */}
           <section className="cyanotype-sheet overflow-hidden">
             {isTableLoading ? (
-              <div className="p-6 space-y-3" aria-busy="true">
-                {[1, 2, 3, 4, 5].map((row) => (
-                  <div
-                    key={row}
-                    className="h-11 bg-[var(--edge)]/80 rounded-[var(--radius-xs)] animate-pulse"
-                  />
-                ))}
+              <div className="p-6" aria-busy="true">
+                <BlankSheetLoader label="QUERYING CANDIDATE VAULT SCHEDULE..." />
               </div>
             ) : candidates.length === 0 ? (
               <div className="py-20 text-center px-4">
@@ -915,11 +910,11 @@ export const AdminPortalPage: React.FC = () => {
                   </button>
 
                   {isDetailLoading || !selectedCandidateDetail ? (
-                    <div className="py-24 text-center">
-                      <div className="w-8 h-8 border-2 border-[var(--prussian)] border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-                      <p className="text-xs text-[var(--prussian)]">
-                        Pulling exposure slip from vault...
-                      </p>
+                    <div className="py-12">
+                      <BlankSheetLoader
+                        lightPaper
+                        label="PULLING FILED EXPOSURE SLIP..."
+                      />
                     </div>
                   ) : (
                     <div>
@@ -935,7 +930,7 @@ export const AdminPortalPage: React.FC = () => {
 
                           {/* Strictly ONE --red rubber checker stamp on Filed Exposure Slip (§6.14) */}
                           {selectedCandidateDetail.candidate.completion_percentage >= 80 ? (
-                            <span className="border-2 border-[var(--red)] text-[var(--red)] px-2 py-0.5 text-[10px] font-bold tracking-widest -rotate-2">
+                            <span className="stamp-strike inline-block border-2 border-[var(--red)] text-[var(--red)] px-2.5 py-0.5 text-[10px] font-bold tracking-widest">
                               FILED · VERIFIED
                             </span>
                           ) : (
