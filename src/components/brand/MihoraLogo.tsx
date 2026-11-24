@@ -10,7 +10,7 @@ interface MihoraLogoProps {
 export const MihoraLogo: React.FC<MihoraLogoProps> = ({
   size = 'md',
   variant = 'full',
-  theme = 'dark',
+  theme = 'light',
   className = '',
 }) => {
   const heights = {
@@ -23,11 +23,11 @@ export const MihoraLogo: React.FC<MihoraLogoProps> = ({
   const currentHeight = heights[size];
   const isDarkSurface = theme === 'dark';
 
-  const wingPrimary = isDarkSurface ? '#F4F7F5' : '#1B3A5C';
-  const wingSecondary = isDarkSurface ? '#B9CCE0' : '#0F2740';
-  const pillarFill = isDarkSurface ? '#22486E' : '#0A1B2E';
-  const lineStroke = isDarkSurface ? '#0F2740' : '#F4F7F5';
-  const nodeFill = isDarkSurface ? '#F4F7F5' : '#F4F7F5';
+  const wingPrimary = isDarkSurface ? '#FFFFFF' : '#143A7B';
+  const wingSecondary = isDarkSurface ? '#CBD5E1' : '#0F172A';
+  const pillarFill = isDarkSurface ? '#334155' : '#1E293B';
+  const lineStroke = isDarkSurface ? '#0F172A' : '#FFFFFF';
+  const nodeFill = isDarkSurface ? '#E2E8F0' : '#F8FAFC';
 
   return (
     <span className={`inline-flex items-center gap-2.5 select-none ${className}`}>
@@ -41,11 +41,11 @@ export const MihoraLogo: React.FC<MihoraLogoProps> = ({
           <polygon points="270,195 500,385 435,435 270,285" fill={wingPrimary} />
           <polygon points="730,195 500,385 565,435 730,285" fill={wingPrimary} />
           <polygon points="500,385 435,435 500,515 565,435" fill={wingSecondary} />
-          <polygon points="270,285 365,355 365,580 270,510" fill={pillarFill} stroke={wingSecondary} strokeWidth="6" />
+          <polygon points="270,285 365,355 365,580 270,510" fill={pillarFill} />
           <polygon points="365,355 435,435 500,515 365,445" fill={wingSecondary} />
-          <polygon points="730,285 635,355 635,580 730,510" fill={pillarFill} stroke={wingSecondary} strokeWidth="6" />
+          <polygon points="730,285 635,355 635,580 730,510" fill={pillarFill} />
           <polygon points="635,355 565,435 500,515 635,445" fill={wingSecondary} />
-          <g stroke={lineStroke} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" opacity="0.9">
+          <g stroke={lineStroke} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" opacity="0.88">
             <line x1="335" y1="377" x2="400" y2="352" />
             <line x1="335" y1="377" x2="440" y2="434" />
             <line x1="400" y1="352" x2="440" y2="434" />
@@ -75,15 +75,15 @@ export const MihoraLogo: React.FC<MihoraLogoProps> = ({
       {variant !== 'mark' && (
         <span className="flex flex-col justify-center leading-none text-left">
           <span
-            className={`font-display font-bold tracking-[0.14em] text-base ${
-              isDarkSurface ? 'text-[var(--exposure)]' : 'text-[var(--edge)]'
+            className={`font-display font-extrabold tracking-[0.08em] text-base ${
+              isDarkSurface ? 'text-white' : 'text-slate-900'
             }`}
           >
             MIHORA
           </span>
           <span
-            className={`text-[10px] font-mono font-medium tracking-[0.24em] mt-0.5 ${
-              isDarkSurface ? 'text-[var(--chalk)]' : 'text-[var(--prussian)]'
+            className={`text-[10px] font-semibold tracking-[0.2em] mt-0.5 ${
+              isDarkSurface ? 'text-slate-300' : 'text-[#143A7B]'
             }`}
           >
             TECH CAREERS

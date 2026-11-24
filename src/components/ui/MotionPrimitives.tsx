@@ -8,10 +8,8 @@ interface RevealProps {
 }
 
 /**
- * Theme 064 §6.3 Sliding Sheet Arrival:
- * - Sections slide onto the light table from the vault drawer (~32px horizontal settle).
- * - Content is NEVER stranded invisible: settles via IntersectionObserver plus a
- *   strict 450ms failsafe timeout, and renders immediately under prefers-reduced-motion.
+ * Clean vertical architectural reveal with 450ms visibility failsafe
+ * and strict prefers-reduced-motion support.
  */
 export const SheetArrival: React.FC<RevealProps> = ({
   children,
@@ -64,10 +62,10 @@ export const SheetArrival: React.FC<RevealProps> = ({
       ref={ref}
       style={{
         transitionDelay: visible ? `${delayMs}ms` : '0ms',
-        transitionTimingFunction: 'cubic-bezier(0.22, 0.9, 0.28, 1)',
+        transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
       }}
       className={`transition-[opacity,transform] duration-500 will-change-transform ${
-        visible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-7'
+        visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
       } ${className}`}
     >
       {children}
@@ -84,65 +82,34 @@ interface BlankSheetLoaderProps {
   className?: string;
 }
 
-/**
- * Theme 064 §6.15 Blank-Sheet Shimmer Loader:
- * Replaces generic circular spinners with a ruled cyanotype sheet swept by a UV light band.
- */
 export const BlankSheetLoader: React.FC<BlankSheetLoaderProps> = ({
-  label = 'LOADING RECORD...',
+  label = 'Loading profile...',
   compact = false,
-  lightPaper = false,
   className = '',
 }) => {
   return (
     <div
       role="status"
       aria-live="polite"
-      className={`relative overflow-hidden border ${
-        lightPaper
-          ? 'bg-[var(--exposure)] border-[var(--rule-paper)] text-[var(--edge)]'
-          : 'cyanotype-sheet border-[var(--rule-hairline)] text-[var(--exposure)]'
-      } ${compact ? 'p-6' : 'p-8 sm:p-10'} ${className}`}
+      className={`relative overflow-hidden bg-white border border-[#E4E2DA] rounded-2xl ${
+        compact ? 'p-6' : 'p-8 sm:p-10'
+      } ${className}`}
     >
-      {/* Sweeping UV Shimmer Band */}
       <div
         aria-hidden="true"
-        className="blank-sheet-shimmer pointer-events-none absolute inset-x-0 top-0 h-28 z-10"
-        style={{
-          background: lightPaper
-            ? 'linear-gradient(to bottom, transparent, rgba(27,58,92,0.08), transparent)'
-            : 'linear-gradient(to bottom, transparent, rgba(244,247,245,0.12), transparent)',
-        }}
+        className="skeleton-shimmer pointer-events-none absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-slate-100/80 to-transparent z-10"
       />
 
       <div className="relative z-0 space-y-3">
-        <div
-          className={`text-[11px] font-mono tracking-wider font-semibold ${
-            lightPaper ? 'text-[var(--prussian)]' : 'text-[var(--chalk)]'
-          }`}
-        >
-          {label}
-        </div>
-        <div
-          className={`h-3 w-3/4 rounded-[var(--radius-xs)] ${
-            lightPaper ? 'bg-[rgba(15,39,64,0.1)]' : 'bg-[var(--prussian-raise)]/80'
-          }`}
-        />
-        <div
-          className={`h-2.5 w-1/2 rounded-[var(--radius-xs)] ${
-            lightPaper ? 'bg-[rgba(15,39,64,0.07)]' : 'bg-[var(--edge)]/90'
-          }`}
-        />
+        <div className="text-xs font-medium text-slate-500">{label}</div>
+        <div className="h-3.5 w-3/4 rounded-md bg-slate-200/80" />
+        <div className="h-3 w-1/2 rounded-md bg-slate-100" />
         {!compact && (
           <div className="pt-3 grid grid-cols-3 gap-3">
             {[1, 2, 3].map((slot) => (
               <div
                 key={slot}
-                className={`h-12 border rounded-[var(--radius-xs)] ${
-                  lightPaper
-                    ? 'border-[var(--rule-paper)] bg-[rgba(15,39,64,0.04)]'
-                    : 'border-[var(--rule-hairline)] bg-[var(--edge)]/70'
-                }`}
+                className="h-14 border border-slate-200 rounded-lg bg-slate-50"
               />
             ))}
           </div>
@@ -201,7 +168,7 @@ export const AnimatedNumber: React.FC<AnimatedNumberProps> = ({
   }, [value, durationMs]);
 
   return (
-    <span className={`font-mono tabular-nums ${className}`}>
+    <span className={`tabular-nums ${className}`}>
       {display}
       {suffix}
     </span>
@@ -213,10 +180,10 @@ export const ScrollProgressBar: React.FC = () => {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute bottom-0 left-0 right-0 h-[1.5px] bg-transparent overflow-hidden"
+      className="pointer-events-none absolute bottom-0 left-0 right-0 h-[2px] bg-transparent overflow-hidden"
     >
       <div
-        className="h-full bg-[var(--exposure)] origin-left transition-transform duration-75"
+        className="h-full bg-[#143A7B] origin-left transition-transform duration-75"
         style={{ transform: `scaleX(${progress})` }}
       />
     </div>

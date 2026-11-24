@@ -54,7 +54,6 @@ const AppContent: React.FC = () => {
     resolveViewFromPath(window.location.pathname)
   );
 
-  // Sync on browser back/forward navigation
   useEffect(() => {
     const handlePopState = () => {
       setCurrentView(resolveViewFromPath(window.location.pathname));
@@ -84,7 +83,6 @@ const AppContent: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'auto' });
   }, []);
 
-  // Auth redirect guard with URL replacement
   useEffect(() => {
     if (isLoading) return;
 
@@ -110,14 +108,14 @@ const AppContent: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-cyanotype-table flex items-center justify-center px-4">
-        <BlankSheetLoader label="LOADING MIHORA CAREERS..." className="max-w-md w-full" />
+      <div className="min-h-screen bg-[#F7F6F2] flex items-center justify-center px-4">
+        <BlankSheetLoader label="Loading MIHORA Careers..." className="max-w-md w-full" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-cyanotype-table text-[var(--exposure)] flex flex-col font-mono">
+    <div className="min-h-screen bg-[#F7F6F2] text-slate-900 flex flex-col font-sans">
       <Navbar currentView={currentView} onNavigate={handleNavigate} />
 
       <main className="grow">

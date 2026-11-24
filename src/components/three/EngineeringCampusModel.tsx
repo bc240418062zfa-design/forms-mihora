@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import { Layers, RotateCcw, ChevronDown, ChevronUp, Compass } from 'lucide-react';
-import campusFallbackImg from '../../assets/images/model_engineering_campus_1795489145677.jpg';
+import campusDaylightFallbackImg from '../../assets/images/studio_campus_daylight_1795500975982.jpg';
 
 export interface EngineeringTrackSpec {
   code: '01' | '02' | '03' | '04';
@@ -18,15 +18,15 @@ export const ENGINEERING_TRACK_SPECS: EngineeringTrackSpec[] = [
   {
     code: '01',
     label: 'Software & Cloud',
-    discipline: 'TRK-01 · SOFTWARE & CLOUD SYSTEMS',
-    note: 'Distributed platforms, enterprise APIs & cloud systems wing',
+    discipline: 'Software & Cloud Systems',
+    note: 'Distributed platforms, enterprise APIs & cloud engineering wing',
     cameraPos: [8.4, 5.4, 8.6],
     targetPos: [1.3, 1.35, 1.1],
   },
   {
     code: '02',
     label: 'Civil & Structural',
-    discipline: 'TRK-02 · CIVIL & STRUCTURAL ENGINEERING',
+    discipline: 'Civil & Structural Engineering',
     note: 'Cantilevered steel truss span & CAD/BIM coordination bay',
     cameraPos: [-8.6, 5.2, 8.2],
     targetPos: [-1.4, 1.35, 1.0],
@@ -34,7 +34,7 @@ export const ENGINEERING_TRACK_SPECS: EngineeringTrackSpec[] = [
   {
     code: '03',
     label: 'Electrical & Power',
-    discipline: 'TRK-03 · ELECTRICAL & POWER SYSTEMS',
+    discipline: 'Electrical & Power Systems',
     note: 'Substation transformer assembly & high-voltage telemetry bay',
     cameraPos: [-8.2, 5.3, -8.5],
     targetPos: [-1.3, 1.35, -1.1],
@@ -42,7 +42,7 @@ export const ENGINEERING_TRACK_SPECS: EngineeringTrackSpec[] = [
   {
     code: '04',
     label: 'QA/QC & Supervision',
-    discipline: 'TRK-04 · QA/QC & FIELD SUPERVISION',
+    discipline: 'QA/QC & Field Supervision',
     note: 'Accredited inspection gallery & compliance verification wing',
     cameraPos: [8.5, 5.5, -8.2],
     targetPos: [1.3, 1.35, -1.1],
@@ -77,9 +77,9 @@ function createContactShadowTexture(): THREE.CanvasTexture {
   const ctx = canvas.getContext('2d');
   if (ctx) {
     const grad = ctx.createRadialGradient(128, 128, 18, 128, 128, 126);
-    grad.addColorStop(0, 'rgba(3, 8, 16, 0.72)');
-    grad.addColorStop(0.55, 'rgba(5, 13, 24, 0.36)');
-    grad.addColorStop(1, 'rgba(10, 27, 46, 0)');
+    grad.addColorStop(0, 'rgba(15, 23, 42, 0.24)');
+    grad.addColorStop(0.55, 'rgba(15, 23, 42, 0.09)');
+    grad.addColorStop(1, 'rgba(236, 234, 228, 0)');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 256, 256);
   }
@@ -106,12 +106,10 @@ function createStrut(
 }
 
 interface EngineeringCampusModelProps {
-  onStatusChange?: (status: string, settled: boolean) => void;
   className?: string;
 }
 
 export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
-  onStatusChange,
   className = '',
 }) => {
   const mountRef = useRef<HTMLDivElement | null>(null);
@@ -173,7 +171,6 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
 
   useEffect(() => {
     if ((reducedMotion && !forceInteractive) || contextLost) {
-      onStatusChange?.('OPEN', true);
       return;
     }
 
@@ -181,14 +178,12 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
     if (!container) return;
 
     const isSoftwareGl = detectSoftwareWebGL();
-    onStatusChange?.('ACTIVE', false);
-
     let width = Math.max(container.clientWidth, 320);
     let height = Math.max(container.clientHeight, 320);
 
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color('#0A1B2E');
-    scene.fog = new THREE.FogExp2('#0A1B2E', 0.026);
+    scene.background = new THREE.Color('#ECEAE4');
+    scene.fog = new THREE.FogExp2('#ECEAE4', 0.024);
 
     const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
     camera.position.set(...OVERVIEW_CAMERA);
@@ -202,14 +197,13 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
       });
     } catch {
       setContextLost(true);
-      onStatusChange?.('OPEN', true);
       return;
     }
 
     renderer.setPixelRatio(isSoftwareGl ? 1 : Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(width, height);
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.14;
+    renderer.toneMappingExposure = 1.08;
     renderer.shadowMap.enabled = !isSoftwareGl;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.domElement.style.display = 'block';
@@ -236,7 +230,7 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
     controls.maxPolarAngle = Math.PI * 0.46;
     controls.enablePan = false;
     controls.autoRotate = !isSoftwareGl;
-    controls.autoRotateSpeed = 0.45;
+    controls.autoRotateSpeed = 0.4;
 
     const handleUserInteract = () => {
       stateRef.current.cameraTransitioning = false;
@@ -244,12 +238,12 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
     };
     controls.addEventListener('start', handleUserInteract);
 
-    // Three-point + Ambient Lighting
-    const hemiLight = new THREE.HemisphereLight('#B9CCE0', '#06111F', 0.85);
+    // Warm Architectural Daylight Lighting
+    const hemiLight = new THREE.HemisphereLight('#FFFFFF', '#D6D1C7', 1.15);
     scene.add(hemiLight);
 
-    const keyLight = new THREE.DirectionalLight('#FFF3E0', 2.4);
-    keyLight.position.set(10, 14, 9);
+    const keyLight = new THREE.DirectionalLight('#FFF9EE', 2.2);
+    keyLight.position.set(11, 16, 9);
     keyLight.castShadow = !isSoftwareGl;
     keyLight.shadow.mapSize.set(1024, 1024);
     keyLight.shadow.camera.near = 2;
@@ -261,94 +255,92 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
     keyLight.shadow.bias = -0.0005;
     scene.add(keyLight);
 
-    const rimLight = new THREE.DirectionalLight('#7FB3E6', 1.35);
+    const rimLight = new THREE.DirectionalLight('#DBEAFE', 1.0);
     rimLight.position.set(-10, 8, -9);
     scene.add(rimLight);
 
-    // Track disposed resources
     const disposables: Array<{ dispose: () => void }> = [envTarget];
     const trackDisp = <T extends { dispose: () => void }>(item: T): T => {
       disposables.push(item);
       return item;
     };
 
-    // Materials with varied roughness & metalness
-    const slateMat = trackDisp(
+    // Museum Architectural Maquette Materials (Limestone, Slate, Brushed Steel, Brass, Crystal Glass)
+    const limestoneMat = trackDisp(
       new THREE.MeshStandardMaterial({
-        color: '#112236',
-        roughness: 0.82,
-        metalness: 0.1,
+        color: '#DEDAD0',
+        roughness: 0.85,
+        metalness: 0.04,
       })
     );
-    const prussianPanelMat = trackDisp(
+    const pavilionStoneMat = trackDisp(
       new THREE.MeshStandardMaterial({
-        color: '#1B3A5C',
-        roughness: 0.44,
-        metalness: 0.48,
+        color: '#F5F3EE',
+        roughness: 0.65,
+        metalness: 0.06,
+      })
+    );
+    const darkSlateMat = trackDisp(
+      new THREE.MeshStandardMaterial({
+        color: '#1E293B',
+        roughness: 0.45,
+        metalness: 0.45,
       })
     );
     const titaniumMat = trackDisp(
       new THREE.MeshStandardMaterial({
-        color: '#D7E2EE',
+        color: '#CBD5E1',
         roughness: 0.24,
         metalness: 0.88,
       })
     );
-    const darkSteelMat = trackDisp(
-      new THREE.MeshStandardMaterial({
-        color: '#5C7691',
-        roughness: 0.34,
-        metalness: 0.82,
-      })
-    );
     const brassMat = trackDisp(
       new THREE.MeshStandardMaterial({
-        color: '#CFA15A',
+        color: '#C69249',
         roughness: 0.25,
         metalness: 0.9,
       })
     );
     const glassMat = trackDisp(
       new THREE.MeshPhysicalMaterial({
-        color: '#88B4DC',
-        roughness: 0.12,
-        metalness: 0.08,
+        color: '#93C5FD',
+        roughness: 0.1,
+        metalness: 0.06,
         clearcoat: 1.0,
-        clearcoatRoughness: 0.1,
+        clearcoatRoughness: 0.08,
         transparent: true,
-        opacity: 0.62,
+        opacity: 0.56,
       })
     );
     const warmInteriorMat = trackDisp(
       new THREE.MeshStandardMaterial({
-        color: '#FCE1B6',
-        emissive: '#F2B86B',
-        emissiveIntensity: 0.85,
-        roughness: 0.45,
+        color: '#FEF3C7',
+        emissive: '#F59E0B',
+        emissiveIntensity: 0.28,
+        roughness: 0.55,
         metalness: 0.05,
       })
     );
     const plinthLineMat = trackDisp(
       new THREE.MeshStandardMaterial({
-        color: '#7E97B0',
-        roughness: 0.55,
-        metalness: 0.3,
+        color: '#94A3B8',
+        roughness: 0.6,
+        metalness: 0.2,
         polygonOffset: true,
         polygonOffsetFactor: -1,
         polygonOffsetUnits: -1,
       })
     );
-    const redBeaconMat = trackDisp(
+    const cobaltPinMat = trackDisp(
       new THREE.MeshStandardMaterial({
-        color: '#C0392B',
-        emissive: '#C0392B',
-        emissiveIntensity: 0.55,
-        roughness: 0.3,
-        metalness: 0.2,
+        color: '#143A7B',
+        emissive: '#143A7B',
+        emissiveIntensity: 0.25,
+        roughness: 0.28,
+        metalness: 0.35,
       })
     );
 
-    // Contact shadow & architectural survey floor
     const shadowTex = trackDisp(createContactShadowTexture());
     const contactPlane = new THREE.Mesh(
       trackDisp(new THREE.PlaneGeometry(14, 14)),
@@ -364,11 +356,10 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
     contactPlane.position.y = -0.02;
     scene.add(contactPlane);
 
-    const gridHelper = new THREE.GridHelper(28, 28, '#284F78', '#152E4A');
+    const gridHelper = new THREE.GridHelper(28, 28, '#D6D2C9', '#E2DFD7');
     gridHelper.position.y = -0.03;
     scene.add(gridHelper);
 
-    // Master Campus Group + 4 Explodable Architectural Layers
     const campusRoot = new THREE.Group();
     scene.add(campusRoot);
 
@@ -378,7 +369,7 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
     const layerCanopy = new THREE.Group();
     campusRoot.add(layerPlinth, layerCore, layerWings, layerCanopy);
 
-    // --- LAYER 0: Beveled Architectural Slate Plinth & Calibration Rings ---
+    // Layer 0: Limestone Plinth
     const plinthShape = new THREE.Shape();
     const pw = 3.85;
     const pd = 3.85;
@@ -403,24 +394,22 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
       })
     );
     plinthGeom.rotateX(-Math.PI / 2);
-    const plinthMesh = new THREE.Mesh(plinthGeom, slateMat);
-    plinthMesh.position.y = 0;
+    const plinthMesh = new THREE.Mesh(plinthGeom, limestoneMat);
     plinthMesh.receiveShadow = true;
     plinthMesh.castShadow = true;
     layerPlinth.add(plinthMesh);
 
     const upperDeck = new THREE.Mesh(
       trackDisp(new THREE.BoxGeometry(6.6, 0.1, 6.6)),
-      prussianPanelMat
+      pavilionStoneMat
     );
     upperDeck.position.y = 0.35;
     upperDeck.receiveShadow = true;
     layerPlinth.add(upperDeck);
 
-    // Concentric calibration rings on plinth deck
     [2.35, 3.05].forEach((r) => {
       const ring = new THREE.Mesh(
-        trackDisp(new THREE.RingGeometry(r - 0.025, r, 64)),
+        trackDisp(new THREE.RingGeometry(r - 0.02, r, 64)),
         plinthLineMat
       );
       ring.rotation.x = -Math.PI / 2;
@@ -428,7 +417,7 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
       layerPlinth.add(ring);
     });
 
-    // --- LAYER 1: Central Glass Atrium & Titanium Structural Columns ---
+    // Layer 1: Central Glass Atrium & Titanium Columns
     const atriumGlass = new THREE.Mesh(
       trackDisp(new THREE.BoxGeometry(2.35, 2.35, 2.35)),
       glassMat
@@ -436,7 +425,6 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
     atriumGlass.position.y = 1.58;
     layerCore.add(atriumGlass);
 
-    // Warm glowing interior floor plates inside atrium
     [0.75, 1.35, 1.95, 2.52].forEach((fy) => {
       const slab = new THREE.Mesh(
         trackDisp(new THREE.BoxGeometry(2.05, 0.08, 2.05)),
@@ -446,9 +434,8 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
       layerCore.add(slab);
     });
 
-    // Structural titanium perimeter columns around atrium
     const colGeom = trackDisp(new THREE.CylinderGeometry(0.055, 0.055, 2.55, 12));
-    const colOffsets = [
+    [
       [-1.22, -1.22],
       [1.22, -1.22],
       [-1.22, 1.22],
@@ -457,15 +444,14 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
       [0, 1.22],
       [-1.22, 0],
       [1.22, 0],
-    ];
-    colOffsets.forEach(([cx, cz]) => {
-      const col = new THREE.Mesh(colGeom, titaniumMat);
+    ].forEach(([cx, cz]) => {
+      const col = new THREE.Mesh(colGeom, darkSlateMat);
       col.position.set(cx, 1.65, cz);
       col.castShadow = true;
       layerCore.add(col);
     });
 
-    // --- LAYER 2: 4 Cantilevered Engineering Track Wings ---
+    // Layer 2: 4 Cantilevered Engineering Track Wings
     const wingBeacons: Record<'01' | '02' | '03' | '04', THREE.Mesh> = {} as any;
     const wingCollars: Record<'01' | '02' | '03' | '04', THREE.Mesh> = {} as any;
 
@@ -477,27 +463,24 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
       const g = new THREE.Group();
       g.position.set(px, 0, pz);
 
-      // Ground-floor podium support pier
       const pier = new THREE.Mesh(
         trackDisp(new THREE.BoxGeometry(1.1, 0.72, 1.1)),
-        prussianPanelMat
+        darkSlateMat
       );
       pier.position.y = 0.76;
       pier.castShadow = true;
       pier.receiveShadow = true;
       g.add(pier);
 
-      // Main cantilevered volume
       const body = new THREE.Mesh(
         trackDisp(new THREE.BoxGeometry(1.85, 1.22, 1.85)),
-        prussianPanelMat
+        pavilionStoneMat
       );
       body.position.y = 1.72;
       body.castShadow = true;
       body.receiveShadow = true;
       g.add(body);
 
-      // Glass curtain strip & warm glowing strip
       const glaze = new THREE.Mesh(
         trackDisp(new THREE.BoxGeometry(1.92, 0.68, 1.92)),
         glassMat
@@ -512,22 +495,20 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
       coreGlow.position.y = 1.72;
       g.add(coreGlow);
 
-      // Titanium roof fascia frame
       const fascia = new THREE.Mesh(
         trackDisp(new THREE.BoxGeometry(1.98, 0.08, 1.98)),
-        titaniumMat
+        brassMat
       );
       fascia.position.y = 2.34;
       g.add(fascia);
 
-      // Selection beacon pin & collar on wing corner
       const collarMat = trackDisp(
         new THREE.MeshStandardMaterial({
-          color: '#F4F7F5',
-          emissive: '#F4F7F5',
-          emissiveIntensity: 0.2,
+          color: '#143A7B',
+          emissive: '#143A7B',
+          emissiveIntensity: 0.08,
           roughness: 0.3,
-          metalness: 0.5,
+          metalness: 0.4,
         })
       );
       const collar = new THREE.Mesh(
@@ -540,7 +521,7 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
 
       const beacon = new THREE.Mesh(
         trackDisp(new THREE.SphereGeometry(0.11, 16, 16)),
-        redBeaconMat.clone()
+        cobaltPinMat.clone()
       );
       beacon.position.set(px > 0 ? 0.85 : -0.85, 2.55, pz > 0 ? 0.85 : -0.85);
       g.add(beacon);
@@ -550,19 +531,17 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
       return g;
     };
 
-    // Wing 01 (+X, +Z): Software & Cloud — precision solar/cooling louver fins
     const wing01 = createWingBase('01', 1.75, 1.75);
     for (let i = -2; i <= 2; i++) {
       const fin = new THREE.Mesh(
         trackDisp(new THREE.BoxGeometry(2.04, 0.035, 0.08)),
-        titaniumMat
+        brassMat
       );
       fin.position.set(0, 1.48 + (i + 2) * 0.14, 0.98);
       wing01.add(fin);
     }
     layerWings.add(wing01);
 
-    // Wing 02 (-X, +Z): Civil & Structural — diagonal Warren steel truss frame
     const wing02 = createWingBase('02', -1.75, 1.75);
     const trussPts = [
       new THREE.Vector3(-0.92, 2.38, -0.92),
@@ -572,12 +551,11 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
     ];
     const trussApex = new THREE.Vector3(0, 2.86, 0);
     trussPts.forEach((pt, i) => {
-      wing02.add(createStrut(pt, trussApex, 0.032, titaniumMat));
-      wing02.add(createStrut(pt, trussPts[(i + 1) % 4], 0.028, darkSteelMat));
+      wing02.add(createStrut(pt, trussApex, 0.032, darkSlateMat));
+      wing02.add(createStrut(pt, trussPts[(i + 1) % 4], 0.028, titaniumMat));
     });
     layerWings.add(wing02);
 
-    // Wing 03 (-X, -Z): Electrical & Power — LatheGeometry stepped ceramic bushings + copper coils
     const wing03 = createWingBase('03', -1.75, -1.75);
     const insulatorPoints = [
       new THREE.Vector2(0, 0),
@@ -604,11 +582,10 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
     wing03.add(coilDrum);
     layerWings.add(wing03);
 
-    // Wing 04 (+X, -Z): QA/QC & Supervision — calibrated observatory dome ring
     const wing04 = createWingBase('04', 1.75, -1.75);
     const obsRing = new THREE.Mesh(
       trackDisp(new THREE.TorusGeometry(0.58, 0.04, 12, 36)),
-      titaniumMat
+      darkSlateMat
     );
     obsRing.rotation.x = Math.PI / 2;
     obsRing.position.set(0, 2.56, 0);
@@ -621,11 +598,11 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
     wing04.add(obsLens);
     layerWings.add(wing04);
 
-    // --- LAYER 3: Canopy Space-Frame Roof Truss & Rotating Compass Crown ---
+    // Layer 3: Canopy Space-Frame & Brass Crown
     const canopyY = 2.95;
     const canopyPlate = new THREE.Mesh(
       trackDisp(new THREE.BoxGeometry(4.45, 0.09, 4.45)),
-      titaniumMat
+      pavilionStoneMat
     );
     canopyPlate.position.y = canopyY + 0.38;
     canopyPlate.castShadow = true;
@@ -638,18 +615,16 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
     canopyGlassSkylight.position.y = canopyY + 0.43;
     layerCanopy.add(canopyGlassSkylight);
 
-    // Space-frame diagonal chords beneath canopy
     const span = 2.05;
     for (let x = -span; x <= span; x += span) {
       for (let z = -span; z <= span; z += span) {
         if (x === 0 && z === 0) continue;
         const bottomNode = new THREE.Vector3(x * 0.65, canopyY, z * 0.65);
         const topNode = new THREE.Vector3(x, canopyY + 0.36, z);
-        layerCanopy.add(createStrut(bottomNode, topNode, 0.028, darkSteelMat));
+        layerCanopy.add(createStrut(bottomNode, topNode, 0.028, titaniumMat));
       }
     }
 
-    // Rotating precision brass telemetry spire at roof apex
     const crownGroup = new THREE.Group();
     crownGroup.position.y = canopyY + 0.56;
     const mast = new THREE.Mesh(
@@ -661,7 +636,7 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
 
     const gyroOuter = new THREE.Mesh(
       trackDisp(new THREE.TorusGeometry(0.46, 0.022, 10, 36)),
-      titaniumMat
+      darkSlateMat
     );
     gyroOuter.position.y = 0.55;
     crownGroup.add(gyroOuter);
@@ -675,7 +650,6 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
     crownGroup.add(gyroInner);
     layerCanopy.add(crownGroup);
 
-    // Resize Observer
     const handleResize = () => {
       if (!container) return;
       width = Math.max(container.clientWidth, 320);
@@ -688,7 +662,6 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
     const resizeObserver = new ResizeObserver(handleResize);
     resizeObserver.observe(container);
 
-    // WebGL Context Loss Recovery
     const onContextLost = (e: Event) => {
       e.preventDefault();
       setContextLost(true);
@@ -699,7 +672,6 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
     renderer.domElement.addEventListener('webglcontextlost', onContextLost);
     renderer.domElement.addEventListener('webglcontextrestored', onContextRestored);
 
-    // Animation & Demand-Coalesced Loop
     let rafId = 0;
     let isDisposed = false;
     let isVisible = true;
@@ -722,39 +694,35 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
       const dt = Math.min((now - lastTime) / 1000, 0.1);
       lastTime = now;
 
-      // Damped Exploded-View Layer Separation
       const targetExplode = stateRef.current.exploded ? 1 : 0;
       explodeProgress = THREE.MathUtils.damp(explodeProgress, targetExplode, 6.5, dt);
       layerCore.position.y = explodeProgress * 0.45;
       layerWings.position.y = explodeProgress * 1.15;
       layerCanopy.position.y = explodeProgress * 2.15;
 
-      // Wing Beacon & Selection Highlight
       (['01', '02', '03', '04'] as const).forEach((code) => {
         const isSel = stateRef.current.activeTrack === code;
         const bMat = wingBeacons[code].material as THREE.MeshStandardMaterial;
         const cMat = wingCollars[code].material as THREE.MeshStandardMaterial;
         bMat.emissiveIntensity = THREE.MathUtils.damp(
           bMat.emissiveIntensity,
-          isSel ? 1.8 : 0.35,
+          isSel ? 1.4 : 0.15,
           8,
           dt
         );
         cMat.emissiveIntensity = THREE.MathUtils.damp(
           cMat.emissiveIntensity,
-          isSel ? 1.0 : 0.12,
+          isSel ? 0.85 : 0.05,
           8,
           dt
         );
       });
 
-      // Gentle live rotation of telemetry spire
       if (!isSoftwareGl) {
         crownGroup.rotation.y += dt * 0.42;
         gyroInner.rotation.x += dt * 0.55;
       }
 
-      // Smooth damped camera preset transitions
       if (stateRef.current.cameraTransitioning) {
         camera.position.x = THREE.MathUtils.damp(
           camera.position.x,
@@ -827,9 +795,7 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
     };
     controls.addEventListener('change', onControlChange);
 
-    // Initial render
     scheduleNextFrame();
-    onStatusChange?.('OPEN', true);
 
     return () => {
       isDisposed = true;
@@ -867,7 +833,7 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
         container.removeChild(renderer.domElement);
       }
     };
-  }, [reducedMotion, forceInteractive, contextLost, onStatusChange]);
+  }, [reducedMotion, forceInteractive, contextLost]);
 
   const activeSpec =
     ENGINEERING_TRACK_SPECS.find((t) => t.code === activeTrack) || ENGINEERING_TRACK_SPECS[0];
@@ -876,38 +842,34 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
 
   return (
     <div
-      className={`relative w-full h-[460px] sm:h-[520px] lg:h-[560px] border border-[rgba(244,247,245,0.28)] bg-[#0A1B2E] overflow-hidden select-none ${className}`}
+      className={`relative w-full h-[460px] sm:h-[520px] lg:h-[560px] rounded-2xl border border-[#E4E2DA] bg-[#ECEAE4] overflow-hidden select-none shadow-[0_20px_50px_-24px_rgba(15,23,42,0.18)] ${className}`}
     >
-      {/* Top Inspection Bar — Solid/Translucent Surface (No backdrop-filter over WebGL) */}
-      <div className="pointer-events-none absolute top-0 inset-x-0 z-10 flex items-center justify-between gap-3 px-4 py-3 bg-[#0A1B2E]/88 border-b border-[rgba(185,204,224,0.18)]">
-        <div className="flex items-center gap-2 text-[11px] font-mono text-[var(--exposure)] font-semibold tracking-wider">
-          <Compass className="w-3.5 h-3.5 text-[var(--chalk)]" />
+      {/* Top Studio Bar — Solid Translucent White (No backdrop-filter over WebGL) */}
+      <div className="pointer-events-none absolute top-0 inset-x-0 z-10 flex items-center justify-between gap-3 px-4 py-3 bg-white/92 border-b border-[#E4E2DA]">
+        <div className="flex items-center gap-2 text-xs font-semibold text-slate-900">
+          <Compass className="w-4 h-4 text-[#143A7B]" />
           <span>
-            {activeTrack
-              ? activeSpec.discipline
-              : 'MIHORA ENGINEERING CAMPUS · 3D ARCHITECTURAL MODEL'}
+            {activeTrack ? activeSpec.discipline : 'MIHORA Engineering & Academic Campus'}
           </span>
         </div>
-        <span className="hidden sm:inline text-[10px] font-mono text-[var(--chalk-dim)]">
-          DRAG TO ORBIT · SCROLL TO ZOOM
+        <span className="hidden sm:inline text-[11px] font-medium text-slate-500">
+          Drag to orbit · Scroll to zoom
         </span>
       </div>
 
-      {/* Isolated 3D WebGL Mount or Reduced-Motion / Fallback Architectural Render */}
       {showFallbackImage ? (
         <div className="relative w-full h-full">
           <img
-            src={campusFallbackImg}
-            alt="MIHORA engineering and academic research campus scale architectural model"
+            src={campusDaylightFallbackImg}
+            alt="MIHORA engineering and academic research campus architectural scale model"
             referrerPolicy="no-referrer"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0A1B2E] via-transparent to-[#0A1B2E]/50" />
           {reducedMotion && !forceInteractive && !contextLost && (
             <button
               type="button"
               onClick={() => setForceInteractive(true)}
-              className="absolute bottom-4 right-4 px-3.5 py-2 text-[11px] font-mono font-semibold text-[var(--edge)] bg-[var(--exposure)] hover:bg-white rounded-[var(--radius-xs)] cursor-pointer"
+              className="absolute bottom-4 right-4 px-4 py-2 text-xs font-semibold text-white bg-[#143A7B] hover:bg-[#0E2B5C] rounded-lg shadow-md cursor-pointer"
             >
               Launch Interactive 3D View
             </button>
@@ -916,25 +878,25 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
       ) : (
         <div
           ref={mountRef}
-          aria-label="Interactive 3D architectural model of the MIHORA engineering and academic campus"
+          aria-label="Interactive 3D architectural scale model of the MIHORA engineering and academic campus"
           className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing"
         />
       )}
 
-      {/* Single Collapsible Bottom-Center Dock (Solid/Translucent — Zero backdrop-filter over WebGL) */}
+      {/* Single Collapsible Bottom-Center Dock (No backdrop-filter over WebGL) */}
       {!showFallbackImage && (
-        <div className="pointer-events-none absolute bottom-3 inset-x-3 z-10 flex flex-col items-center gap-2">
+        <div className="pointer-events-none absolute bottom-3.5 inset-x-3 z-10 flex flex-col items-center gap-2">
           {controlsCollapsed ? (
             <button
               type="button"
               onClick={() => setControlsCollapsed(false)}
-              className="pointer-events-auto inline-flex items-center gap-1.5 px-3.5 py-1.5 text-[11px] font-mono font-semibold text-[var(--exposure)] bg-[#0F2740]/95 border border-[var(--rule-strong)] rounded-[var(--radius-xs)] hover:bg-[var(--prussian)] transition-colors cursor-pointer"
+              className="pointer-events-auto inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-slate-800 bg-white/96 border border-[#CBD5E1] rounded-lg shadow-md hover:bg-slate-50 transition-colors cursor-pointer"
             >
-              <ChevronUp className="w-3.5 h-3.5" />
+              <ChevronUp className="w-3.5 h-3.5 text-[#143A7B]" />
               <span>Model Controls</span>
             </button>
           ) : (
-            <div className="pointer-events-auto max-w-full bg-[#0F2740]/94 border border-[rgba(244,247,245,0.28)] rounded-[var(--radius-xs)] p-2 shadow-[0_14px_34px_rgba(3,9,18,0.75)] flex flex-wrap items-center justify-center gap-1.5">
+            <div className="pointer-events-auto max-w-full bg-white/96 border border-[#E4E2DA] rounded-xl p-1.5 shadow-[0_12px_32px_rgba(15,23,42,0.12)] flex flex-wrap items-center justify-center gap-1.5">
               {ENGINEERING_TRACK_SPECS.map((track) => {
                 const isSelected = activeTrack === track.code;
                 return (
@@ -945,31 +907,31 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
                     onClick={() =>
                       setActiveTrack((prev) => (prev === track.code ? null : track.code))
                     }
-                    className={`px-2.5 py-1.5 text-[11px] font-mono rounded-[var(--radius-xs)] border transition-colors cursor-pointer whitespace-nowrap ${
+                    className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors cursor-pointer whitespace-nowrap ${
                       isSelected
-                        ? 'bg-[var(--exposure)] text-[var(--edge)] border-[var(--exposure)] font-semibold'
-                        : 'bg-[#14304E] text-[var(--chalk)] border-[rgba(185,204,224,0.24)] hover:text-[var(--exposure)] hover:border-[var(--exposure)]'
+                        ? 'bg-[#143A7B] text-white font-semibold shadow-xs'
+                        : 'bg-[#F7F6F2] text-slate-700 hover:bg-slate-100 hover:text-slate-900'
                     }`}
                   >
-                    {track.code} · {track.label}
+                    {track.label}
                   </button>
                 );
               })}
 
-              <span className="hidden sm:inline-block w-px h-5 bg-[rgba(185,204,224,0.22)] mx-0.5" />
+              <span className="hidden sm:inline-block w-px h-5 bg-slate-200 mx-0.5" />
 
               <button
                 type="button"
                 aria-pressed={exploded}
                 onClick={() => setExploded((prev) => !prev)}
-                className={`px-2.5 py-1.5 text-[11px] font-mono rounded-[var(--radius-xs)] border inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap ${
+                className={`px-3 py-1.5 text-xs font-medium rounded-lg inline-flex items-center gap-1.5 transition-colors cursor-pointer whitespace-nowrap ${
                   exploded
-                    ? 'bg-[var(--exposure)] text-[var(--edge)] border-[var(--exposure)] font-semibold'
-                    : 'bg-[#14304E] text-[var(--chalk)] border-[rgba(185,204,224,0.24)] hover:text-[var(--exposure)]'
+                    ? 'bg-[#143A7B] text-white font-semibold'
+                    : 'bg-[#F7F6F2] text-slate-700 hover:bg-slate-100 hover:text-slate-900'
                 }`}
               >
                 <Layers className="w-3.5 h-3.5" />
-                <span>{exploded ? 'Assemble' : 'Explode'}</span>
+                <span>{exploded ? 'Assemble' : 'Explode View'}</span>
               </button>
 
               <button
@@ -980,7 +942,7 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
                 }}
                 title="Reset 3D view"
                 aria-label="Reset 3D view"
-                className="p-1.5 text-[var(--chalk)] bg-[#14304E] border border-[rgba(185,204,224,0.24)] rounded-[var(--radius-xs)] hover:text-[var(--exposure)] transition-colors cursor-pointer"
+                className="p-1.5 text-slate-600 bg-[#F7F6F2] rounded-lg hover:bg-slate-100 hover:text-slate-900 transition-colors cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
               </button>
@@ -990,7 +952,7 @@ export const EngineeringCampusModel: React.FC<EngineeringCampusModelProps> = ({
                 onClick={() => setControlsCollapsed(true)}
                 title="Hide controls"
                 aria-label="Hide controls"
-                className="p-1.5 text-[var(--chalk)] bg-[#14304E] border border-[rgba(185,204,224,0.24)] rounded-[var(--radius-xs)] hover:text-[var(--exposure)] transition-colors cursor-pointer"
+                className="p-1.5 text-slate-600 bg-[#F7F6F2] rounded-lg hover:bg-slate-100 hover:text-slate-900 transition-colors cursor-pointer"
               >
                 <ChevronDown className="w-3.5 h-3.5" />
               </button>

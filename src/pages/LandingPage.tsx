@@ -1,18 +1,12 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { MihoraLogo } from '../components/brand/MihoraLogo';
 import { SheetArrival } from '../components/ui/MotionPrimitives';
 import { EngineeringCampusModel } from '../components/three/EngineeringCampusModel';
 import {
-  AmbientDustField,
-  RegistrationCrosses,
-  TitleBlock,
-  EdgeDimensionRuler,
-  ScrollDimensionRule,
-  CommuteCalibrationDiagram,
-  DossierLayerDiagram,
-  SingleRedMark,
-} from '../components/cyanotype/BlueprintApparatus';
-import { ArrowRight, ArrowUpRight } from 'lucide-react';
+  RegionalMobilityShowcase,
+  TechnicalEvaluationShowcase,
+} from '../components/showcase/EnterpriseModels';
+import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
 
 interface LandingPageProps {
   onNavigate: (view: string) => void;
@@ -84,469 +78,375 @@ const DISCIPLINES_SCHEDULE = [
 
 export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
   const [selectedPillar, setSelectedPillar] = useState(0);
-  const [heroStatus, setHeroStatus] = useState('OPEN');
-  const [heroStatusSettled, setHeroStatusSettled] = useState(true);
 
-  const handleHeroStatusChange = useCallback((nextStatus: string, settled: boolean) => {
-    setHeroStatus(nextStatus);
-    setHeroStatusSettled(settled);
-  }, []);
-
-  const jumpToSheet = (id: string) => {
+  const jumpToSection = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
-    <div className="min-h-screen bg-cyanotype-table flex flex-col justify-between relative">
-      <AmbientDustField />
-      <EdgeDimensionRuler />
+    <div className="min-h-screen bg-[#F7F6F2] text-slate-900 flex flex-col justify-between">
+      {/* SECTION 01: LUMINOUS ARCHITECTURAL HERO + 3D CAMPUS MAQUETTE */}
+      <section
+        id="overview"
+        aria-labelledby="hero-heading"
+        className="max-w-[1360px] w-full mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-16 sm:pt-14 sm:pb-24"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          <div className="lg:col-span-5 flex flex-col justify-between space-y-8">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#143A7B] mb-4">
+                MIHORA Engineering &amp; Academic Talent Network
+              </p>
 
-      <div className="relative z-10 max-w-[1360px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-20 sm:space-y-28">
-        {/* SECTION 01: ENTERPRISE TALENT PORTAL HERO + REAL-TIME 3D CAMPUS MODEL */}
-        <section
-          id="sheet-mhr-01"
-          aria-labelledby="hero-sheet-heading"
-          className="cyanotype-sheet p-6 sm:p-10 lg:p-14 scroll-mt-20"
-        >
-          <RegistrationCrosses />
+              <h1
+                id="hero-heading"
+                className="font-display text-4xl sm:text-5xl xl:text-[54px] font-extrabold text-slate-900 leading-[1.06] tracking-tight text-balance"
+              >
+                Advance Your Engineering &amp;{' '}
+                <span className="font-editorial italic font-semibold text-[#143A7B]">
+                  Academic Career
+                </span>{' '}
+                with MIHORA.
+              </h1>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-            <div className="lg:col-span-5 flex flex-col justify-between space-y-8">
-              <div>
-                <p className="text-xs font-mono text-[var(--chalk)] tracking-wider mb-4">
-                  MIHORA TECH · CAREERS &amp; ACADEMIC TALENT NETWORK
-                </p>
+              <p className="mt-6 text-base text-slate-600 leading-relaxed max-w-lg">
+                The executive talent portal for software architects, civil and structural leads, electrical engineers, and QA directors. Present verified credentials, leadership history, and site mobility in one authoritative portfolio.
+              </p>
 
-                <h1
-                  id="hero-sheet-heading"
-                  className="font-display text-4xl sm:text-5xl xl:text-[54px] font-bold text-[var(--exposure)] leading-[1.03] tracking-tight text-balance"
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <button
+                  type="button"
+                  onClick={() => onNavigate('register')}
+                  className="px-6 py-3.5 text-sm font-semibold text-white bg-[#143A7B] hover:bg-[#0E2B5C] rounded-xl transition-colors inline-flex items-center justify-center gap-2 group cursor-pointer shadow-sm whitespace-nowrap"
                 >
-                  Advance Your Engineering &amp; Academic Career with MIHORA.
-                </h1>
+                  <span>Create Candidate Profile</span>
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                </button>
 
-                <p className="mt-6 text-sm sm:text-base text-[var(--chalk)] leading-relaxed max-w-lg">
-                  The executive talent portal for software architects, civil and structural leads, electrical engineers, and QA directors. Present verified academic credentials, leadership history, and site mobility in one authoritative portfolio.
-                </p>
-
-                <div className="mt-8 flex flex-col sm:flex-row sm:items-center gap-4">
-                  <button
-                    type="button"
-                    onClick={() => onNavigate('register')}
-                    className="px-6 py-3.5 text-xs font-mono font-semibold text-[var(--edge)] bg-[var(--exposure)] hover:bg-white rounded-[var(--radius-xs)] transition-colors inline-flex items-center justify-center gap-2 group cursor-pointer whitespace-nowrap"
-                  >
-                    <span>Create Candidate Profile</span>
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => onNavigate('signin')}
-                    className="px-3 py-2 text-xs font-mono font-medium text-[var(--exposure)] hover:text-white pencil-link cursor-pointer whitespace-nowrap"
-                  >
-                    Candidate Sign In →
-                  </button>
-                </div>
-              </div>
-
-              <div className="pt-6 double-exposure-rule grid grid-cols-3 gap-5 text-xs font-mono">
-                <div>
-                  <div className="text-[var(--chalk-dim)] text-[10px] tracking-wider">
-                    CAREER TRACKS
-                  </div>
-                  <div className="text-xl font-bold text-[var(--exposure)] tabular-nums mt-1">
-                    04
-                  </div>
-                </div>
-                <div>
-                  <div className="text-[var(--chalk-dim)] text-[10px] tracking-wider">
-                    PLACEMENT
-                  </div>
-                  <div className="text-xl font-bold text-[var(--exposure)] mt-1">GLOBAL</div>
-                </div>
-                <div>
-                  <div className="text-[var(--chalk-dim)] text-[10px] tracking-wider">
-                    PORTFOLIO
-                  </div>
-                  <div className="text-xl font-bold text-[var(--exposure)] mt-1">A4 PDF</div>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => onNavigate('signin')}
+                  className="px-5 py-3.5 text-sm font-semibold text-slate-800 bg-white hover:bg-slate-50 border border-[#CBD5E1] rounded-xl transition-colors cursor-pointer whitespace-nowrap"
+                >
+                  Candidate Sign In
+                </button>
               </div>
             </div>
 
-            <div className="lg:col-span-7 space-y-4">
-              <EngineeringCampusModel onStatusChange={handleHeroStatusChange} />
-
-              <div className="flex flex-wrap items-center justify-between gap-4 pt-1">
-                <div className="flex flex-wrap items-center gap-5 text-[11px] font-mono text-[var(--chalk)]">
-                  {[
-                    { id: 'sheet-mhr-02', label: '02 Mobility' },
-                    { id: 'sheet-mhr-03', label: '03 Evaluation' },
-                    { id: 'sheet-mhr-04', label: '04 Tracks' },
-                  ].map((section) => (
-                    <button
-                      key={section.id}
-                      type="button"
-                      onClick={() => jumpToSheet(section.id)}
-                      className="pencil-link hover:text-[var(--exposure)] cursor-pointer"
-                    >
-                      {section.label}
-                    </button>
-                  ))}
+            <div className="pt-6 border-t border-[#E4E2DA] grid grid-cols-3 gap-6">
+              <div>
+                <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                  Career Tracks
                 </div>
-
-                <TitleBlock
-                  drawingNo="CAREERS PORTAL"
-                  scale={heroStatus}
-                  scaleTick={heroStatusSettled}
-                  date="2026"
-                  drawnBy="MIHORA"
-                  checkedBy="ACTIVE"
-                />
+                <div className="text-2xl font-bold text-slate-900 tabular-nums mt-1">04</div>
+              </div>
+              <div>
+                <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                  Placement
+                </div>
+                <div className="text-2xl font-bold text-slate-900 mt-1">Global</div>
+              </div>
+              <div>
+                <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                  Portfolio
+                </div>
+                <div className="text-2xl font-bold text-slate-900 mt-1">A4 PDF</div>
               </div>
             </div>
           </div>
-        </section>
 
-        {/* SECTION 02: WORKFORCE MOBILITY & PLACEMENT */}
-        <SheetArrival>
-          <section
-            id="sheet-mhr-02"
-            aria-labelledby="calibration-sheet-heading"
-            className="cyanotype-sheet p-6 sm:p-10 lg:p-14 scroll-mt-20"
-          >
-            <RegistrationCrosses />
+          <div className="lg:col-span-7 space-y-4">
+            <EngineeringCampusModel />
 
-            <div className="mb-8 pb-4 border-b border-[var(--rule-hairline)]">
-              <ScrollDimensionRule
-                label="REGIONAL MOBILITY THRESHOLD"
-                unitSuffix="km"
-                targetNumber={50}
-                bandStart={0.05}
-                bandEnd={0.45}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-              <div className="lg:col-span-6 space-y-6">
-                <div>
-                  <p className="text-xs font-mono text-[var(--chalk)] tracking-wider mb-2">
-                    WORKFORCE MOBILITY · REGIONAL &amp; SITE PLACEMENT
-                  </p>
-                  <h2
-                    id="calibration-sheet-heading"
-                    className="font-display text-3xl sm:text-4xl font-bold text-[var(--exposure)] text-balance leading-tight"
-                  >
-                    Precision matching for academic specialists and field leaders.
-                  </h2>
-                </div>
-
-                <CommuteCalibrationDiagram />
-              </div>
-
-              <div className="lg:col-span-6 flex flex-col justify-between h-full space-y-8">
-                <div className="divide-y divide-[var(--rule-hairline)] border-t border-b border-[var(--rule-hairline)]">
-                  <div className="py-7">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="font-mono text-xs text-[var(--chalk)]">01 · CREDENTIALS</span>
-                      <span className="font-mono text-xs text-[var(--exposure)]">CANDIDATE ID</span>
-                    </div>
-                    <h3 className="font-display text-xl font-bold text-[var(--exposure)] mt-2">
-                      Verified Academic &amp; Career Portfolio
-                    </h3>
-                    <p className="text-xs sm:text-sm text-[var(--chalk)] mt-2.5 leading-relaxed">
-                      Every applicant receives a permanent MIHORA candidate ID connecting university qualifications, certifications, leadership history, and technical proficiencies in one authoritative record.
-                    </p>
-                  </div>
-
-                  <div className="py-7">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="font-mono text-xs text-[var(--chalk)]">02 · MOBILITY</span>
-                      <div className="relative inline-flex items-center">
-                        <span className="font-mono text-xs text-[var(--exposure)] font-semibold">
-                          KM / MIN PREFERENCE
-                        </span>
-                        <SingleRedMark variant="tick" className="ml-1.5 -mt-1" />
-                      </div>
-                    </div>
-                    <h3 className="font-display text-xl font-bold text-[var(--exposure)] mt-2">
-                      Clear Commute &amp; Housing Preferences
-                    </h3>
-                    <p className="text-xs sm:text-sm text-[var(--chalk)] mt-2.5 leading-relaxed">
-                      Specify comfortable daily travel distances, commute times, transport arrangements, and relocation needs so regional project directors match you accurately to active assignments.
-                    </p>
-                  </div>
-
-                  <div className="py-7">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="font-mono text-xs text-[var(--chalk)]">03 · EVALUATION</span>
-                      <span className="font-mono text-xs text-[var(--exposure)]">EXECUTIVE PDF</span>
-                    </div>
-                    <h3 className="font-display text-xl font-bold text-[var(--exposure)] mt-2">
-                      Direct Hiring Review &amp; Formal Dossier
-                    </h3>
-                    <p className="text-xs sm:text-sm text-[var(--chalk)] mt-2.5 leading-relaxed">
-                      Profile updates reflect immediately for MIHORA’s recruitment directors and generate a clean, executive A4 PDF portfolio you can download anytime.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex justify-end">
-                  <TitleBlock
-                    drawingNo="SITE MOBILITY"
-                    scale="GLOBAL"
-                    date="2026"
-                    drawnBy="TALENT"
-                    checkedBy="OPS"
-                  />
-                </div>
-              </div>
-            </div>
-          </section>
-        </SheetArrival>
-
-        {/* SECTION 03: CANDIDATE EVALUATION FRAMEWORK */}
-        <SheetArrival>
-          <section
-            id="sheet-mhr-03"
-            aria-labelledby="schema-sheet-heading"
-            className="cyanotype-sheet p-6 sm:p-10 lg:p-14 scroll-mt-20"
-          >
-            <RegistrationCrosses />
-
-            <div className="mb-8 pb-4 border-b border-[var(--rule-hairline)]">
-              <ScrollDimensionRule
-                label="EVALUATION READINESS"
-                unitSuffix="%"
-                targetNumber={100}
-                bandStart={0.35}
-                bandEnd={0.75}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-              <div className="lg:col-span-6">
-                <p className="text-xs font-mono text-[var(--chalk)] tracking-wider mb-2">
-                  CREDENTIAL STANDARDS · CANDIDATE EVALUATION
-                </p>
-                <h2
-                  id="schema-sheet-heading"
-                  className="font-display text-3xl sm:text-4xl font-bold text-[var(--exposure)] text-balance leading-tight mb-7"
-                >
-                  Five evaluation pillars from academic foundation to placement.
-                </h2>
-
-                <div className="border border-[var(--rule-hairline)] divide-y divide-[var(--rule-hairline)]">
-                  {EVALUATION_PILLARS.map((item, idx) => {
-                    const active = selectedPillar === idx;
-                    return (
-                      <button
-                        key={item.code}
-                        type="button"
-                        onClick={() => setSelectedPillar(idx)}
-                        className={`w-full text-left px-5 py-4 flex items-baseline justify-between gap-4 transition-colors cursor-pointer ${
-                          active
-                            ? 'bg-[var(--prussian-raise)] text-[var(--exposure)]'
-                            : 'bg-[var(--prussian)] hover:bg-[var(--prussian-raise)]/65 text-[var(--chalk)]'
-                        }`}
-                      >
-                        <div className="min-w-0">
-                          <div className="flex items-baseline gap-3">
-                            <span className="font-mono text-xs font-semibold text-[var(--exposure)] shrink-0">
-                              {item.code}.
-                            </span>
-                            <span className="text-sm font-semibold text-[var(--exposure)]">
-                              {item.label}
-                            </span>
-                          </div>
-                          {active && (
-                            <p className="text-xs sm:text-sm text-[var(--chalk)] mt-2 pl-7 leading-relaxed">
-                              {item.detail}
-                            </p>
-                          )}
-                        </div>
-                        <span className="font-mono text-[11px] shrink-0 text-[var(--chalk)]">
-                          {active ? 'SELECTED' : 'VIEW'}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="lg:col-span-6 flex flex-col justify-between space-y-6">
-                <DossierLayerDiagram activeIndex={selectedPillar} />
-
-                <div className="border border-[var(--rule-hairline)] bg-[var(--edge)]/85 p-6 space-y-4">
-                  <div className="flex items-center justify-between text-xs font-mono text-[var(--chalk)]">
-                    <span>READY TO APPLY</span>
-                    <span className="text-[var(--exposure)] font-semibold">DIRECT EVALUATION</span>
-                  </div>
-                  <p className="text-xs sm:text-sm text-[var(--chalk)] leading-relaxed">
-                    Create your MIHORA candidate profile in under a minute and keep your academic and engineering record ready for upcoming opportunities.
-                  </p>
+            <div className="flex flex-wrap items-center justify-between gap-4 px-1">
+              <div className="flex flex-wrap items-center gap-6 text-xs font-semibold text-slate-500">
+                {[
+                  { id: 'mobility', label: 'Regional Mobility' },
+                  { id: 'evaluation', label: 'Evaluation Pillars' },
+                  { id: 'tracks', label: 'Engineering Tracks' },
+                ].map((section) => (
                   <button
+                    key={section.id}
                     type="button"
-                    onClick={() => onNavigate('register')}
-                    className="w-full py-3 px-4 text-xs font-mono font-semibold text-[var(--edge)] bg-[var(--exposure)] hover:bg-white rounded-[var(--radius-xs)] transition-colors inline-flex items-center justify-center gap-2 cursor-pointer"
+                    onClick={() => jumpToSection(section.id)}
+                    className="nav-link-underline hover:text-[#143A7B] cursor-pointer"
                   >
-                    <span>Start Candidate Profile</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    {section.label}
                   </button>
-                </div>
-
-                <div className="flex justify-end">
-                  <TitleBlock
-                    drawingNo="EVALUATION"
-                    scale="MERIT"
-                    date="2026"
-                    drawnBy="BOARD"
-                    checkedBy="VERIFIED"
-                  />
-                </div>
-              </div>
-            </div>
-          </section>
-        </SheetArrival>
-
-        {/* SECTION 04: ENGINEERING DISCIPLINES SCHEDULE TABLE */}
-        <SheetArrival>
-          <section
-            id="sheet-mhr-04"
-            aria-labelledby="schedule-sheet-heading"
-            className="cyanotype-sheet p-6 sm:p-10 lg:p-14 scroll-mt-20"
-          >
-            <RegistrationCrosses />
-
-            <div className="pt-2 space-y-8">
-              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                <div>
-                  <p className="text-xs font-mono text-[var(--chalk)] tracking-wider mb-2">
-                    ENGINEERING &amp; TECHNICAL OPPORTUNITIES
-                  </p>
-                  <h2
-                    id="schedule-sheet-heading"
-                    className="font-display text-3xl sm:text-4xl font-bold text-[var(--exposure)]"
-                  >
-                    Active Engineering Tracks Across MIHORA Projects
-                  </h2>
-                </div>
-                <div className="flex items-center gap-2 font-mono text-xs text-[var(--exposure)] shrink-0">
-                  <span>04 CORE TRACKS OPEN</span>
-                  <SingleRedMark variant="tick" />
-                </div>
-              </div>
-
-              {/* Desktop Semantic Schedule Table */}
-              <div className="hidden md:block">
-                <table className="w-full text-left border-collapse font-mono text-xs">
-                  <caption className="sr-only">
-                    MIHORA active engineering career tracks specification schedule
-                  </caption>
-                  <thead>
-                    <tr className="border-b border-[var(--rule-strong)] text-[var(--chalk)]">
-                      <th scope="col" className="py-3.5 pr-4 font-medium">
-                        Track Code
-                      </th>
-                      <th scope="col" className="py-3.5 px-4 font-medium">
-                        Discipline
-                      </th>
-                      <th scope="col" className="py-3.5 px-4 font-medium">
-                        Focus &amp; Responsibilities
-                      </th>
-                      <th scope="col" className="py-3.5 pl-4 text-right font-medium">
-                        Work Mode
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[var(--rule-hairline)]">
-                    {DISCIPLINES_SCHEDULE.map((row) => (
-                      <tr
-                        key={row.code}
-                        className="group hover:bg-[var(--prussian-raise)]/65 transition-colors"
-                      >
-                        <td className="py-5 pr-4 font-semibold text-[var(--exposure)] whitespace-nowrap">
-                          {row.code}
-                        </td>
-                        <td className="py-5 px-4 font-semibold text-[var(--exposure)] whitespace-nowrap">
-                          <span className="pencil-link">{row.title}</span>
-                        </td>
-                        <td className="py-5 px-4 text-[var(--chalk)] leading-relaxed">
-                          {row.scope}
-                        </td>
-                        <td className="py-5 pl-4 text-right text-[var(--exposure)] whitespace-nowrap">
-                          {row.mode}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                  <tfoot>
-                    <tr className="double-exposure-rule text-[var(--exposure)] font-semibold">
-                      <td colSpan={3} className="py-4 pr-4">
-                        ACTIVE ENGINEERING &amp; ACADEMIC TALENT TRACKS
-                      </td>
-                      <td className="py-4 pl-4 text-right tabular-nums">
-                        04 TRACKS · OPEN INTAKE
-                      </td>
-                    </tr>
-                  </tfoot>
-                </table>
-              </div>
-
-              {/* Mobile Stacked Schedule */}
-              <div className="md:hidden divide-y divide-[var(--rule-hairline)] border-t border-b border-[var(--rule-hairline)]">
-                {DISCIPLINES_SCHEDULE.map((row) => (
-                  <div key={row.code} className="py-4 space-y-1.5 font-mono text-xs">
-                    <div className="flex items-center justify-between text-[var(--chalk)]">
-                      <span className="font-semibold text-[var(--exposure)]">{row.code}</span>
-                      <span>{row.mode}</span>
-                    </div>
-                    <div className="text-sm font-display font-bold text-[var(--exposure)]">
-                      {row.title}
-                    </div>
-                    <p className="text-xs text-[var(--chalk)] leading-relaxed">{row.scope}</p>
-                  </div>
                 ))}
               </div>
+              <span className="text-xs text-slate-400">Interactive 3D Campus Model</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
-              <div className="flex justify-end pt-2">
-                <TitleBlock
-                  drawingNo="CAREER TRACKS"
-                  scale="OPEN"
-                  date="2026"
-                  drawnBy="MIHORA"
-                  checkedBy="HIRING"
-                />
+      {/* SECTION 02: WORKFORCE MOBILITY & REGIONAL PLACEMENT */}
+      <section
+        id="mobility"
+        aria-labelledby="mobility-heading"
+        className="bg-white border-y border-[#E4E2DA] py-16 sm:py-24 scroll-mt-16"
+      >
+        <SheetArrival className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            <div className="lg:col-span-6">
+              <RegionalMobilityShowcase />
+            </div>
+
+            <div className="lg:col-span-6 space-y-8">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#143A7B] mb-2">
+                  Workforce Mobility &amp; Placement
+                </p>
+                <h2
+                  id="mobility-heading"
+                  className="font-display text-3xl sm:text-4xl font-bold text-slate-900 leading-tight text-balance"
+                >
+                  Precision matching for academic specialists and field leaders.
+                </h2>
+              </div>
+
+              <div className="divide-y divide-[#E4E2DA] border-t border-b border-[#E4E2DA]">
+                <div className="py-6">
+                  <div className="flex items-center justify-between gap-2 text-xs font-semibold text-[#143A7B]">
+                    <span>01 · Verified Credentials</span>
+                    <span className="font-mono text-slate-400">CANDIDATE ID</span>
+                  </div>
+                  <h3 className="font-display text-lg font-bold text-slate-900 mt-1.5">
+                    Authoritative Academic &amp; Career Portfolio
+                  </h3>
+                  <p className="text-sm text-slate-600 mt-2 leading-relaxed">
+                    Every applicant receives a permanent MIHORA candidate ID uniting university qualifications, honors, leadership history, and technical proficiencies in one record.
+                  </p>
+                </div>
+
+                <div className="py-6">
+                  <div className="flex items-center justify-between gap-2 text-xs font-semibold text-[#143A7B]">
+                    <span>02 · Site Calibration</span>
+                    <span className="font-mono text-slate-400">COMMUTE &amp; HOUSING</span>
+                  </div>
+                  <h3 className="font-display text-lg font-bold text-slate-900 mt-1.5">
+                    Clear Commute &amp; Relocation Preferences
+                  </h3>
+                  <p className="text-sm text-slate-600 mt-2 leading-relaxed">
+                    Specify comfortable daily travel distances, commute times, transport arrangements, and housing preferences so project directors match you accurately to active assignments.
+                  </p>
+                </div>
+
+                <div className="py-6">
+                  <div className="flex items-center justify-between gap-2 text-xs font-semibold text-[#143A7B]">
+                    <span>03 · Hiring Review</span>
+                    <span className="font-mono text-slate-400">EXECUTIVE PDF</span>
+                  </div>
+                  <h3 className="font-display text-lg font-bold text-slate-900 mt-1.5">
+                    Direct Evaluation &amp; Formal Dossier
+                  </h3>
+                  <p className="text-sm text-slate-600 mt-2 leading-relaxed">
+                    Profile updates reflect immediately for MIHORA recruitment directors and generate a clean, executive A4 PDF portfolio you can download anytime.
+                  </p>
+                </div>
               </div>
             </div>
-          </section>
+          </div>
         </SheetArrival>
-      </div>
+      </section>
+
+      {/* SECTION 03: FIVE-PILLAR EVALUATION FRAMEWORK */}
+      <section
+        id="evaluation"
+        aria-labelledby="evaluation-heading"
+        className="py-16 sm:py-24 scroll-mt-16"
+      >
+        <SheetArrival className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+            <div className="lg:col-span-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#143A7B] mb-2">
+                Credential Standards
+              </p>
+              <h2
+                id="evaluation-heading"
+                className="font-display text-3xl sm:text-4xl font-bold text-slate-900 leading-tight text-balance mb-8"
+              >
+                Five evaluation pillars from academic foundation to placement.
+              </h2>
+
+              <div className="space-y-3">
+                {EVALUATION_PILLARS.map((item, idx) => {
+                  const active = selectedPillar === idx;
+                  return (
+                    <button
+                      key={item.code}
+                      type="button"
+                      onClick={() => setSelectedPillar(idx)}
+                      className={`w-full text-left p-5 rounded-xl border transition-all cursor-pointer ${
+                        active
+                          ? 'bg-white border-[#143A7B] shadow-[0_8px_24px_-12px_rgba(20,58,123,0.22)]'
+                          : 'bg-white/60 border-[#E4E2DA] hover:bg-white hover:border-slate-300'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-4">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <span
+                            className={`w-7 h-7 rounded-lg text-xs font-mono font-semibold flex items-center justify-center shrink-0 ${
+                              active
+                                ? 'bg-[#143A7B] text-white'
+                                : 'bg-[#EFECE6] text-slate-600'
+                            }`}
+                          >
+                            {item.code}
+                          </span>
+                          <span className="font-display text-base font-bold text-slate-900 truncate">
+                            {item.label}
+                          </span>
+                        </div>
+                        {active && <Check className="w-4 h-4 text-[#143A7B] shrink-0" />}
+                      </div>
+                      {active && (
+                        <p className="text-sm text-slate-600 mt-3 pl-10 leading-relaxed">
+                          {item.detail}
+                        </p>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div className="lg:col-span-6 space-y-6">
+              <TechnicalEvaluationShowcase activeIndex={selectedPillar} />
+
+              <div className="enterprise-card p-6 sm:p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+                <div>
+                  <h3 className="font-display text-lg font-bold text-slate-900">
+                    Ready to present your credentials?
+                  </h3>
+                  <p className="text-sm text-slate-600 mt-1">
+                    Initialize your verified MIHORA candidate profile in under a minute.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => onNavigate('register')}
+                  className="px-5 py-3 text-xs font-semibold text-white bg-[#143A7B] hover:bg-[#0E2B5C] rounded-xl transition-colors inline-flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+                >
+                  <span>Start Profile</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </SheetArrival>
+      </section>
+
+      {/* SECTION 04: ACTIVE ENGINEERING TRACKS */}
+      <section
+        id="tracks"
+        aria-labelledby="tracks-heading"
+        className="bg-white border-t border-[#E4E2DA] py-16 sm:py-24 scroll-mt-16"
+      >
+        <SheetArrival className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#143A7B] mb-2">
+                Engineering &amp; Technical Opportunities
+              </p>
+              <h2
+                id="tracks-heading"
+                className="font-display text-3xl sm:text-4xl font-bold text-slate-900"
+              >
+                Active Engineering Tracks Across MIHORA Projects
+              </h2>
+            </div>
+            <button
+              type="button"
+              onClick={() => onNavigate('register')}
+              className="text-sm font-semibold text-[#143A7B] hover:text-[#0E2B5C] inline-flex items-center gap-1.5 shrink-0 cursor-pointer"
+            >
+              <span>Apply to open tracks</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="hidden md:block enterprise-card overflow-hidden">
+            <table className="w-full text-left border-collapse">
+              <caption className="sr-only">
+                MIHORA active engineering career tracks schedule
+              </caption>
+              <thead>
+                <tr className="border-b border-[#E4E2DA] bg-[#FAF9F6] text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  <th scope="col" className="py-4 px-6">
+                    Track
+                  </th>
+                  <th scope="col" className="py-4 px-6">
+                    Discipline
+                  </th>
+                  <th scope="col" className="py-4 px-6">
+                    Focus &amp; Responsibilities
+                  </th>
+                  <th scope="col" className="py-4 px-6 text-right">
+                    Work Mode
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#E4E2DA] text-sm">
+                {DISCIPLINES_SCHEDULE.map((row) => (
+                  <tr key={row.code} className="hover:bg-[#F7F6F2]/80 transition-colors">
+                    <td className="py-5 px-6 font-mono text-xs font-semibold text-[#143A7B] whitespace-nowrap">
+                      {row.code}
+                    </td>
+                    <td className="py-5 px-6 font-display font-bold text-slate-900 whitespace-nowrap">
+                      {row.title}
+                    </td>
+                    <td className="py-5 px-6 text-slate-600 leading-relaxed">{row.scope}</td>
+                    <td className="py-5 px-6 text-right font-medium text-slate-800 whitespace-nowrap">
+                      {row.mode}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="md:hidden space-y-3">
+            {DISCIPLINES_SCHEDULE.map((row) => (
+              <div key={row.code} className="enterprise-panel p-5 space-y-2">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-mono font-semibold text-[#143A7B]">{row.code}</span>
+                  <span className="font-medium text-slate-500">{row.mode}</span>
+                </div>
+                <div className="text-base font-display font-bold text-slate-900">{row.title}</div>
+                <p className="text-sm text-slate-600 leading-relaxed">{row.scope}</p>
+              </div>
+            ))}
+          </div>
+        </SheetArrival>
+      </section>
 
       {/* ENTERPRISE CAREERS FOOTER */}
-      <footer className="relative z-10 bg-[var(--edge)] double-exposure-rule py-12 px-4 sm:px-6 lg:px-8 mt-12">
-        <div className="max-w-[1360px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-xs font-mono">
-          <div className="space-y-2 text-[var(--chalk)]">
-            <div className="text-[var(--exposure)] font-semibold">ENTERPRISE CAREERS</div>
+      <footer className="bg-slate-900 text-slate-300 py-14 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[1360px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
+          <div className="space-y-2.5">
+            <MihoraLogo size="sm" variant="full" theme="dark" />
+            <p className="text-slate-400 text-xs pt-2 leading-relaxed max-w-xs">
+              Enterprise talent acquisition and engineering credential portal for MIHORA projects worldwide.
+            </p>
+          </div>
+
+          <div className="space-y-2 text-xs text-slate-400">
+            <div className="text-white font-semibold uppercase tracking-wider mb-2">
+              Career Programs
+            </div>
             <p>04 Core Engineering &amp; Technical Tracks</p>
             <p>Global Remote, Hybrid &amp; Site Placement</p>
             <p>Direct Hiring Committee Evaluation</p>
           </div>
 
-          <div className="space-y-2.5">
-            <MihoraLogo size="sm" variant="full" theme="dark" />
-            <p className="text-[var(--chalk)]">
-              MIHORA Tech Careers · career.forms.mihora.tech
-            </p>
-            <p className="text-[var(--chalk-dim)]">
-              Enterprise Talent Acquisition · © {new Date().getFullYear()} MIHORA Tech
-            </p>
-          </div>
-
-          <div className="flex flex-col md:items-end justify-between gap-3 text-[var(--exposure)]">
-            <div className="flex flex-wrap items-center gap-5">
+          <div className="flex flex-col md:items-end justify-between gap-4 text-xs">
+            <div className="flex flex-wrap items-center gap-6 text-slate-200 font-medium">
               <button
                 type="button"
                 onClick={() => onNavigate('admin_login')}
-                className="pencil-link cursor-pointer"
+                className="hover:text-white transition-colors cursor-pointer"
               >
                 Admin Access
               </button>
@@ -554,19 +454,15 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onNavigate }) => {
                 href="https://mihora.tech"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="pencil-link inline-flex items-center gap-1"
+                className="hover:text-white inline-flex items-center gap-1 transition-colors"
               >
                 <span>mihora.tech</span>
-                <ArrowUpRight className="w-3 h-3" />
+                <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
             </div>
-            <button
-              type="button"
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="text-[var(--chalk)] hover:text-[var(--exposure)] pencil-link cursor-pointer"
-            >
-              Back to Top ↑
-            </button>
+            <p className="text-slate-500">
+              © {new Date().getFullYear()} MIHORA Tech · career.forms.mihora.tech
+            </p>
           </div>
         </div>
       </footer>

@@ -5,44 +5,30 @@
       <feComposite in="SourceGraphic" in2="blur" operator="over" />
     </filter>
     <linearGradient id="electricBlue" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#2484FF" />
-      <stop offset="100%" stop-color="#1467E6" />
+      <stop offset="0%" stop-color="#1E4E9E" />
+      <stop offset="100%" stop-color="#143A7B" />
     </linearGradient>
     <linearGradient id="darkNavyLeft" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0E2344" />
-      <stop offset="100%" stop-color="#08152B" />
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#0F172A" />
     </linearGradient>
     <linearGradient id="darkNavyRight" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0C203E" />
-      <stop offset="100%" stop-color="#061226" />
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#0F172A" />
     </linearGradient>
   </defs>
 
   <!-- Geometric Faceted M Monogram -->
   <g id="mihora-monogram">
-    <!-- Top Left Wing (Electric Blue) -->
     <polygon points="270,195 500,385 435,435 270,285" fill="url(#electricBlue)" />
-
-    <!-- Top Right Wing (Electric Blue) -->
     <polygon points="730,195 500,385 565,435 730,285" fill="url(#electricBlue)" />
-
-    <!-- Center Downward Apex Triangle (Electric Blue) -->
-    <polygon points="500,385 435,435 500,515 565,435" fill="#1877F2" />
-
-    <!-- Left Outer Dark Navy Pillar -->
+    <polygon points="500,385 435,435 500,515 565,435" fill="#143A7B" />
     <polygon points="270,285 365,355 365,580 270,510" fill="url(#darkNavyLeft)" />
-
-    <!-- Left Inner Dark Facet (Fold) -->
-    <polygon points="365,355 435,435 500,515 365,445" fill="#0A1C38" />
-
-    <!-- Right Outer Dark Navy Pillar -->
+    <polygon points="365,355 435,435 500,515 365,445" fill="#0F172A" />
     <polygon points="730,285 635,355 635,580 730,510" fill="url(#darkNavyRight)" />
-
-    <!-- Right Inner Dark Facet (Fold) -->
-    <polygon points="635,355 565,435 500,515 635,445" fill="#0A1C38" />
+    <polygon points="635,355 565,435 500,515 635,445" fill="#0F172A" />
 
     <!-- Constellation Network Overlay -->
-    <!-- Network Lines -->
     <g stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.95">
       <line x1="335" y1="377" x2="400" y2="352" />
       <line x1="335" y1="377" x2="440" y2="434" />
@@ -58,7 +44,6 @@
       <line x1="651" y1="309" x2="687" y2="416" />
     </g>
 
-    <!-- Constellation White Nodes -->
     <g fill="#FFFFFF" filter="url(#softGlow)">
       <circle cx="335" cy="377" r="9" />
       <circle cx="400" cy="352" r="9.5" />
@@ -73,24 +58,22 @@
 
   <!-- Brand Typography -->
   <g id="mihora-typography">
-    <!-- MIHORA Wordmark -->
-    <text x="500" y="715" 
-          font-family="'Archivo', system-ui, -apple-system, sans-serif" 
-          font-size="94" 
-          font-weight="700" 
-          letter-spacing="9" 
-          fill="#0A1C38" 
+    <text x="500" y="715"
+          font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif"
+          font-size="94"
+          font-weight="800"
+          letter-spacing="9"
+          fill="#0F172A"
           text-anchor="middle">MIHORA</text>
 
-    <!-- Accent Lines and TECH subtext -->
-    <line x1="130" y1="770" x2="270" y2="770" stroke="#1877F2" stroke-width="3.5" stroke-linecap="round" />
-    <text x="500" y="779" 
-          font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif" 
-          font-size="34" 
-          font-weight="600" 
-          letter-spacing="18" 
-          fill="#1877F2" 
+    <line x1="130" y1="770" x2="270" y2="770" stroke="#143A7B" stroke-width="3.5" stroke-linecap="round" />
+    <text x="500" y="779"
+          font-family="'Plus Jakarta Sans', system-ui, -apple-system, sans-serif"
+          font-size="34"
+          font-weight="700"
+          letter-spacing="18"
+          fill="#143A7B"
           text-anchor="middle">TECH</text>
-    <line x1="730" y1="770" x2="870" y2="770" stroke="#1877F2" stroke-width="3.5" stroke-linecap="round" />
+    <line x1="730" y1="770" x2="870" y2="770" stroke="#143A7B" stroke-width="3.5" stroke-linecap="round" />
   </g>
 </svg>

@@ -9,8 +9,8 @@ interface ArchitecturalFrameProps {
 }
 
 /**
- * High-craft studio architectural visual container with built-in dark Prussian fallback
- * if an image asset fails to load. Always uses referrerPolicy="no-referrer".
+ * Gallery-grade architectural visual frame with warm stone fallback
+ * if an image asset fails to load. Uses referrerPolicy="no-referrer".
  */
 export const ArchitecturalFrame: React.FC<ArchitecturalFrameProps> = ({
   src,
@@ -23,7 +23,7 @@ export const ArchitecturalFrame: React.FC<ArchitecturalFrameProps> = ({
 
   return (
     <div
-      className={`relative overflow-hidden bg-[#0A1B2E] border border-[rgba(244,247,245,0.22)] ${className}`}
+      className={`relative overflow-hidden bg-[#EFECE6] border border-[#E4E2DA] ${className}`}
     >
       {!failed ? (
         <img
@@ -37,10 +37,10 @@ export const ArchitecturalFrame: React.FC<ArchitecturalFrameProps> = ({
       ) : (
         <div
           aria-label={alt}
-          className="w-full h-full bg-gradient-to-br from-[#0F2740] via-[#1B3A5C] to-[#0A1B2E] flex items-center justify-center p-6"
+          className="w-full h-full bg-gradient-to-br from-[#F7F6F2] via-[#EFECE6] to-[#E2DFD7] flex items-center justify-center p-6"
         >
-          <div className="w-16 h-16 border border-[rgba(244,247,245,0.28)] rotate-45 flex items-center justify-center">
-            <div className="w-6 h-6 border border-[rgba(244,247,245,0.5)]" />
+          <div className="w-16 h-16 border border-slate-300 rotate-45 flex items-center justify-center">
+            <div className="w-6 h-6 border border-[#143A7B]/40" />
           </div>
         </div>
       )}

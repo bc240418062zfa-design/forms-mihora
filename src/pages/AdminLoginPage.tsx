@@ -3,11 +3,6 @@ import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
 import { MihoraLogo } from '../components/brand/MihoraLogo';
 import {
-  RegistrationCrosses,
-  SingleRedMark,
-  TitleBlock,
-} from '../components/cyanotype/BlueprintApparatus';
-import {
   Lock,
   Mail,
   ArrowRight,
@@ -114,32 +109,27 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-cyanotype-table flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="mx-auto w-full max-w-lg cyanotype-sheet p-7 sm:p-10">
-        <RegistrationCrosses />
-
-        <div className="flex items-start justify-between gap-4 pb-6 border-b border-[var(--rule-hairline)]">
-          <div>
-            <MihoraLogo size="md" variant="full" theme="dark" />
-            <p className="text-[11px] font-mono text-[var(--chalk)] tracking-wider mt-4">
-              AUTHORIZED PERSONNEL · TALENT ADMINISTRATION
-            </p>
-            <h1 className="font-display text-2xl font-bold tracking-tight text-[var(--exposure)] mt-1">
-              {isSettingUp ? 'Initialize Primary Administrator' : 'Administrator Console Sign In'}
-            </h1>
-            <p className="mt-1.5 text-xs font-mono text-[var(--chalk)] leading-relaxed">
-              {isSettingUp
-                ? 'No administrator accounts exist yet. Establish the primary super-admin credentials below.'
-                : 'Authorized MIHORA personnel only. All dossier views and exports are audit logged.'}
-            </p>
-          </div>
-          <SingleRedMark variant="tick" className="shrink-0 mt-1" />
+    <div className="min-h-[calc(100vh-4rem)] bg-[#F7F6F2] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-md enterprise-card p-8 sm:p-10">
+        <div className="pb-6 border-b border-[#E4E2DA]">
+          <MihoraLogo size="md" variant="full" theme="light" />
+          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#143A7B] mt-6">
+            Authorized Personnel
+          </p>
+          <h1 className="font-display text-2xl font-bold text-slate-900 mt-1">
+            {isSettingUp ? 'Initialize Primary Administrator' : 'Administrator Console Sign In'}
+          </h1>
+          <p className="mt-2 text-sm text-slate-600 leading-relaxed">
+            {isSettingUp
+              ? 'No administrator accounts exist yet. Establish the primary super-admin credentials below.'
+              : 'Authorized MIHORA personnel only. All dossier views and exports are audit logged.'}
+          </p>
         </div>
 
         <div className="pt-6">
           {setupSuccess && (
-            <div className="mb-5 p-3.5 rounded-[var(--radius-xs)] bg-[var(--status-verified-soft)] border border-[var(--status-verified)]/45 text-[var(--status-verified)] text-xs font-mono flex items-start gap-2">
-              <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
+            <div className="mb-5 p-3.5 rounded-lg bg-[#ECFDF5] border border-emerald-200 text-emerald-800 text-xs sm:text-sm flex items-start gap-2">
+              <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5 text-emerald-600" />
               <span>{setupSuccess}</span>
             </div>
           )}
@@ -147,9 +137,9 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
           {error && (
             <div
               role="alert"
-              className="mb-5 p-3.5 rounded-[var(--radius-xs)] bg-[var(--status-notice-bg)] border border-[var(--status-notice-border)] text-[var(--exposure)] text-xs font-mono flex items-start gap-2.5"
+              className="mb-5 p-3.5 rounded-lg bg-[#FEF2F2] border border-red-200 text-red-800 text-xs sm:text-sm flex items-start gap-2.5"
             >
-              <AlertCircle className="w-4 h-4 text-[var(--status-warn)] shrink-0 mt-0.5" />
+              <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
               <span>{error}</span>
             </div>
           )}
@@ -157,11 +147,11 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
           {isSettingUp ? (
             <form className="space-y-4" onSubmit={handleSetup}>
               <div>
-                <label className="block text-[11px] font-mono font-semibold text-[var(--chalk)] tracking-wider mb-1.5">
-                  PRIMARY ADMIN EMAIL <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                  Primary Admin Email
                 </label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 text-[var(--chalk-dim)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
                     type="email"
                     required
@@ -177,11 +167,11 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
               </div>
 
               <div>
-                <label className="block text-[11px] font-mono font-semibold text-[var(--chalk)] tracking-wider mb-1.5">
-                  ADMIN MASTER PASSWORD <span className="text-[var(--chalk-dim)]">(MIN 10 CHARS)</span>
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                  Admin Master Password <span className="text-slate-400 font-normal">(min 10 chars)</span>
                 </label>
                 <div className="relative">
-                  <Lock className="w-4 h-4 text-[var(--chalk-dim)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     required
@@ -197,7 +187,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-[var(--chalk)] hover:text-[var(--exposure)] cursor-pointer"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-700 cursor-pointer"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -205,11 +195,11 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
               </div>
 
               <div>
-                <label className="block text-[11px] font-mono font-semibold text-[var(--chalk)] tracking-wider mb-1.5">
-                  CONFIRM ADMIN PASSWORD
+                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                  Confirm Admin Password
                 </label>
                 <div className="relative">
-                  <Lock className="w-4 h-4 text-[var(--chalk-dim)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
                     type={showPassword ? 'text' : 'password'}
                     required
@@ -226,11 +216,11 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
 
               {hasAdmin && (
                 <div>
-                  <label className="block text-[11px] font-mono font-semibold text-[var(--chalk)] tracking-wider mb-1.5">
-                    SETUP SECRET KEY
+                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    Setup Secret Key
                   </label>
                   <div className="relative">
-                    <KeyRound className="w-4 h-4 text-[var(--chalk-dim)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                    <KeyRound className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                     <input
                       type="password"
                       value={setupKey}
@@ -245,10 +235,10 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full mt-2 py-3 px-4 text-xs font-mono font-semibold text-[var(--edge)] bg-[var(--exposure)] hover:bg-white rounded-[var(--radius-xs)] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                className="w-full mt-2 py-3 px-4 text-sm font-semibold text-white bg-[#143A7B] hover:bg-[#0E2B5C] rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
               >
                 <span>{isLoading ? 'Configuring Administrator...' : 'Initialize Primary Administrator'}</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-4 h-4" />
               </button>
 
               {hasAdmin && (
@@ -256,7 +246,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
                   <button
                     type="button"
                     onClick={() => setIsSettingUp(false)}
-                    className="pencil-link text-xs font-mono text-[var(--exposure)] font-semibold cursor-pointer"
+                    className="text-xs font-semibold text-[#143A7B] hover:text-[#0E2B5C] cursor-pointer"
                   >
                     Back to Administrator Sign In
                   </button>
@@ -266,14 +256,11 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
           ) : (
             <form className="space-y-4" onSubmit={handleLogin}>
               <div>
-                <label
-                  htmlFor="admin-email"
-                  className="block text-[11px] font-mono font-semibold text-[var(--chalk)] tracking-wider mb-1.5"
-                >
-                  ADMINISTRATOR EMAIL
+                <label htmlFor="admin-email" className="block text-xs font-semibold text-slate-700 mb-1.5">
+                  Administrator Email
                 </label>
                 <div className="relative">
-                  <Mail className="w-4 h-4 text-[var(--chalk-dim)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
                     id="admin-email"
                     type="email"
@@ -291,14 +278,11 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
               </div>
 
               <div>
-                <label
-                  htmlFor="admin-password"
-                  className="block text-[11px] font-mono font-semibold text-[var(--chalk)] tracking-wider mb-1.5"
-                >
-                  PASSWORD
+                <label htmlFor="admin-password" className="block text-xs font-semibold text-slate-700 mb-1.5">
+                  Password
                 </label>
                 <div className="relative">
-                  <Lock className="w-4 h-4 text-[var(--chalk-dim)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                   <input
                     id="admin-password"
                     type={showPassword ? 'text' : 'password'}
@@ -316,7 +300,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
                     aria-label={showPassword ? 'Hide password' : 'Show password'}
-                    className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-[var(--chalk)] hover:text-[var(--exposure)] cursor-pointer"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-slate-700 cursor-pointer"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -326,23 +310,22 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({ onNavigate }) =>
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full mt-2 py-3 px-4 text-xs font-mono font-semibold text-[var(--edge)] bg-[var(--exposure)] hover:bg-white rounded-[var(--radius-xs)] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+                className="w-full mt-2 py-3 px-4 text-sm font-semibold text-white bg-[#143A7B] hover:bg-[#0E2B5C] rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
               >
                 <span>{isLoading ? 'Verifying Access...' : 'Sign In to Admin Console'}</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <ArrowRight className="w-4 h-4" />
               </button>
             </form>
           )}
 
-          <div className="mt-6 pt-5 border-t border-[var(--rule-hairline)] flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div className="mt-6 pt-5 border-t border-[#E4E2DA]">
             <button
               type="button"
               onClick={() => onNavigate('signin')}
-              className="pencil-link text-xs font-mono text-[var(--chalk)] hover:text-[var(--exposure)] transition-colors cursor-pointer self-start"
+              className="text-xs font-semibold text-slate-500 hover:text-[#143A7B] transition-colors cursor-pointer"
             >
-              Return to Candidate Portal Sign In
+              ← Return to Candidate Portal Sign In
             </button>
-            <TitleBlock drawingNo="ADMINISTRATION" scale="RESTRICTED" date="2026" drawnBy="HR" checkedBy="STAFF" />
           </div>
         </div>
       </div>

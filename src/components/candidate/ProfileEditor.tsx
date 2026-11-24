@@ -12,11 +12,6 @@ import { api } from '../../services/api';
 import { generateCandidatePdf } from '../../utils/pdfGenerator';
 import { AnimatedNumber } from '../ui/MotionPrimitives';
 import {
-  RegistrationCrosses,
-  SingleRedMark,
-  TitleBlock,
-} from '../cyanotype/BlueprintApparatus';
-import {
   CheckCircle2,
   AlertCircle,
   Save,
@@ -35,6 +30,7 @@ import {
   ChevronLeft,
   Copy,
   Check,
+  ShieldCheck,
 } from 'lucide-react';
 
 interface ProfileEditorProps {
@@ -337,33 +333,32 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
     }
   };
 
-  const labelClass =
-    'block text-[11px] font-mono font-semibold text-[var(--chalk)] tracking-wider mb-1.5';
-  const subFormCardClass =
-    'mb-6 p-5 bg-[var(--edge)]/85 rounded-[var(--radius-xs)] border border-[var(--rule-hairline)]';
+  const labelClass = 'block text-xs font-semibold text-slate-700 mb-1.5';
+  const reqStar = <span className="text-[#B47B2B] ml-0.5">*</span>;
+  const subFormCardClass = 'mb-6 p-5 sm:p-6 bg-[#FAF9F6] rounded-xl border border-[#E4E2DA]';
   const primaryCtaClass =
-    'px-5 py-2.5 text-xs font-mono font-semibold text-[var(--edge)] bg-[var(--exposure)] hover:bg-white rounded-[var(--radius-xs)] transition-colors inline-flex items-center gap-2 disabled:opacity-50 cursor-pointer';
+    'px-5 py-2.5 text-sm font-semibold text-white bg-[#143A7B] hover:bg-[#0E2B5C] rounded-lg transition-colors inline-flex items-center gap-2 disabled:opacity-50 cursor-pointer shadow-xs';
   const secondaryCtaClass =
-    'px-4 py-2.5 text-xs font-mono font-semibold text-[var(--exposure)] bg-[var(--edge)] hover:bg-[var(--prussian-raise)] border border-[var(--rule-strong)] rounded-[var(--radius-xs)] transition-colors inline-flex items-center gap-1.5 cursor-pointer';
+    'px-4 py-2.5 text-sm font-semibold text-slate-700 bg-white hover:bg-[#FAF9F6] border border-[#CBD5E1] rounded-lg transition-colors inline-flex items-center gap-1.5 cursor-pointer';
 
   const tileClass = (active: boolean) =>
-    `min-h-[42px] px-3 py-2 text-xs font-mono rounded-[var(--radius-xs)] border transition-colors cursor-pointer inline-flex items-center justify-center gap-1.5 ${
+    `min-h-[42px] px-3.5 py-2 text-xs font-semibold rounded-lg border transition-colors cursor-pointer inline-flex items-center justify-center gap-1.5 ${
       active
-        ? 'bg-[var(--exposure)] border-[var(--exposure)] text-[var(--edge)] font-semibold'
-        : 'bg-[var(--edge)]/70 border-[var(--rule-hairline)] text-[var(--chalk)] hover:border-[var(--exposure)] hover:text-[var(--exposure)]'
+        ? 'bg-[#143A7B] border-[#143A7B] text-white'
+        : 'bg-[#FAF9F6] border-[#CBD5E1] text-slate-700 hover:border-[#143A7B]/45 hover:text-slate-900'
     }`;
+
+  const isVerifiedReady = completeness.percentage >= 80;
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* Top Master Calibration Header */}
-        <div className="cyanotype-sheet p-6 sm:p-7 mb-6">
-          <RegistrationCrosses />
-
+      <div className="max-w-[1360px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Top Summary Header */}
+        <div className="enterprise-card p-6 sm:p-7 mb-6">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
             <div>
-              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs font-mono text-[var(--chalk)] mb-1.5">
-                <span>Ref Code</span>
+              <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-slate-500 mb-1.5">
+                <span>Reference ID</span>
                 <button
                   type="button"
                   onClick={() => {
@@ -371,28 +366,26 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                     setCopiedCode(true);
                     window.setTimeout(() => setCopiedCode(false), 2000);
                   }}
-                  className="font-semibold text-[var(--exposure)] hover:underline inline-flex items-center gap-1 cursor-pointer"
+                  className="font-mono font-semibold text-[#143A7B] bg-[#EEF3FA] px-2 py-0.5 rounded-md hover:bg-[#E1EAF7] inline-flex items-center gap-1 cursor-pointer"
                   title="Copy reference code"
                 >
                   <span>{candidate.reference_code}</span>
                   {copiedCode ? (
-                    <Check className="w-3 h-3 text-[var(--status-verified)]" />
+                    <Check className="w-3 h-3 text-emerald-700" />
                   ) : (
                     <Copy className="w-3 h-3 opacity-80" />
                   )}
                 </button>
                 <span aria-hidden="true">·</span>
-                <span className="text-[var(--status-verified)] font-medium">
-                  Profile Active
-                </span>
+                <span className="text-emerald-700 font-semibold">Profile Active</span>
               </div>
 
-              <h1 className="font-display text-2xl sm:text-3xl font-bold text-[var(--exposure)] tracking-tight">
+              <h1 className="font-display text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
                 {candidate.first_name || candidate.last_name
                   ? `${candidate.first_name || ''} ${candidate.last_name || ''}`.trim()
                   : 'Candidate Professional Profile'}
               </h1>
-              <p className="text-xs sm:text-sm font-mono text-[var(--chalk)] mt-1 max-w-2xl">
+              <p className="text-sm text-slate-600 mt-1 max-w-2xl">
                 Complete each section in sequence. Your progress saves automatically as you advance.
               </p>
             </div>
@@ -400,25 +393,16 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
             <div className="flex flex-wrap items-center gap-4 shrink-0">
               <div className="flex flex-col sm:items-end">
                 <div className="flex items-baseline gap-2">
-                  <SingleRedMark variant="tick" className="w-5 h-4" />
-                  <span className="text-xs font-mono text-[var(--chalk)]">Completeness</span>
-                  <span className="text-xl font-bold font-mono tabular-nums text-[var(--exposure)]">
+                  <span className="text-xs font-medium text-slate-500">Completeness</span>
+                  <span className="text-xl font-bold font-mono tabular-nums text-slate-900">
                     <AnimatedNumber value={completeness.percentage} suffix="%" />
                   </span>
                 </div>
-                <div className="relative w-44 bg-[var(--edge)] border border-[var(--rule-hairline)] rounded-[var(--radius-xs)] h-2.5 mt-1.5 overflow-hidden">
+                <div className="w-44 bg-[#EFECE6] rounded-full h-2 mt-1.5 overflow-hidden">
                   <div
-                    className="bg-[var(--exposure)] h-full transition-all duration-400"
+                    className="bg-[#143A7B] h-full rounded-full transition-all duration-400"
                     style={{ width: `${completeness.percentage}%` }}
                   />
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 flex justify-between px-[10%]"
-                  >
-                    {[10, 20, 30, 40, 50, 60, 70, 80, 90].map((mark) => (
-                      <span key={mark} className="w-px h-full bg-[var(--table)]/45" />
-                    ))}
-                  </div>
                 </div>
               </div>
 
@@ -428,7 +412,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                 disabled={isSaving}
                 className={primaryCtaClass}
               >
-                <Save className="w-3.5 h-3.5" />
+                <Save className="w-4 h-4" />
                 <span>{isSaving ? 'Saving...' : 'Save Draft'}</span>
               </button>
             </div>
@@ -437,9 +421,9 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
           {saveSuccess && (
             <div
               role="status"
-              className="mt-4 p-3 bg-[var(--status-verified-soft)] border border-[var(--status-verified)]/45 rounded-[var(--radius-xs)] text-[var(--status-verified)] text-xs font-mono flex items-center gap-2"
+              className="mt-4 p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-sm flex items-center gap-2.5"
             >
-              <CheckCircle2 className="w-4 h-4 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
               <span className="font-medium">{saveSuccess}</span>
             </div>
           )}
@@ -447,9 +431,9 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
           {errorMessage && (
             <div
               role="alert"
-              className="mt-4 p-3 bg-[var(--status-notice-bg)] border border-[var(--status-notice-border)] rounded-[var(--radius-xs)] text-[var(--exposure)] text-xs font-mono flex items-center gap-2"
+              className="mt-4 p-3.5 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm flex items-center gap-2.5"
             >
-              <AlertCircle className="w-4 h-4 text-[var(--status-warn)] shrink-0" />
+              <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
               <span className="font-medium">{errorMessage}</span>
             </div>
           )}
@@ -457,16 +441,16 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* Mobile Progress Header & Stepper */}
-          <div className="lg:hidden cyanotype-sheet p-3.5 space-y-2.5">
-            <div className="flex items-center justify-between text-xs font-mono px-1">
-              <span className="font-semibold text-[var(--exposure)]">
+          <div className="lg:hidden enterprise-card p-4 space-y-3">
+            <div className="flex items-center justify-between text-xs px-1">
+              <span className="font-semibold text-slate-900">
                 Section {activeStep} of 8
               </span>
-              <span className="font-medium text-[var(--chalk)]">{activeStepMeta.label}</span>
+              <span className="font-medium text-slate-500">{activeStepMeta.label}</span>
             </div>
-            <div className="w-full bg-[var(--edge)] rounded-[var(--radius-xs)] h-1.5 overflow-hidden">
+            <div className="w-full bg-[#EFECE6] rounded-full h-1.5 overflow-hidden">
               <div
-                className="bg-[var(--exposure)] h-full transition-all duration-300"
+                className="bg-[#143A7B] h-full rounded-full transition-all duration-300"
                 style={{ width: `${(activeStep / 8) * 100}%` }}
               />
             </div>
@@ -479,15 +463,15 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                     key={step.id}
                     type="button"
                     onClick={() => goToStep(step.id)}
-                    className={`flex items-center gap-2 px-3 py-2 text-xs font-mono font-semibold rounded-[var(--radius-xs)] whitespace-nowrap transition-colors shrink-0 cursor-pointer border ${
+                    className={`flex items-center gap-2 px-3 py-2 text-xs font-semibold rounded-lg whitespace-nowrap transition-colors shrink-0 cursor-pointer border ${
                       isActive
-                        ? 'bg-[var(--exposure)] text-[var(--edge)] border-[var(--exposure)]'
+                        ? 'bg-[#143A7B] text-white border-[#143A7B]'
                         : isDone
-                        ? 'text-[var(--status-verified)] bg-[var(--status-verified-soft)] border-[var(--status-verified)]/35'
-                        : 'text-[var(--chalk)] bg-[var(--edge)]/70 border-[var(--rule-hairline)] hover:text-[var(--exposure)]'
+                        ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
+                        : 'text-slate-600 bg-[#FAF9F6] border-[#E4E2DA] hover:text-slate-900'
                     }`}
                   >
-                    <span className="text-xs">
+                    <span className="font-mono text-xs">
                       {isDone && !isActive ? '✓' : `0${step.id}`}
                     </span>
                     <span>{step.label}</span>
@@ -499,11 +483,11 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
           {/* Desktop Sticky Left Rail */}
           <aside className="hidden lg:block lg:col-span-3 sticky top-20 space-y-4">
-            <div className="cyanotype-sheet overflow-hidden">
-              <div className="px-4 py-3 bg-[var(--edge)]/75 border-b border-[var(--rule-hairline)] text-[11px] font-mono font-semibold text-[var(--chalk)] tracking-wider">
-                PROFILE SECTIONS
+            <div className="enterprise-card overflow-hidden">
+              <div className="px-4 py-3.5 bg-[#FAF9F6] border-b border-[#E4E2DA] text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                Profile Sections
               </div>
-              <nav aria-label="Profile Sections" className="divide-y divide-[var(--rule-hairline)]">
+              <nav aria-label="Profile Sections" className="p-2 space-y-1">
                 {steps.map((step) => {
                   const Icon = step.icon;
                   const isActive = activeStep === step.id;
@@ -514,31 +498,31 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       type="button"
                       onClick={() => goToStep(step.id)}
                       aria-current={isActive ? 'step' : undefined}
-                      className={`w-full px-4 py-3 text-left flex items-center justify-between gap-3 transition-colors cursor-pointer font-mono ${
+                      className={`w-full px-3.5 py-2.5 rounded-xl text-left flex items-center justify-between gap-3 transition-colors cursor-pointer ${
                         isActive
-                          ? 'bg-[var(--prussian-raise)] text-[var(--exposure)] font-semibold'
-                          : 'text-[var(--chalk)] hover:bg-[var(--edge)]/60 hover:text-[var(--exposure)]'
+                          ? 'bg-[#EEF3FA] text-[#143A7B] font-semibold'
+                          : 'text-slate-600 hover:bg-[#FAF9F6] hover:text-slate-900'
                       }`}
                     >
                       <span className="flex items-center gap-2.5 min-w-0">
                         <Icon
                           className={`w-4 h-4 shrink-0 ${
                             isActive
-                              ? 'text-[var(--exposure)]'
+                              ? 'text-[#143A7B]'
                               : isDone
-                              ? 'text-[var(--status-verified)]'
-                              : 'text-[var(--chalk-dim)]'
+                              ? 'text-emerald-600'
+                              : 'text-slate-400'
                           }`}
                         />
-                        <span className="text-xs truncate">{step.label}</span>
+                        <span className="text-sm truncate">{step.label}</span>
                       </span>
                       <span
-                        className={`text-xs shrink-0 ${
+                        className={`font-mono text-xs shrink-0 ${
                           isDone
-                            ? 'text-[var(--status-verified)] font-semibold'
+                            ? 'text-emerald-600 font-semibold'
                             : isActive
-                            ? 'text-[var(--exposure)]'
-                            : 'text-[var(--chalk-dim)]'
+                            ? 'text-[#143A7B] font-semibold'
+                            : 'text-slate-400'
                         }`}
                       >
                         {isDone ? '✓' : `0${step.id}`}
@@ -549,45 +533,59 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
               </nav>
             </div>
 
-            <TitleBlock
-              drawingNo={candidate.reference_code || 'PROFILE'}
-              scale={completeness.percentage >= 80 ? 'VERIFIED' : 'IN PROGRESS'}
-              date="2026"
-              drawnBy="MIHORA"
-              checkedBy={`STEP 0${activeStep}`}
-              className="sm:w-full"
-            />
+            <div className="enterprise-card p-4 bg-[#FAF9F6]">
+              <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
+                <span>Profile Status</span>
+                <span
+                  className={`font-semibold ${
+                    isVerifiedReady ? 'text-emerald-700' : 'text-amber-700'
+                  }`}
+                >
+                  {isVerifiedReady ? 'Verified Ready' : 'Draft'}
+                </span>
+              </div>
+              <div className="font-mono text-xs font-semibold text-slate-900">
+                {candidate.reference_code}
+              </div>
+              <div className="text-xs text-slate-500 mt-1">
+                {experiences.length} experience · {education.length} education · {skills.length}{' '}
+                skills
+              </div>
+            </div>
           </aside>
 
-          {/* Active Step Form Sheet with 160ms Motion transition */}
+          {/* Active Step Form Panel */}
           <div className="lg:col-span-9">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={activeStep}
-                initial={{ opacity: 0, x: 14 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                className={isSaving ? 'opacity-80 transition-opacity duration-150' : 'transition-opacity duration-150'}
+                className={
+                  isSaving
+                    ? 'opacity-80 transition-opacity duration-150'
+                    : 'transition-opacity duration-150'
+                }
               >
                 {/* STEP 1: BASIC INFORMATION */}
                 {activeStep === 1 && (
-                  <section className="cyanotype-sheet p-6 sm:p-8">
-                    <RegistrationCrosses />
-                    <div className="text-[11px] font-mono text-[var(--chalk)] tracking-wider mb-1">
-                      SECTION 01 OF 08
+                  <section className="enterprise-card p-6 sm:p-8">
+                    <div className="text-xs font-semibold text-[#143A7B] uppercase tracking-wider mb-1">
+                      Section 01 of 08
                     </div>
-                    <h2 className="font-display text-xl font-bold text-[var(--exposure)]">
+                    <h2 className="font-display text-xl font-bold text-slate-900">
                       Basic Personal &amp; Contact Information
                     </h2>
-                    <p className="text-xs font-mono text-[var(--chalk)] mt-1 mb-6">
+                    <p className="text-sm text-slate-600 mt-1 mb-6">
                       Legal identification, active phone numbers, and current residential location.
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                       <div>
                         <label className={labelClass}>
-                          FIRST NAME <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                          First Name {reqStar}
                         </label>
                         <input
                           type="text"
@@ -599,7 +597,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
 
                       <div>
-                        <label className={labelClass}>MIDDLE NAME</label>
+                        <label className={labelClass}>Middle Name</label>
                         <input
                           type="text"
                           value={candidate.middle_name || ''}
@@ -611,7 +609,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                       <div>
                         <label className={labelClass}>
-                          LAST NAME <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                          Last Name {reqStar}
                         </label>
                         <input
                           type="text"
@@ -623,7 +621,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
 
                       <div>
-                        <label className={labelClass}>PREFERRED / DISPLAY NAME</label>
+                        <label className={labelClass}>Preferred / Display Name</label>
                         <input
                           type="text"
                           value={candidate.preferred_name || ''}
@@ -634,7 +632,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
 
                       <div>
-                        <label className={labelClass}>DATE OF BIRTH (OPTIONAL)</label>
+                        <label className={labelClass}>Date of Birth (Optional)</label>
                         <input
                           type="date"
                           value={
@@ -647,7 +645,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                       <div>
                         <label className={labelClass}>
-                          COUNTRY CALLING CODE <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                          Country Calling Code {reqStar}
                         </label>
                         <input
                           type="text"
@@ -662,8 +660,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                       <div>
                         <label className={labelClass}>
-                          PRIMARY PHONE / MOBILE{' '}
-                          <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                          Primary Phone / Mobile {reqStar}
                         </label>
                         <input
                           type="tel"
@@ -675,7 +672,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
 
                       <div>
-                        <label className={labelClass}>ALTERNATE / WHATSAPP PHONE</label>
+                        <label className={labelClass}>Alternate / WhatsApp Phone</label>
                         <input
                           type="tel"
                           value={candidate.alternate_phone || ''}
@@ -687,7 +684,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                       <div>
                         <label className={labelClass}>
-                          CURRENT COUNTRY <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                          Current Country {reqStar}
                         </label>
                         <input
                           type="text"
@@ -699,7 +696,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
 
                       <div>
-                        <label className={labelClass}>STATE / PROVINCE / REGION</label>
+                        <label className={labelClass}>State / Province / Region</label>
                         <input
                           type="text"
                           value={candidate.current_state || ''}
@@ -711,7 +708,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                       <div>
                         <label className={labelClass}>
-                          CURRENT CITY <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                          Current City {reqStar}
                         </label>
                         <input
                           type="text"
@@ -723,7 +720,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
 
                       <div>
-                        <label className={labelClass}>LOCALITY / AREA</label>
+                        <label className={labelClass}>Locality / Area</label>
                         <input
                           type="text"
                           value={candidate.current_locality || ''}
@@ -734,7 +731,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
                     </div>
 
-                    <div className="mt-8 pt-6 border-t border-[var(--rule-hairline)] flex justify-end">
+                    <div className="mt-8 pt-6 border-t border-[#E4E2DA] flex justify-end">
                       <button
                         type="button"
                         disabled={isSaving}
@@ -750,22 +747,21 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                 {/* STEP 2: ROLES & SENIORITY */}
                 {activeStep === 2 && (
-                  <section className="cyanotype-sheet p-6 sm:p-8">
-                    <RegistrationCrosses />
-                    <div className="text-[11px] font-mono text-[var(--chalk)] tracking-wider mb-1">
-                      SECTION 02 OF 08
+                  <section className="enterprise-card p-6 sm:p-8">
+                    <div className="text-xs font-semibold text-[#143A7B] uppercase tracking-wider mb-1">
+                      Section 02 of 08
                     </div>
-                    <h2 className="font-display text-xl font-bold text-[var(--exposure)]">
+                    <h2 className="font-display text-xl font-bold text-slate-900">
                       Position, Role &amp; Professional Level
                     </h2>
-                    <p className="text-xs font-mono text-[var(--chalk)] mt-1 mb-6">
+                    <p className="text-sm text-slate-600 mt-1 mb-6">
                       Specify your primary engineering discipline and multi-role flexibility.
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                       <div>
                         <label className={labelClass}>
-                          PRIMARY ROLE <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                          Primary Role {reqStar}
                         </label>
                         <input
                           type="text"
@@ -774,14 +770,14 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                           placeholder="e.g. Software Engineer, Civil Engineer"
                           className="field-input"
                         />
-                        <span className="text-[11px] font-mono text-[var(--chalk-dim)] mt-1 block">
+                        <span className="text-xs text-slate-500 mt-1.5 block">
                           Examples: Full Stack Engineer, Site Engineer, Project Engineer, QA/QC Engineer
                         </span>
                       </div>
 
                       <div>
                         <label className={labelClass}>
-                          SENIORITY LEVEL <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                          Seniority Level {reqStar}
                         </label>
                         <select
                           value={candidate.seniority_level || 'Mid-Level'}
@@ -802,7 +798,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
 
                       <div>
-                        <label className={labelClass}>PROFESSIONAL CATEGORY</label>
+                        <label className={labelClass}>Professional Category</label>
                         <select
                           value={candidate.professional_category || 'Software & Technology'}
                           onChange={(e) =>
@@ -829,11 +825,11 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
 
                       <div>
-                        <span className={labelClass}>MULTI-ROLE CAPABILITY</span>
+                        <span className={labelClass}>Multi-Role Capability</span>
                         <div
                           role="group"
                           aria-label="Multi-Role Capability"
-                          className="grid grid-cols-2 gap-2"
+                          className="grid grid-cols-2 gap-2.5"
                         >
                           <button
                             type="button"
@@ -863,7 +859,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       {candidate.can_multi_role && (
                         <div className="md:col-span-2">
                           <label className={labelClass}>
-                            SECONDARY / ADDITIONAL ROLES (COMMA SEPARATED)
+                            Secondary / Additional Roles (Comma Separated)
                           </label>
                           <input
                             type="text"
@@ -877,7 +873,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                       <div className="md:col-span-2">
                         <label className={labelClass}>
-                          PROFESSIONAL SUMMARY &amp; CAREER OVERVIEW
+                          Professional Summary &amp; Career Overview
                         </label>
                         <textarea
                           rows={4}
@@ -891,7 +887,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
                     </div>
 
-                    <div className="mt-8 pt-6 border-t border-[var(--rule-hairline)] flex justify-between">
+                    <div className="mt-8 pt-6 border-t border-[#E4E2DA] flex justify-between">
                       <button
                         type="button"
                         onClick={() => goToStep(1)}
@@ -915,18 +911,17 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                 {/* STEP 3: WORK EXPERIENCE */}
                 {activeStep === 3 && (
-                  <section className="cyanotype-sheet p-6 sm:p-8">
-                    <RegistrationCrosses />
+                  <section className="enterprise-card p-6 sm:p-8">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                       <div>
-                        <div className="text-[11px] font-mono text-[var(--chalk)] tracking-wider mb-1">
-                          SECTION 03 OF 08
+                        <div className="text-xs font-semibold text-[#143A7B] uppercase tracking-wider mb-1">
+                          Section 03 of 08
                         </div>
-                        <h2 className="font-display text-xl font-bold text-[var(--exposure)]">
-                          Career Experience Ledger
+                        <h2 className="font-display text-xl font-bold text-slate-900">
+                          Career Experience History
                         </h2>
-                        <p className="text-xs font-mono text-[var(--chalk)] mt-1">
-                          Record employment history and relevant contract engagements.
+                        <p className="text-sm text-slate-600 mt-1">
+                          Record employment history and relevant engineering engagements.
                         </p>
                       </div>
                       <button
@@ -934,14 +929,14 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                         onClick={() => setShowAddExp((prev) => !prev)}
                         className={primaryCtaClass}
                       >
-                        <Plus className="w-3.5 h-3.5" />
+                        <Plus className="w-4 h-4" />
                         <span>{showAddExp ? 'Close Form' : 'Add Position'}</span>
                       </button>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pb-6 mb-6 border-b border-[var(--rule-hairline)]">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pb-6 mb-6 border-b border-[#E4E2DA]">
                       <div>
-                        <label className={labelClass}>TOTAL EXPERIENCE (YEARS)</label>
+                        <label className={labelClass}>Total Experience (Years)</label>
                         <input
                           type="number"
                           step="0.5"
@@ -954,7 +949,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                         />
                       </div>
                       <div>
-                        <label className={labelClass}>RELEVANT EXPERIENCE (YEARS)</label>
+                        <label className={labelClass}>Relevant Experience (Years)</label>
                         <input
                           type="number"
                           step="0.5"
@@ -970,13 +965,13 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                     {showAddExp && (
                       <form onSubmit={handleAddExperience} className={subFormCardClass}>
-                        <h3 className="font-display text-sm font-bold text-[var(--exposure)] mb-4">
+                        <h3 className="font-display text-base font-bold text-slate-900 mb-4">
                           New Employment Record
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                           <div>
                             <label className={labelClass}>
-                              JOB TITLE <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                              Job Title {reqStar}
                             </label>
                             <input
                               type="text"
@@ -989,8 +984,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                           </div>
                           <div>
                             <label className={labelClass}>
-                              COMPANY / ORGANIZATION{' '}
-                              <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                              Company / Organization {reqStar}
                             </label>
                             <input
                               type="text"
@@ -1004,7 +998,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             />
                           </div>
                           <div>
-                            <label className={labelClass}>EMPLOYMENT TYPE</label>
+                            <label className={labelClass}>Employment Type</label>
                             <select
                               value={newExp.employment_type || 'Full-time'}
                               onChange={(e) =>
@@ -1019,7 +1013,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             </select>
                           </div>
                           <div>
-                            <label className={labelClass}>LOCATION</label>
+                            <label className={labelClass}>Location</label>
                             <input
                               type="text"
                               value={newExp.location || ''}
@@ -1029,7 +1023,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             />
                           </div>
                           <div>
-                            <label className={labelClass}>START DATE</label>
+                            <label className={labelClass}>Start Date</label>
                             <input
                               type="date"
                               value={newExp.start_date || ''}
@@ -1038,7 +1032,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             />
                           </div>
                           <div>
-                            <label className={labelClass}>END DATE</label>
+                            <label className={labelClass}>End Date</label>
                             <input
                               type="date"
                               disabled={Boolean(newExp.is_current)}
@@ -1046,7 +1040,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                               onChange={(e) => setNewExp({ ...newExp, end_date: e.target.value })}
                               className="field-input font-mono"
                             />
-                            <label className="flex items-center gap-2 text-xs font-mono text-[var(--chalk)] mt-2 cursor-pointer">
+                            <label className="flex items-center gap-2 text-xs font-medium text-slate-600 mt-2 cursor-pointer">
                               <input
                                 type="checkbox"
                                 checked={Boolean(newExp.is_current)}
@@ -1058,7 +1052,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             </label>
                           </div>
                           <div className="md:col-span-2">
-                            <label className={labelClass}>RESPONSIBILITIES &amp; ACHIEVEMENTS</label>
+                            <label className={labelClass}>Responsibilities &amp; Achievements</label>
                             <textarea
                               rows={2}
                               value={newExp.responsibilities || ''}
@@ -1070,7 +1064,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             />
                           </div>
                           <div className="md:col-span-2">
-                            <label className={labelClass}>TECHNOLOGIES &amp; TOOLS USED</label>
+                            <label className={labelClass}>Technologies &amp; Tools Used</label>
                             <input
                               type="text"
                               value={newExp.technologies || ''}
@@ -1082,7 +1076,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             />
                           </div>
                         </div>
-                        <div className="flex justify-end gap-2">
+                        <div className="flex justify-end gap-2.5">
                           <button
                             type="button"
                             onClick={() => setShowAddExp(false)}
@@ -1098,36 +1092,36 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                     )}
 
                     {experiences.length === 0 ? (
-                      <div className="text-center py-10 border border-dashed border-[var(--rule-strong)] rounded-[var(--radius-xs)] text-[var(--chalk)] text-xs font-mono">
+                      <div className="text-center py-10 border border-dashed border-[#CBD5E1] rounded-xl text-slate-500 text-sm bg-[#FAF9F6]">
                         No employment records added yet. Click &ldquo;Add Position&rdquo; above to add your work history.
                       </div>
                     ) : (
-                      <div className="divide-y divide-[var(--rule-hairline)] border-t border-b border-[var(--rule-hairline)]">
+                      <div className="divide-y divide-[#E4E2DA] border-t border-b border-[#E4E2DA]">
                         {experiences.map((exp) => (
                           <div
                             key={exp.id}
                             className="py-4 flex items-start justify-between gap-4"
                           >
                             <div className="min-w-0">
-                              <h4 className="font-display text-sm font-bold text-[var(--exposure)]">
+                              <h4 className="font-display text-sm font-bold text-slate-900">
                                 {exp.job_title}
                               </h4>
-                              <div className="text-xs font-mono text-[var(--chalk)] font-medium mt-0.5">
+                              <div className="text-sm text-slate-700 font-medium mt-0.5">
                                 {exp.company_name}
                                 {exp.employment_type ? ` · ${exp.employment_type}` : ''}
                               </div>
-                              <div className="text-xs text-[var(--chalk-dim)] mt-1 font-mono">
+                              <div className="font-mono text-xs text-slate-500 mt-1">
                                 {exp.start_date || 'Start'} —{' '}
                                 {exp.is_current ? 'Present' : exp.end_date || 'N/A'}
                                 {exp.location ? ` · ${exp.location}` : ''}
                               </div>
                               {exp.responsibilities && (
-                                <p className="text-xs font-mono text-[var(--chalk)] mt-2 leading-relaxed">
+                                <p className="text-sm text-slate-600 mt-2 leading-relaxed">
                                   {exp.responsibilities}
                                 </p>
                               )}
                               {exp.technologies && (
-                                <div className="text-xs text-[var(--chalk-dim)] mt-1.5 font-mono">
+                                <div className="text-xs text-slate-500 mt-1.5 font-mono">
                                   Tools: {exp.technologies}
                                 </div>
                               )}
@@ -1135,7 +1129,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             <button
                               type="button"
                               onClick={() => handleDeleteExperience(exp.id)}
-                              className="p-2 text-[var(--chalk-dim)] hover:text-[var(--exposure)] transition-colors shrink-0 cursor-pointer"
+                              className="p-2 text-slate-400 hover:text-red-600 transition-colors shrink-0 cursor-pointer"
                               aria-label={`Remove ${exp.job_title}`}
                             >
                               <Trash2 className="w-4 h-4" />
@@ -1145,7 +1139,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
                     )}
 
-                    <div className="mt-8 pt-6 border-t border-[var(--rule-hairline)] flex justify-between">
+                    <div className="mt-8 pt-6 border-t border-[#E4E2DA] flex justify-between">
                       <button
                         type="button"
                         onClick={() => goToStep(2)}
@@ -1169,17 +1163,16 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                 {/* STEP 4: EDUCATION */}
                 {activeStep === 4 && (
-                  <section className="cyanotype-sheet p-6 sm:p-8">
-                    <RegistrationCrosses />
+                  <section className="enterprise-card p-6 sm:p-8">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
                       <div>
-                        <div className="text-[11px] font-mono text-[var(--chalk)] tracking-wider mb-1">
-                          SECTION 04 OF 08
+                        <div className="text-xs font-semibold text-[#143A7B] uppercase tracking-wider mb-1">
+                          Section 04 of 08
                         </div>
-                        <h2 className="font-display text-xl font-bold text-[var(--exposure)]">
+                        <h2 className="font-display text-xl font-bold text-slate-900">
                           Education &amp; Academic Qualifications
                         </h2>
-                        <p className="text-xs font-mono text-[var(--chalk)] mt-1">
+                        <p className="text-sm text-slate-600 mt-1">
                           Degrees, engineering diplomas, and accredited academic records.
                         </p>
                       </div>
@@ -1188,21 +1181,20 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                         onClick={() => setShowAddEdu((prev) => !prev)}
                         className={primaryCtaClass}
                       >
-                        <Plus className="w-3.5 h-3.5" />
+                        <Plus className="w-4 h-4" />
                         <span>{showAddEdu ? 'Close Form' : 'Add Degree / Diploma'}</span>
                       </button>
                     </div>
 
                     {showAddEdu && (
                       <form onSubmit={handleAddEducation} className={subFormCardClass}>
-                        <h3 className="font-display text-sm font-bold text-[var(--exposure)] mb-4">
+                        <h3 className="font-display text-base font-bold text-slate-900 mb-4">
                           New Academic Credential
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                           <div>
                             <label className={labelClass}>
-                              QUALIFICATION / DEGREE{' '}
-                              <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                              Qualification / Degree {reqStar}
                             </label>
                             <input
                               type="text"
@@ -1217,8 +1209,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                           </div>
                           <div>
                             <label className={labelClass}>
-                              INSTITUTION / UNIVERSITY{' '}
-                              <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                              Institution / University {reqStar}
                             </label>
                             <input
                               type="text"
@@ -1232,7 +1223,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             />
                           </div>
                           <div>
-                            <label className={labelClass}>FIELD OF STUDY</label>
+                            <label className={labelClass}>Field of Study</label>
                             <input
                               type="text"
                               value={newEdu.field_of_study}
@@ -1244,7 +1235,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             />
                           </div>
                           <div>
-                            <label className={labelClass}>COUNTRY</label>
+                            <label className={labelClass}>Country</label>
                             <input
                               type="text"
                               value={newEdu.country}
@@ -1254,7 +1245,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             />
                           </div>
                           <div>
-                            <label className={labelClass}>START YEAR</label>
+                            <label className={labelClass}>Start Year</label>
                             <input
                               type="number"
                               min="1960"
@@ -1267,7 +1258,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             />
                           </div>
                           <div>
-                            <label className={labelClass}>COMPLETION YEAR</label>
+                            <label className={labelClass}>Completion Year</label>
                             <input
                               type="number"
                               min="1960"
@@ -1279,7 +1270,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                               }
                               className="field-input font-mono"
                             />
-                            <label className="flex items-center gap-2 text-xs font-mono text-[var(--chalk)] mt-2 cursor-pointer">
+                            <label className="flex items-center gap-2 text-xs font-medium text-slate-600 mt-2 cursor-pointer">
                               <input
                                 type="checkbox"
                                 checked={newEdu.is_current}
@@ -1291,7 +1282,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             </label>
                           </div>
                           <div>
-                            <label className={labelClass}>GRADE / CGPA (OPTIONAL)</label>
+                            <label className={labelClass}>Grade / CGPA (Optional)</label>
                             <input
                               type="text"
                               value={newEdu.grade_gpa}
@@ -1301,7 +1292,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             />
                           </div>
                         </div>
-                        <div className="flex justify-end gap-2">
+                        <div className="flex justify-end gap-2.5">
                           <button
                             type="button"
                             onClick={() => setShowAddEdu(false)}
@@ -1317,26 +1308,26 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                     )}
 
                     {education.length === 0 ? (
-                      <div className="text-center py-10 border border-dashed border-[var(--rule-strong)] rounded-[var(--radius-xs)] text-[var(--chalk)] text-xs font-mono">
+                      <div className="text-center py-10 border border-dashed border-[#CBD5E1] rounded-xl text-slate-500 text-sm bg-[#FAF9F6]">
                         No education records added yet. Click &ldquo;Add Degree / Diploma&rdquo; above.
                       </div>
                     ) : (
-                      <div className="divide-y divide-[var(--rule-hairline)] border-t border-b border-[var(--rule-hairline)]">
+                      <div className="divide-y divide-[#E4E2DA] border-t border-b border-[#E4E2DA]">
                         {education.map((edu) => (
                           <div
                             key={edu.id}
                             className="py-4 flex items-start justify-between gap-4"
                           >
                             <div>
-                              <h4 className="font-display text-sm font-bold text-[var(--exposure)]">
+                              <h4 className="font-display text-sm font-bold text-slate-900">
                                 {edu.qualification}
                                 {edu.field_of_study ? ` — ${edu.field_of_study}` : ''}
                               </h4>
-                              <div className="text-xs font-mono text-[var(--chalk)] font-medium mt-0.5">
+                              <div className="text-sm text-slate-700 font-medium mt-0.5">
                                 {edu.institution}
                                 {edu.country ? ` · ${edu.country}` : ''}
                               </div>
-                              <div className="text-xs text-[var(--chalk-dim)] mt-1 font-mono">
+                              <div className="font-mono text-xs text-slate-500 mt-1">
                                 {edu.start_year || ''} —{' '}
                                 {edu.is_current ? 'Present' : edu.completion_year || 'Present'}
                                 {edu.grade_gpa ? ` · Grade: ${edu.grade_gpa}` : ''}
@@ -1345,7 +1336,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             <button
                               type="button"
                               onClick={() => handleDeleteEducation(edu.id)}
-                              className="p-2 text-[var(--chalk-dim)] hover:text-[var(--exposure)] transition-colors shrink-0 cursor-pointer"
+                              className="p-2 text-slate-400 hover:text-red-600 transition-colors shrink-0 cursor-pointer"
                               aria-label={`Remove ${edu.qualification}`}
                             >
                               <Trash2 className="w-4 h-4" />
@@ -1355,7 +1346,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
                     )}
 
-                    <div className="mt-8 pt-6 border-t border-[var(--rule-hairline)] flex justify-between">
+                    <div className="mt-8 pt-6 border-t border-[#E4E2DA] flex justify-between">
                       <button
                         type="button"
                         onClick={() => goToStep(3)}
@@ -1379,23 +1370,22 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                 {/* STEP 5: SKILLS */}
                 {activeStep === 5 && (
-                  <section className="cyanotype-sheet p-6 sm:p-8">
-                    <RegistrationCrosses />
-                    <div className="text-[11px] font-mono text-[var(--chalk)] tracking-wider mb-1">
-                      SECTION 05 OF 08
+                  <section className="enterprise-card p-6 sm:p-8">
+                    <div className="text-xs font-semibold text-[#143A7B] uppercase tracking-wider mb-1">
+                      Section 05 of 08
                     </div>
-                    <h2 className="font-display text-xl font-bold text-[var(--exposure)]">
+                    <h2 className="font-display text-xl font-bold text-slate-900">
                       Technical &amp; Domain Skills
                     </h2>
-                    <p className="text-xs font-mono text-[var(--chalk)] mt-1 mb-6">
+                    <p className="text-sm text-slate-600 mt-1 mb-6">
                       Add structured technical skills with calibrated proficiency and years of practice.
                     </p>
 
                     <form onSubmit={handleAddSkill} className={subFormCardClass}>
-                      <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
+                      <div className="grid grid-cols-1 md:grid-cols-4 gap-3.5">
                         <div>
                           <label className={labelClass}>
-                            SKILL NAME <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                            Skill Name {reqStar}
                           </label>
                           <input
                             type="text"
@@ -1408,7 +1398,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                         </div>
 
                         <div>
-                          <label className={labelClass}>CATEGORY</label>
+                          <label className={labelClass}>Category</label>
                           <select
                             value={newSkill.category}
                             onChange={(e) => setNewSkill({ ...newSkill, category: e.target.value })}
@@ -1428,7 +1418,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                         </div>
 
                         <div>
-                          <label className={labelClass}>PROFICIENCY</label>
+                          <label className={labelClass}>Proficiency</label>
                           <select
                             value={newSkill.level}
                             onChange={(e) => setNewSkill({ ...newSkill, level: e.target.value })}
@@ -1443,7 +1433,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                         <div className="flex items-end gap-2">
                           <div className="grow">
-                            <label className={labelClass}>YEARS</label>
+                            <label className={labelClass}>Years</label>
                             <input
                               type="number"
                               min="0.5"
@@ -1454,7 +1444,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             />
                           </div>
                           <button type="submit" className={primaryCtaClass}>
-                            <Plus className="w-3.5 h-3.5" />
+                            <Plus className="w-4 h-4" />
                             <span>Add</span>
                           </button>
                         </div>
@@ -1462,22 +1452,22 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                     </form>
 
                     {skills.length === 0 ? (
-                      <div className="text-center py-10 border border-dashed border-[var(--rule-strong)] rounded-[var(--radius-xs)] text-[var(--chalk)] text-xs font-mono">
+                      <div className="text-center py-10 border border-dashed border-[#CBD5E1] rounded-xl text-slate-500 text-sm bg-[#FAF9F6]">
                         No skills added yet. Add your primary engineering tools and technologies above.
                       </div>
                     ) : (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 divide-y sm:divide-y-0 border-t border-b border-[var(--rule-hairline)]">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 divide-y sm:divide-y-0 border-t border-b border-[#E4E2DA]">
                         {skills.map((skill) => (
                           <div
                             key={skill.id}
-                            className="py-3 border-b border-[var(--rule-hairline)] flex items-center justify-between gap-2"
+                            className="py-3.5 border-b border-[#E4E2DA] flex items-center justify-between gap-2"
                           >
                             <div className="min-w-0">
-                              <div className="text-xs font-mono font-bold text-[var(--exposure)] truncate">
+                              <div className="text-sm font-semibold text-slate-900 truncate">
                                 {skill.skill_name}
                               </div>
-                              <div className="text-xs font-mono text-[var(--chalk)] mt-0.5">
-                                <span className="text-[var(--status-verified)]">
+                              <div className="text-xs text-slate-500 mt-0.5 font-mono">
+                                <span className="text-emerald-700 font-semibold">
                                   {skill.proficiency_level}
                                 </span>{' '}
                                 · {skill.years_of_experience} yrs
@@ -1486,17 +1476,17 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             <button
                               type="button"
                               onClick={() => handleDeleteSkill(skill.id)}
-                              className="text-[var(--chalk-dim)] hover:text-[var(--exposure)] transition-colors p-1.5 cursor-pointer"
+                              className="text-slate-400 hover:text-red-600 transition-colors p-1.5 cursor-pointer"
                               aria-label={`Remove ${skill.skill_name}`}
                             >
-                              <Trash2 className="w-3.5 h-3.5" />
+                              <Trash2 className="w-4 h-4" />
                             </button>
                           </div>
                         ))}
                       </div>
                     )}
 
-                    <div className="mt-8 pt-6 border-t border-[var(--rule-hairline)] flex justify-between">
+                    <div className="mt-8 pt-6 border-t border-[#E4E2DA] flex justify-between">
                       <button
                         type="button"
                         onClick={() => goToStep(4)}
@@ -1520,22 +1510,21 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                 {/* STEP 6: WORK PREFERENCES, ON-SITE DEPLOYMENT & COMMUTE */}
                 {activeStep === 6 && (
-                  <section className="cyanotype-sheet p-6 sm:p-8">
-                    <RegistrationCrosses />
-                    <div className="text-[11px] font-mono text-[var(--chalk)] tracking-wider mb-1">
-                      SECTION 06 OF 08
+                  <section className="enterprise-card p-6 sm:p-8">
+                    <div className="text-xs font-semibold text-[#143A7B] uppercase tracking-wider mb-1">
+                      Section 06 of 08
                     </div>
-                    <h2 className="font-display text-xl font-bold text-[var(--exposure)]">
+                    <h2 className="font-display text-xl font-bold text-slate-900">
                       Work Preferences, Commute &amp; Accommodation
                     </h2>
-                    <p className="text-xs font-mono text-[var(--chalk)] mt-1 mb-6">
-                      Calibrate on-site deployment willingness, commute limits, and housing parameters.
+                    <p className="text-sm text-slate-600 mt-1 mb-6">
+                      Specify on-site deployment willingness, commute limits, and housing parameters.
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
-                        <span className={labelClass}>PREFERRED WORK MODES</span>
-                        <div className="grid grid-cols-2 gap-2">
+                        <span className={labelClass}>Preferred Work Modes</span>
+                        <div className="grid grid-cols-2 gap-2.5">
                           {['Remote', 'Hybrid', 'On-Site', 'Flexible'].map((mode) => {
                             const currentModes = (candidate.work_modes || '')
                               .split(',')
@@ -1554,10 +1543,10 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                                     : currentModes.filter((m) => m !== mode.toLowerCase());
                                   handleInputChange('work_modes', updated.join(', '));
                                 }}
-                                className={`min-h-[42px] px-3 py-2 text-xs font-mono rounded-[var(--radius-xs)] border transition-colors cursor-pointer flex items-center justify-between gap-2 ${
+                                className={`min-h-[42px] px-3.5 py-2 text-xs font-semibold rounded-lg border transition-colors cursor-pointer flex items-center justify-between gap-2 ${
                                   isChecked
-                                    ? 'bg-[var(--exposure)] border-[var(--exposure)] text-[var(--edge)] font-semibold'
-                                    : 'bg-[var(--edge)]/70 border-[var(--rule-hairline)] text-[var(--chalk)] hover:border-[var(--exposure)] hover:text-[var(--exposure)]'
+                                    ? 'bg-[#143A7B] border-[#143A7B] text-white'
+                                    : 'bg-[#FAF9F6] border-[#CBD5E1] text-slate-700 hover:border-[#143A7B]/45 hover:text-slate-900'
                                 }`}
                               >
                                 <span>{mode}</span>
@@ -1569,11 +1558,11 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
 
                       <div>
-                        <span className={labelClass}>ON-SITE ENGINEERING DEPLOYMENT</span>
+                        <span className={labelClass}>On-Site Engineering Deployment</span>
                         <div
                           role="group"
                           aria-label="On-Site Engineering Deployment"
-                          className="grid grid-cols-2 gap-2"
+                          className="grid grid-cols-2 gap-2.5"
                         >
                           <button
                             type="button"
@@ -1602,7 +1591,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                       <div>
                         <label className={labelClass}>
-                          MAX COMFORTABLE COMMUTE DISTANCE (KM)
+                          Max Comfortable Commute Distance (km)
                         </label>
                         <input
                           type="number"
@@ -1618,7 +1607,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                       <div>
                         <label className={labelClass}>
-                          MAX COMFORTABLE COMMUTE TIME (MINUTES)
+                          Max Comfortable Commute Time (Minutes)
                         </label>
                         <input
                           type="number"
@@ -1634,8 +1623,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                       <div>
                         <label className={labelClass}>
-                          ACCOMMODATION REQUIREMENT STATUS{' '}
-                          <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                          Accommodation Requirement Status {reqStar}
                         </label>
                         <select
                           value={candidate.accommodation_status || 'not_required'}
@@ -1658,7 +1646,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       {candidate.accommodation_status === 'required_beyond_distance' && (
                         <div>
                           <label className={labelClass}>
-                            ACCOMMODATION REQUIRED BEYOND DISTANCE (KM)
+                            Accommodation Required Beyond Distance (km)
                           </label>
                           <input
                             type="number"
@@ -1674,7 +1662,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       )}
 
                       <div>
-                        <label className={labelClass}>TRANSPORTATION ARRANGEMENT</label>
+                        <label className={labelClass}>Transportation Arrangement</label>
                         <select
                           value={candidate.transportation_status || 'own_transport'}
                           onChange={(e) =>
@@ -1696,11 +1684,11 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
 
                       <div>
-                        <span className={labelClass}>WILLING TO RELOCATE?</span>
+                        <span className={labelClass}>Willing to Relocate?</span>
                         <div
                           role="group"
                           aria-label="Willing to Relocate"
-                          className="grid grid-cols-2 gap-2"
+                          className="grid grid-cols-2 gap-2.5"
                         >
                           <button
                             type="button"
@@ -1728,7 +1716,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
                     </div>
 
-                    <div className="mt-8 pt-6 border-t border-[var(--rule-hairline)] flex justify-between">
+                    <div className="mt-8 pt-6 border-t border-[#E4E2DA] flex justify-between">
                       <button
                         type="button"
                         onClick={() => goToStep(5)}
@@ -1752,22 +1740,21 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                 {/* STEP 7: COMPENSATION & AVAILABILITY */}
                 {activeStep === 7 && (
-                  <section className="cyanotype-sheet p-6 sm:p-8">
-                    <RegistrationCrosses />
-                    <div className="text-[11px] font-mono text-[var(--chalk)] tracking-wider mb-1">
-                      SECTION 07 OF 08
+                  <section className="enterprise-card p-6 sm:p-8">
+                    <div className="text-xs font-semibold text-[#143A7B] uppercase tracking-wider mb-1">
+                      Section 07 of 08
                     </div>
-                    <h2 className="font-display text-xl font-bold text-[var(--exposure)]">
+                    <h2 className="font-display text-xl font-bold text-slate-900">
                       Compensation Expectations &amp; Availability
                     </h2>
-                    <p className="text-xs font-mono text-[var(--chalk)] mt-1 mb-6">
-                      Remuneration benchmarks, joining notice period, shift flexibility, and verified links.
+                    <p className="text-sm text-slate-600 mt-1 mb-6">
+                      Remuneration benchmarks, joining notice period, shift flexibility, and portfolio links.
                     </p>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                       <div>
                         <label className={labelClass}>
-                          EXPECTED AMOUNT <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                          Expected Amount {reqStar}
                         </label>
                         <input
                           type="number"
@@ -1782,7 +1769,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
 
                       <div>
-                        <label className={labelClass}>CURRENCY</label>
+                        <label className={labelClass}>Currency</label>
                         <select
                           value={candidate.compensation_currency || 'PKR'}
                           onChange={(e) =>
@@ -1800,7 +1787,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
 
                       <div>
-                        <label className={labelClass}>PERIOD BASIS</label>
+                        <label className={labelClass}>Period Basis</label>
                         <select
                           value={candidate.compensation_period || 'monthly'}
                           onChange={(e) => handleInputChange('compensation_period', e.target.value)}
@@ -1814,8 +1801,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                       <div>
                         <label className={labelClass}>
-                          EMPLOYMENT STATUS{' '}
-                          <span className="text-[var(--chalk-dim)]">[REQ]</span>
+                          Employment Status {reqStar}
                         </label>
                         <select
                           value={candidate.employment_status || 'currently_available'}
@@ -1832,7 +1818,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
 
                       <div>
-                        <label className={labelClass}>NOTICE PERIOD (DAYS)</label>
+                        <label className={labelClass}>Notice Period (Days)</label>
                         <input
                           type="number"
                           min="0"
@@ -1844,7 +1830,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
 
                       <div>
-                        <label className={labelClass}>EARLIEST JOINING DATE</label>
+                        <label className={labelClass}>Earliest Joining Date</label>
                         <input
                           type="date"
                           value={
@@ -1860,8 +1846,8 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
 
                       <div className="md:col-span-3 pt-2">
-                        <span className={labelClass}>SHIFT &amp; WORKING TIME AVAILABILITY</span>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+                        <span className={labelClass}>Shift &amp; Working Time Availability</span>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5">
                           {[
                             { key: 'shift_day', label: 'Day Shift' },
                             { key: 'shift_evening', label: 'Evening Shift' },
@@ -1879,10 +1865,10 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                                 onClick={() =>
                                   handleInputChange(key as keyof Candidate, !isChecked)
                                 }
-                                className={`min-h-[42px] px-3 py-2 text-xs font-mono rounded-[var(--radius-xs)] border transition-colors cursor-pointer flex items-center justify-between gap-1.5 ${
+                                className={`min-h-[42px] px-3 py-2 text-xs font-semibold rounded-lg border transition-colors cursor-pointer flex items-center justify-between gap-1.5 ${
                                   isChecked
-                                    ? 'bg-[var(--exposure)] border-[var(--exposure)] text-[var(--edge)] font-semibold'
-                                    : 'bg-[var(--edge)]/70 border-[var(--rule-hairline)] text-[var(--chalk)] hover:border-[var(--exposure)] hover:text-[var(--exposure)]'
+                                    ? 'bg-[#143A7B] border-[#143A7B] text-white'
+                                    : 'bg-[#FAF9F6] border-[#CBD5E1] text-slate-700 hover:border-[#143A7B]/45 hover:text-slate-900'
                                 }`}
                               >
                                 <span className="truncate">{label}</span>
@@ -1893,13 +1879,13 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                         </div>
                       </div>
 
-                      <div className="md:col-span-3 pt-6 border-t border-[var(--rule-hairline)]">
-                        <h3 className="text-[11px] font-mono font-semibold text-[var(--chalk)] tracking-wider mb-4">
-                          PROFESSIONAL PROFILES &amp; PORTFOLIO LINKS (OPTIONAL)
+                      <div className="md:col-span-3 pt-6 border-t border-[#E4E2DA]">
+                        <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-4">
+                          Professional Profiles &amp; Portfolio Links (Optional)
                         </h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                           <div>
-                            <label className={labelClass}>LINKEDIN URL</label>
+                            <label className={labelClass}>LinkedIn URL</label>
                             <input
                               type="url"
                               value={candidate.linkedin_url || ''}
@@ -1909,7 +1895,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             />
                           </div>
                           <div>
-                            <label className={labelClass}>GITHUB URL</label>
+                            <label className={labelClass}>GitHub URL</label>
                             <input
                               type="url"
                               value={candidate.github_url || ''}
@@ -1919,7 +1905,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             />
                           </div>
                           <div>
-                            <label className={labelClass}>PORTFOLIO / WEBSITE URL</label>
+                            <label className={labelClass}>Portfolio / Website URL</label>
                             <input
                               type="url"
                               value={candidate.portfolio_url || ''}
@@ -1932,7 +1918,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
                     </div>
 
-                    <div className="mt-8 pt-6 border-t border-[var(--rule-hairline)] flex justify-between">
+                    <div className="mt-8 pt-6 border-t border-[#E4E2DA] flex justify-between">
                       <button
                         type="button"
                         onClick={() => goToStep(6)}
@@ -1947,7 +1933,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                         onClick={() => handleContinue(8)}
                         className={primaryCtaClass}
                       >
-                        <span>{isSaving ? 'Saving...' : 'Review Complete Dossier'}</span>
+                        <span>{isSaving ? 'Saving...' : 'Review Complete Profile'}</span>
                         <ChevronRight className="w-4 h-4" />
                       </button>
                     </div>
@@ -1956,18 +1942,17 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
 
                 {/* STEP 8: REVIEW & DOSSIER EXPORT */}
                 {activeStep === 8 && (
-                  <section className="cyanotype-sheet p-6 sm:p-8">
-                    <RegistrationCrosses />
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[var(--rule-hairline)]">
+                  <section className="enterprise-card p-6 sm:p-8">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-[#E4E2DA]">
                       <div>
-                        <div className="text-[11px] font-mono text-[var(--chalk)] tracking-wider mb-1">
-                          SECTION 08 OF 08
+                        <div className="text-xs font-semibold text-[#143A7B] uppercase tracking-wider mb-1">
+                          Section 08 of 08
                         </div>
-                        <h2 className="font-display text-xl font-bold text-[var(--exposure)]">
-                          Dossier Review &amp; Confirmation
+                        <h2 className="font-display text-xl font-bold text-slate-900">
+                          Profile Review &amp; Confirmation
                         </h2>
-                        <p className="text-xs font-mono text-[var(--chalk)] mt-1">
-                          Verify all parameters below before confirming. Updates remain editable at any time.
+                        <p className="text-sm text-slate-600 mt-1">
+                          Verify all details below before confirming. Updates remain editable at any time.
                         </p>
                       </div>
                       <button
@@ -1975,43 +1960,39 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                         onClick={() => generateCandidatePdf(candidate, experiences, education, skills)}
                         className={secondaryCtaClass}
                       >
-                        <Download className="w-3.5 h-3.5" />
+                        <Download className="w-4 h-4 text-slate-500" />
                         <span>Download PDF Dossier</span>
                       </button>
                     </div>
 
-                    <div className="divide-y divide-[var(--rule-hairline)] text-xs font-mono">
+                    <div className="divide-y divide-[#E4E2DA] text-sm">
                       <div className="py-5">
-                        <h3 className="text-[11px] font-semibold text-[var(--chalk)] tracking-wider mb-3">
-                          01 · PRIMARY CANDIDATE IDENTITY
+                        <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+                          01 · Candidate Identity
                         </h3>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                           <div>
-                            <span className="text-[var(--chalk-dim)] block text-xs">Full Name</span>
-                            <span className="font-semibold text-[var(--exposure)] mt-0.5 block">
+                            <span className="text-slate-500 block text-xs">Full Name</span>
+                            <span className="font-semibold text-slate-900 mt-0.5 block">
                               {candidate.first_name} {candidate.last_name}
                             </span>
                           </div>
                           <div>
-                            <span className="text-[var(--chalk-dim)] block text-xs">
-                              Role &amp; Level
-                            </span>
-                            <span className="font-semibold text-[var(--exposure)] mt-0.5 block">
+                            <span className="text-slate-500 block text-xs">Role &amp; Level</span>
+                            <span className="font-semibold text-slate-900 mt-0.5 block">
                               {candidate.primary_role || 'Not set'} (
                               {candidate.seniority_level || 'Mid-Level'})
                             </span>
                           </div>
                           <div>
-                            <span className="text-[var(--chalk-dim)] block text-xs">Location</span>
-                            <span className="font-semibold text-[var(--exposure)] mt-0.5 block">
+                            <span className="text-slate-500 block text-xs">Location</span>
+                            <span className="font-semibold text-slate-900 mt-0.5 block">
                               {candidate.current_city || '—'}, {candidate.current_country || '—'}
                             </span>
                           </div>
                           <div>
-                            <span className="text-[var(--chalk-dim)] block text-xs">
-                              Reference ID
-                            </span>
-                            <span className="font-bold text-[var(--exposure)] mt-0.5 block">
+                            <span className="text-slate-500 block text-xs">Reference ID</span>
+                            <span className="font-mono font-bold text-[#143A7B] mt-0.5 block">
                               {candidate.reference_code}
                             </span>
                           </div>
@@ -2019,41 +2000,35 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
 
                       <div className="py-5">
-                        <h3 className="text-[11px] font-semibold text-[var(--chalk)] tracking-wider mb-3">
-                          02 · DEPLOYMENT &amp; COMMUTE CALIBRATION
+                        <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+                          02 · Deployment &amp; Commute Preferences
                         </h3>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                           <div>
-                            <span className="text-[var(--chalk-dim)] block text-xs">
+                            <span className="text-slate-500 block text-xs">
                               On-Site Deployment
                             </span>
-                            <span className="font-semibold text-[var(--exposure)] mt-0.5 block">
+                            <span className="font-semibold text-slate-900 mt-0.5 block">
                               {candidate.willing_onsite_deployment ? 'Willing' : 'Remote Only'}
                             </span>
                           </div>
                           <div>
-                            <span className="text-[var(--chalk-dim)] block text-xs">
-                              Max Commute
-                            </span>
-                            <span className="font-semibold text-[var(--exposure)] mt-0.5 block">
+                            <span className="text-slate-500 block text-xs">Max Commute</span>
+                            <span className="font-mono font-semibold text-slate-900 mt-0.5 block">
                               {candidate.max_commute_distance_km
                                 ? `${candidate.max_commute_distance_km} km`
                                 : 'Flexible'}
                             </span>
                           </div>
                           <div>
-                            <span className="text-[var(--chalk-dim)] block text-xs">
-                              Accommodation
-                            </span>
-                            <span className="font-semibold text-[var(--exposure)] capitalize mt-0.5 block">
+                            <span className="text-slate-500 block text-xs">Accommodation</span>
+                            <span className="font-semibold text-slate-900 capitalize mt-0.5 block">
                               {candidate.accommodation_status?.replace(/_/g, ' ') || 'Not required'}
                             </span>
                           </div>
                           <div>
-                            <span className="text-[var(--chalk-dim)] block text-xs">
-                              Transportation
-                            </span>
-                            <span className="font-semibold text-[var(--exposure)] capitalize mt-0.5 block">
+                            <span className="text-slate-500 block text-xs">Transportation</span>
+                            <span className="font-semibold text-slate-900 capitalize mt-0.5 block">
                               {candidate.transportation_status?.replace(/_/g, ' ') ||
                                 'None specified'}
                             </span>
@@ -2062,15 +2037,15 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
 
                       <div className="py-5">
-                        <h3 className="text-[11px] font-semibold text-[var(--chalk)] tracking-wider mb-3">
-                          03 · COMPENSATION &amp; JOINING READINESS
+                        <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+                          03 · Compensation &amp; Joining Readiness
                         </h3>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                           <div>
-                            <span className="text-[var(--chalk-dim)] block text-xs">
+                            <span className="text-slate-500 block text-xs">
                               Expected Remuneration
                             </span>
-                            <span className="font-semibold text-[var(--exposure)] mt-0.5 block">
+                            <span className="font-mono font-semibold text-slate-900 mt-0.5 block">
                               {candidate.expected_compensation_amount
                                 ? `${Number(
                                     candidate.expected_compensation_amount
@@ -2081,26 +2056,22 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                             </span>
                           </div>
                           <div>
-                            <span className="text-[var(--chalk-dim)] block text-xs">
-                              Employment Status
-                            </span>
-                            <span className="font-semibold text-[var(--exposure)] capitalize mt-0.5 block">
+                            <span className="text-slate-500 block text-xs">Employment Status</span>
+                            <span className="font-semibold text-slate-900 capitalize mt-0.5 block">
                               {candidate.employment_status?.replace(/_/g, ' ')}
                             </span>
                           </div>
                           <div>
-                            <span className="text-[var(--chalk-dim)] block text-xs">
-                              Notice Period
-                            </span>
-                            <span className="font-semibold text-[var(--exposure)] mt-0.5 block">
+                            <span className="text-slate-500 block text-xs">Notice Period</span>
+                            <span className="font-mono font-semibold text-slate-900 mt-0.5 block">
                               {candidate.notice_period_days || 0} days
                             </span>
                           </div>
                           <div>
-                            <span className="text-[var(--chalk-dim)] block text-xs">
+                            <span className="text-slate-500 block text-xs">
                               Profile Completeness
                             </span>
-                            <span className="font-semibold text-[var(--status-verified)] mt-0.5 block">
+                            <span className="font-mono font-bold text-emerald-700 mt-0.5 block">
                               {completeness.percentage}% Complete
                             </span>
                           </div>
@@ -2108,57 +2079,66 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                       </div>
                     </div>
 
-                    {/* Executive Candidate Credential Summary Card */}
-                    <div className="mt-6 bg-[var(--exposure)] text-[var(--edge)] rounded-[var(--radius-xs)] border border-[var(--rule-strong)] p-5 shadow-sm">
-                      <div className="flex flex-wrap items-start justify-between gap-4 pb-3 border-b border-[var(--edge)]/20">
+                    {/* Executive Portfolio Summary Card */}
+                    <div className="mt-6 bg-[#FAF9F6] rounded-xl border border-[#E4E2DA] p-5 sm:p-6">
+                      <div className="flex flex-wrap items-start justify-between gap-4 pb-4 border-b border-[#E4E2DA]">
                         <div>
-                          <div className="text-[10px] font-mono font-semibold tracking-wider text-[var(--edge)]/70">
-                            MIHORA TECH CAREERS · CANDIDATE CREDENTIAL SUMMARY
+                          <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+                            MIHORA Tech Careers · Candidate Portfolio Summary
                           </div>
-                          <div className="font-display text-lg font-bold tracking-tight text-[var(--edge)] mt-0.5">
+                          <div className="font-display text-lg font-bold tracking-tight text-slate-900 mt-1">
                             {candidate.first_name || candidate.last_name
                               ? `${candidate.first_name || ''} ${candidate.last_name || ''}`.trim()
                               : 'Unnamed Engineering Candidate'}
                           </div>
-                          <div className="text-xs font-mono text-[var(--edge)]/75 mt-0.5">
+                          <div className="text-xs font-mono text-slate-500 mt-0.5">
                             {candidate.reference_code} · {candidate.primary_role || 'Role Unassigned'}
                           </div>
                         </div>
-                        <div
-                          className={`stamp-strike px-2.5 py-1 border-2 text-[11px] font-mono font-bold tracking-wider uppercase ${
-                            completeness.percentage >= 80
-                              ? 'border-[var(--red)] text-[var(--red)]'
-                              : 'border-[var(--prussian)] text-[var(--prussian)]'
+                        <span
+                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border text-xs font-semibold ${
+                            isVerifiedReady
+                              ? 'bg-emerald-50 border-emerald-200 text-emerald-700'
+                              : 'bg-amber-50 border-amber-200 text-amber-700'
                           }`}
                         >
-                          {completeness.percentage >= 80
-                            ? 'FILED · VERIFIED'
-                            : `DRAFT · ${completeness.percentage}%`}
-                        </div>
+                          <ShieldCheck className="w-3.5 h-3.5" />
+                          <span>
+                            {isVerifiedReady
+                              ? 'Verified Ready'
+                              : `Draft · ${completeness.percentage}%`}
+                          </span>
+                        </span>
                       </div>
-                      <div className="pt-3 grid grid-cols-2 sm:grid-cols-4 gap-3 text-[11px] font-mono text-[var(--edge)]">
+                      <div className="pt-4 grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
                         <div>
-                          <span className="block text-[var(--edge)]/60">EXPERIENCE</span>
-                          <span className="font-semibold">{experiences.length} record(s)</span>
+                          <span className="block text-slate-500">Experience</span>
+                          <span className="font-mono font-semibold text-slate-900 mt-0.5 block">
+                            {experiences.length} record(s)
+                          </span>
                         </div>
                         <div>
-                          <span className="block text-[var(--edge)]/60">EDUCATION</span>
-                          <span className="font-semibold">{education.length} degree(s)</span>
+                          <span className="block text-slate-500">Education</span>
+                          <span className="font-mono font-semibold text-slate-900 mt-0.5 block">
+                            {education.length} degree(s)
+                          </span>
                         </div>
                         <div>
-                          <span className="block text-[var(--edge)]/60">SKILLS</span>
-                          <span className="font-semibold">{skills.length} verified</span>
+                          <span className="block text-slate-500">Skills</span>
+                          <span className="font-mono font-semibold text-slate-900 mt-0.5 block">
+                            {skills.length} verified
+                          </span>
                         </div>
                         <div>
-                          <span className="block text-[var(--edge)]/60">READINESS</span>
-                          <span className="font-semibold tabular-nums">
+                          <span className="block text-slate-500">Readiness</span>
+                          <span className="font-mono font-semibold text-slate-900 tabular-nums mt-0.5 block">
                             {completeness.percentage}% Complete
                           </span>
                         </div>
                       </div>
                     </div>
 
-                    <div className="mt-6 pt-6 border-t border-[var(--rule-hairline)] flex justify-between">
+                    <div className="mt-6 pt-6 border-t border-[#E4E2DA] flex justify-between">
                       <button
                         type="button"
                         onClick={() => goToStep(7)}
@@ -2174,7 +2154,7 @@ export const ProfileEditor: React.FC<ProfileEditorProps> = ({
                         className={primaryCtaClass}
                       >
                         <CheckCircle2 className="w-4 h-4" />
-                        <span>{isSaving ? 'Confirming...' : 'Confirm & Save Dossier'}</span>
+                        <span>{isSaving ? 'Confirming...' : 'Confirm & Save Profile'}</span>
                       </button>
                     </div>
                   </section>

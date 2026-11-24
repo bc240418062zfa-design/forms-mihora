@@ -5,10 +5,6 @@ import { Candidate, AdminMetrics, AuditLog } from '../types';
 import { generateCandidatePdf } from '../utils/pdfGenerator';
 import { AnimatedNumber, BlankSheetLoader } from '../components/ui/MotionPrimitives';
 import {
-  RegistrationCrosses,
-  TitleBlock,
-} from '../components/cyanotype/BlueprintApparatus';
-import {
   Users,
   Clock,
   Search,
@@ -291,29 +287,29 @@ export const AdminPortalPage: React.FC = () => {
 
   const renderSortIcon = (column: string) => {
     if (sortBy !== column) {
-      return <ArrowUpDown className="w-3 h-3 opacity-45 shrink-0" />;
+      return <ArrowUpDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />;
     }
     return sortOrder === 'ASC' ? (
-      <ArrowUp className="w-3 h-3 text-[var(--exposure)] shrink-0" />
+      <ArrowUp className="w-3.5 h-3.5 text-[#143A7B] shrink-0" />
     ) : (
-      <ArrowDown className="w-3 h-3 text-[var(--exposure)] shrink-0" />
+      <ArrowDown className="w-3.5 h-3.5 text-[#143A7B] shrink-0" />
     );
   };
 
   const actionBtnClass =
-    'px-3.5 py-2 text-xs font-mono font-semibold text-[var(--exposure)] bg-[var(--edge)] border border-[var(--rule-strong)] rounded-[var(--radius-xs)] hover:bg-[var(--prussian-raise)] transition-colors inline-flex items-center gap-1.5 disabled:opacity-50 cursor-pointer whitespace-nowrap';
+    'px-3.5 py-2 text-xs font-semibold text-slate-800 bg-white border border-[#CBD5E1] rounded-lg hover:bg-[#FAF9F6] transition-colors inline-flex items-center gap-1.5 disabled:opacity-50 cursor-pointer whitespace-nowrap';
 
   return (
     <MotionConfig reducedMotion="user">
-      <div className="min-h-[calc(100vh-4rem)] bg-cyanotype-table py-8 px-4 sm:px-6 lg:px-8">
+      <div className="min-h-[calc(100vh-4rem)] bg-[#F7F6F2] py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-[1360px] mx-auto space-y-6">
           {actionError && (
             <div
               role="alert"
-              className="p-3.5 bg-[var(--status-notice-bg)] border border-[var(--status-notice-border)] rounded-[var(--radius-xs)] text-[var(--exposure)] text-xs font-mono flex items-center justify-between gap-3"
+              className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-800 text-sm flex items-center justify-between gap-3"
             >
-              <div className="flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 text-[var(--status-warn)] shrink-0" />
+              <div className="flex items-center gap-2.5">
+                <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
                 <span className="font-medium">{actionError}</span>
               </div>
               <button
@@ -327,161 +323,150 @@ export const AdminPortalPage: React.FC = () => {
           )}
 
           {realtimeNotification && (
-            <div className="p-3.5 bg-[var(--status-verified-soft)] border border-[var(--status-verified)]/45 rounded-[var(--radius-xs)] text-[var(--status-verified)] text-xs font-mono flex items-center justify-between gap-3">
-              <div className="flex items-center gap-2">
-                <Radio className="w-4 h-4 shrink-0" />
+            <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-sm flex items-center justify-between gap-3">
+              <div className="flex items-center gap-2.5">
+                <Radio className="w-4 h-4 shrink-0 text-emerald-600" />
                 <span className="font-semibold">{realtimeNotification}</span>
               </div>
               <button
                 type="button"
                 onClick={() => setRealtimeNotification(null)}
-                className="text-[var(--chalk)] hover:text-[var(--exposure)] text-xs font-medium cursor-pointer"
+                className="text-emerald-700 hover:text-emerald-950 text-xs font-semibold cursor-pointer"
               >
                 Dismiss
               </button>
             </div>
           )}
 
-          {/* Admin Portal Master Header Sheet */}
-          <section className="cyanotype-sheet p-6 sm:p-8">
-            <RegistrationCrosses />
+          {/* Header Bar */}
+          <section className="enterprise-card p-6 sm:p-8">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
               <div>
-                <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs font-mono text-[var(--chalk)] mb-1.5">
-                  <span className="font-semibold text-[var(--exposure)]">
-                    MIHORA TALENT ADMINISTRATION
+                <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs font-semibold text-slate-500 mb-1.5">
+                  <span className="text-[#143A7B] uppercase tracking-wider">
+                    Talent Administration
                   </span>
                   <span aria-hidden="true">·</span>
-                  <span className="text-[var(--status-verified)] inline-flex items-center gap-1.5 font-medium">
+                  <span className="text-emerald-700 inline-flex items-center gap-1.5">
                     <Radio className="w-3.5 h-3.5" />
-                    <span>Real-Time Directory</span>
+                    <span>Live Directory Sync</span>
                   </span>
                 </div>
-                <h1 className="font-display text-2xl sm:text-3xl font-bold text-[var(--exposure)] tracking-tight">
+                <h1 className="font-display text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
                   Candidate Profiles &amp; Engineering Registry
                 </h1>
-                <p className="text-xs sm:text-sm font-mono text-[var(--chalk)] mt-1">
-                  Manage candidate applications, verified academic credentials, and executive profile exports.
+                <p className="text-sm text-slate-600 mt-1">
+                  Manage candidate applications, verified academic credentials, and executive exports.
                 </p>
-
-                <div className="flex flex-wrap items-center gap-2 mt-5">
-                  <button type="button" onClick={openAuditLogsModal} className={actionBtnClass}>
-                    <Clock className="w-3.5 h-3.5 text-[var(--chalk)]" />
-                    <span>Activity Log</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    disabled={exportingFormat !== null}
-                    onClick={() => handleExport('csv')}
-                    className={actionBtnClass}
-                  >
-                    <FileSpreadsheet className="w-3.5 h-3.5 text-[var(--status-verified)]" />
-                    <span>{exportingFormat === 'csv' ? 'Exporting...' : 'Export CSV'}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    disabled={exportingFormat !== null}
-                    onClick={() => handleExport('json')}
-                    className={actionBtnClass}
-                  >
-                    <FileCode className="w-3.5 h-3.5 text-[var(--chalk)]" />
-                    <span>{exportingFormat === 'json' ? 'Exporting...' : 'Export JSON'}</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setActionError(null);
-                      loadMetrics();
-                      loadCandidates();
-                    }}
-                    className="p-2 text-[var(--chalk)] bg-[var(--edge)] border border-[var(--rule-strong)] rounded-[var(--radius-xs)] hover:bg-[var(--prussian-raise)] hover:text-[var(--exposure)] transition-colors cursor-pointer"
-                    title="Refresh candidate directory"
-                    aria-label="Refresh candidate directory"
-                  >
-                    <RefreshCw className="w-4 h-4" />
-                  </button>
-                </div>
               </div>
 
-              <div className="shrink-0">
-                <TitleBlock
-                  drawingNo="TALENT DIRECTORY"
-                  scale="LIVE"
-                  date="2026"
-                  drawnBy="MIHORA"
-                  checkedBy="ADMIN"
-                />
+              <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+                <button type="button" onClick={openAuditLogsModal} className={actionBtnClass}>
+                  <Clock className="w-3.5 h-3.5 text-slate-500" />
+                  <span>Activity Log</span>
+                </button>
+
+                <button
+                  type="button"
+                  disabled={exportingFormat !== null}
+                  onClick={() => handleExport('csv')}
+                  className={actionBtnClass}
+                >
+                  <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-700" />
+                  <span>{exportingFormat === 'csv' ? 'Exporting...' : 'Export CSV'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  disabled={exportingFormat !== null}
+                  onClick={() => handleExport('json')}
+                  className={actionBtnClass}
+                >
+                  <FileCode className="w-3.5 h-3.5 text-[#143A7B]" />
+                  <span>{exportingFormat === 'json' ? 'Exporting...' : 'Export JSON'}</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActionError(null);
+                    loadMetrics();
+                    loadCandidates();
+                  }}
+                  className="p-2 text-slate-600 bg-white border border-[#CBD5E1] rounded-lg hover:bg-[#FAF9F6] hover:text-slate-900 transition-colors cursor-pointer"
+                  title="Refresh candidate directory"
+                  aria-label="Refresh candidate directory"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                </button>
               </div>
             </div>
           </section>
 
-          {/* Hairline-Divided 4-Column Real Metrics Sheet */}
-          <section className="cyanotype-sheet grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[var(--rule-hairline)]">
-            <div className="p-5">
-              <div className="text-[11px] font-mono font-medium text-[var(--chalk)] tracking-wider">
-                REGISTERED CANDIDATES
+          {/* 4-Column Hairline-Divided KPI Strip */}
+          <section className="enterprise-card grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-[#E4E2DA]">
+            <div className="p-5 sm:p-6">
+              <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                Registered Candidates
               </div>
-              <div className="text-3xl font-bold font-mono text-[var(--exposure)] tabular-nums mt-1.5">
+              <div className="text-3xl font-bold font-mono text-slate-900 tabular-nums mt-2">
                 {metricsLoading ? '—' : <AnimatedNumber value={metrics?.totalCandidates ?? 0} />}
               </div>
-              <div className="text-xs font-mono text-[var(--chalk-dim)] mt-1">
+              <div className="text-xs text-slate-500 mt-1">
                 Active talent profiles
               </div>
             </div>
 
-            <div className="p-5">
-              <div className="text-[11px] font-mono font-medium text-[var(--chalk)] tracking-wider">
-                COMPLETE (≥80%)
+            <div className="p-5 sm:p-6">
+              <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                Complete (≥80%)
               </div>
-              <div className="text-3xl font-bold font-mono text-[var(--status-verified)] tabular-nums mt-1.5">
+              <div className="text-3xl font-bold font-mono text-emerald-700 tabular-nums mt-2">
                 {metricsLoading ? '—' : <AnimatedNumber value={metrics?.completedProfiles ?? 0} />}
               </div>
-              <div className="text-xs font-mono text-[var(--chalk-dim)] mt-1">
-                Full verified dossiers
+              <div className="text-xs text-slate-500 mt-1">
+                Verified dossiers ready
               </div>
             </div>
 
-            <div className="p-5">
-              <div className="text-[11px] font-mono font-medium text-[var(--chalk)] tracking-wider">
-                IN PROGRESS
+            <div className="p-5 sm:p-6">
+              <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                In Progress
               </div>
-              <div className="text-3xl font-bold font-mono text-[var(--status-warn)] tabular-nums mt-1.5">
+              <div className="text-3xl font-bold font-mono text-amber-700 tabular-nums mt-2">
                 {metricsLoading ? (
                   '—'
                 ) : (
                   <AnimatedNumber value={metrics?.inProgressProfiles ?? 0} />
                 )}
               </div>
-              <div className="text-xs font-mono text-[var(--chalk-dim)] mt-1">
+              <div className="text-xs text-slate-500 mt-1">
                 Partially completed drafts
               </div>
             </div>
 
-            <div className="p-5">
-              <div className="text-[11px] font-mono font-medium text-[var(--chalk)] tracking-wider">
-                ON-SITE READY
+            <div className="p-5 sm:p-6">
+              <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                On-Site Ready
               </div>
-              <div className="text-3xl font-bold font-mono text-[var(--exposure)] tabular-nums mt-1.5">
+              <div className="text-3xl font-bold font-mono text-[#143A7B] tabular-nums mt-2">
                 {metricsLoading ? (
                   '—'
                 ) : (
                   <AnimatedNumber value={metrics?.readyForDeployment ?? 0} />
                 )}
               </div>
-              <div className="text-xs font-mono text-[var(--chalk-dim)] mt-1">
+              <div className="text-xs text-slate-500 mt-1">
                 Willing to deploy on-site
               </div>
             </div>
           </section>
 
-          {/* Search & Filter Sheet */}
-          <section className="cyanotype-sheet p-4">
+          {/* Search & Filter Controls */}
+          <section className="enterprise-card p-4 sm:p-5">
             <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
               <form onSubmit={handleSearchSubmit} className="w-full md:w-96 relative">
-                <Search className="w-4 h-4 text-[var(--chalk-dim)] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
                   value={search}
@@ -490,7 +475,7 @@ export const AdminPortalPage: React.FC = () => {
                     setPage(1);
                   }}
                   placeholder="Search name, role, email, city, ref code..."
-                  className="field-input field-input-icon text-xs py-2"
+                  className="field-input field-input-icon text-sm py-2"
                 />
               </form>
 
@@ -498,10 +483,10 @@ export const AdminPortalPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setShowFilterDrawer((prev) => !prev)}
-                  className={`px-3 py-2 text-xs font-mono font-semibold rounded-[var(--radius-xs)] border transition-colors inline-flex items-center gap-1.5 cursor-pointer ${
+                  className={`px-3.5 py-2 text-xs font-semibold rounded-lg border transition-colors inline-flex items-center gap-1.5 cursor-pointer ${
                     showFilterDrawer || hasActiveFilters
-                      ? 'bg-[var(--exposure)] border-[var(--exposure)] text-[var(--edge)]'
-                      : 'bg-[var(--edge)] border-[var(--rule-strong)] text-[var(--chalk)] hover:text-[var(--exposure)]'
+                      ? 'bg-[#143A7B] border-[#143A7B] text-white'
+                      : 'bg-white border-[#CBD5E1] text-slate-700 hover:bg-[#FAF9F6] hover:text-slate-900'
                   }`}
                 >
                   <Filter className="w-3.5 h-3.5" />
@@ -515,7 +500,7 @@ export const AdminPortalPage: React.FC = () => {
                     setPage(1);
                   }}
                   aria-label="Sort candidates by"
-                  className="field-input w-auto py-2 px-3 text-xs"
+                  className="field-input w-auto py-2 px-3 text-xs font-medium"
                 >
                   <option value="updated_at">Sort: Last Updated</option>
                   <option value="created_at">Sort: Created Date</option>
@@ -530,7 +515,7 @@ export const AdminPortalPage: React.FC = () => {
                     setSortOrder((prev) => (prev === 'ASC' ? 'DESC' : 'ASC'));
                     setPage(1);
                   }}
-                  className="p-2 text-[var(--chalk)] bg-[var(--edge)] border border-[var(--rule-strong)] rounded-[var(--radius-xs)] hover:bg-[var(--prussian-raise)] hover:text-[var(--exposure)] cursor-pointer"
+                  className="p-2 text-slate-600 bg-white border border-[#CBD5E1] rounded-lg hover:bg-[#FAF9F6] hover:text-slate-900 cursor-pointer"
                   title={`Toggle sort order (${sortOrder})`}
                   aria-label={`Toggle sort order, currently ${sortOrder}`}
                 >
@@ -540,14 +525,14 @@ export const AdminPortalPage: React.FC = () => {
             </div>
 
             {activeFilterChips.length > 0 && (
-              <div className="mt-3 pt-3 border-t border-[var(--rule-hairline)] flex flex-wrap items-center gap-2">
-                <span className="text-xs font-mono text-[var(--chalk)] mr-1">Active:</span>
+              <div className="mt-3.5 pt-3.5 border-t border-[#E4E2DA] flex flex-wrap items-center gap-2">
+                <span className="text-xs font-medium text-slate-500 mr-1">Active:</span>
                 {activeFilterChips.map((chip) => (
                   <button
                     key={chip.key}
                     type="button"
                     onClick={chip.onClear}
-                    className="px-2.5 py-1 text-xs font-mono font-medium text-[var(--exposure)] bg-[var(--prussian-raise)] border border-[var(--rule-strong)] rounded-[var(--radius-xs)] hover:bg-[var(--edge)] transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+                    className="px-2.5 py-1 text-xs font-semibold text-[#143A7B] bg-[#EEF3FA] border border-[#143A7B]/20 rounded-md hover:bg-[#E1EAF7] transition-colors inline-flex items-center gap-1.5 cursor-pointer"
                   >
                     <span>{chip.label}</span>
                     <X className="w-3 h-3" />
@@ -556,7 +541,7 @@ export const AdminPortalPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={resetFilters}
-                  className="pencil-link text-xs font-mono font-semibold text-[var(--chalk)] hover:text-[var(--exposure)] ml-auto cursor-pointer"
+                  className="text-xs font-semibold text-slate-600 hover:text-[#143A7B] ml-auto cursor-pointer"
                 >
                   Clear all
                 </button>
@@ -564,10 +549,10 @@ export const AdminPortalPage: React.FC = () => {
             )}
 
             {showFilterDrawer && (
-              <div className="mt-4 pt-4 border-t border-[var(--rule-hairline)] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+              <div className="mt-4 pt-4 border-t border-[#E4E2DA] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
                 <div>
-                  <label className="block text-[11px] font-mono font-semibold text-[var(--chalk)] mb-1">
-                    ROLE TITLE
+                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    Role Title
                   </label>
                   <input
                     type="text"
@@ -577,13 +562,13 @@ export const AdminPortalPage: React.FC = () => {
                       setPage(1);
                     }}
                     placeholder="e.g. Civil, Software"
-                    className="field-input text-xs py-1.5"
+                    className="field-input text-xs py-2"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-mono font-semibold text-[var(--chalk)] mb-1">
-                    SENIORITY LEVEL
+                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    Seniority Level
                   </label>
                   <select
                     value={filterSeniority}
@@ -591,7 +576,7 @@ export const AdminPortalPage: React.FC = () => {
                       setFilterSeniority(e.target.value);
                       setPage(1);
                     }}
-                    className="field-input text-xs py-1.5"
+                    className="field-input text-xs py-2"
                   >
                     <option value="">All Levels</option>
                     <option value="Intern">Intern</option>
@@ -605,8 +590,8 @@ export const AdminPortalPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-mono font-semibold text-[var(--chalk)] mb-1">
-                    AVAILABILITY STATUS
+                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    Availability Status
                   </label>
                   <select
                     value={filterStatus}
@@ -614,7 +599,7 @@ export const AdminPortalPage: React.FC = () => {
                       setFilterStatus(e.target.value);
                       setPage(1);
                     }}
-                    className="field-input text-xs py-1.5"
+                    className="field-input text-xs py-2"
                   >
                     <option value="">All Statuses</option>
                     <option value="currently_available">Currently Available</option>
@@ -625,8 +610,8 @@ export const AdminPortalPage: React.FC = () => {
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-mono font-semibold text-[var(--chalk)] mb-1">
-                    MIN COMPLETENESS
+                  <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    Min Completeness
                   </label>
                   <select
                     value={filterMinCompletion}
@@ -634,7 +619,7 @@ export const AdminPortalPage: React.FC = () => {
                       setFilterMinCompletion(e.target.value);
                       setPage(1);
                     }}
-                    className="field-input text-xs py-1.5"
+                    className="field-input text-xs py-2"
                   >
                     <option value="">Any Score</option>
                     <option value="80">≥ 80% (Complete)</option>
@@ -647,7 +632,7 @@ export const AdminPortalPage: React.FC = () => {
                   <button
                     type="button"
                     onClick={resetFilters}
-                    className="w-full px-3 py-2 text-xs font-mono font-semibold text-[var(--exposure)] bg-[var(--edge)] hover:bg-[var(--prussian-raise)] border border-[var(--rule-strong)] rounded-[var(--radius-xs)] transition-colors cursor-pointer"
+                    className="w-full px-3 py-2 text-xs font-semibold text-slate-700 bg-[#FAF9F6] hover:bg-[#EFECE6] border border-[#CBD5E1] rounded-lg transition-colors cursor-pointer"
                   >
                     Reset Filters
                   </button>
@@ -656,28 +641,28 @@ export const AdminPortalPage: React.FC = () => {
             )}
           </section>
 
-          {/* Candidate Directory Schedule Sheet */}
-          <section className="cyanotype-sheet overflow-hidden">
+          {/* Candidate Directory Table */}
+          <section className="enterprise-card overflow-hidden">
             {isTableLoading ? (
               <div className="p-6" aria-busy="true">
-                <BlankSheetLoader label="LOADING CANDIDATE DIRECTORY..." />
+                <BlankSheetLoader label="Loading candidate directory..." />
               </div>
             ) : candidates.length === 0 ? (
               <div className="py-20 text-center px-4">
-                <Users className="w-9 h-9 text-[var(--chalk-dim)] mx-auto mb-3" />
-                <h3 className="font-display text-base font-bold text-[var(--exposure)]">
+                <Users className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+                <h3 className="font-display text-lg font-bold text-slate-900">
                   No Candidate Profiles Found
                 </h3>
-                <p className="text-xs font-mono text-[var(--chalk)] mt-1 max-w-sm mx-auto leading-relaxed">
+                <p className="text-sm text-slate-600 mt-1.5 max-w-sm mx-auto leading-relaxed">
                   {search || hasActiveFilters
                     ? 'No candidate records matched your active filters. Try clearing or adjusting your query.'
-                    : 'No candidate profiles have registered yet. New registrations appear here in real time.'}
+                    : 'No candidate profiles have registered yet. New registrations appear here automatically.'}
                 </p>
                 {(search || hasActiveFilters) && (
                   <button
                     type="button"
                     onClick={resetFilters}
-                    className="mt-5 px-4 py-2 text-xs font-mono font-semibold text-[var(--edge)] bg-[var(--exposure)] hover:bg-white rounded-[var(--radius-xs)] transition-colors cursor-pointer"
+                    className="mt-5 px-4 py-2 text-xs font-semibold text-white bg-[#143A7B] hover:bg-[#0E2B5C] rounded-lg transition-colors cursor-pointer"
                   >
                     Reset All Filters
                   </button>
@@ -687,46 +672,46 @@ export const AdminPortalPage: React.FC = () => {
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="bg-[var(--edge)]/80 border-b-2 border-[var(--rule-strong)] text-[11px] font-mono font-semibold text-[var(--chalk)] tracking-wider">
-                      <th className="py-3.5 px-4">REF CODE</th>
+                    <tr className="bg-[#FAF9F6] border-b border-[#E4E2DA] text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                      <th className="py-3.5 px-4">Ref Code</th>
                       <th className="py-3.5 px-4">
                         <button
                           type="button"
                           onClick={() => handleColumnSort('name')}
-                          className="inline-flex items-center gap-1 hover:text-[var(--exposure)] transition-colors cursor-pointer"
+                          className="inline-flex items-center gap-1.5 hover:text-slate-900 transition-colors cursor-pointer"
                         >
-                          <span>CANDIDATE</span>
+                          <span>Candidate</span>
                           {renderSortIcon('name')}
                         </button>
                       </th>
-                      <th className="py-3.5 px-4">ROLE &amp; SENIORITY</th>
-                      <th className="py-3.5 px-4">LOCATION</th>
+                      <th className="py-3.5 px-4">Role &amp; Seniority</th>
+                      <th className="py-3.5 px-4">Location</th>
                       <th className="py-3.5 px-4 text-right">
                         <button
                           type="button"
                           onClick={() => handleColumnSort('experience')}
-                          className="inline-flex items-center justify-end gap-1 hover:text-[var(--exposure)] transition-colors cursor-pointer ml-auto"
+                          className="inline-flex items-center justify-end gap-1.5 hover:text-slate-900 transition-colors cursor-pointer ml-auto"
                         >
-                          <span>EXP</span>
+                          <span>Exp</span>
                           {renderSortIcon('experience')}
                         </button>
                       </th>
-                      <th className="py-3.5 px-4">AVAILABILITY</th>
+                      <th className="py-3.5 px-4">Availability</th>
                       <th className="py-3.5 px-4 text-right">
                         <button
                           type="button"
                           onClick={() => handleColumnSort('completion_percentage')}
-                          className="inline-flex items-center justify-end gap-1 hover:text-[var(--exposure)] transition-colors cursor-pointer ml-auto"
+                          className="inline-flex items-center justify-end gap-1.5 hover:text-slate-900 transition-colors cursor-pointer ml-auto"
                         >
-                          <span>SCORE</span>
+                          <span>Score</span>
                           {renderSortIcon('completion_percentage')}
                         </button>
                       </th>
-                      <th className="py-3.5 px-4">DEPLOYMENT</th>
-                      <th className="py-3.5 px-4 text-right">PROFILE</th>
+                      <th className="py-3.5 px-4">Deployment</th>
+                      <th className="py-3.5 px-4 text-right">Profile</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[var(--rule-hairline)] text-xs font-mono text-[var(--chalk)]">
+                  <tbody className="divide-y divide-[#E4E2DA] text-sm text-slate-700">
                     {candidates.map((cand) => {
                       const nameStr =
                         `${cand.first_name || ''} ${cand.last_name || ''}`.trim() ||
@@ -736,64 +721,62 @@ export const AdminPortalPage: React.FC = () => {
                         <tr
                           key={cand.id}
                           onClick={() => openCandidateDetail(cand.id)}
-                          className="hover:bg-[var(--prussian-raise)]/65 transition-colors cursor-pointer"
+                          className="hover:bg-[#F7F6F2] transition-colors cursor-pointer"
                         >
-                          <td className="py-3.5 px-4 font-semibold text-[var(--exposure)] whitespace-nowrap">
+                          <td className="py-3.5 px-4 font-mono text-xs font-semibold text-[#143A7B] whitespace-nowrap">
                             {cand.reference_code}
                           </td>
 
                           <td className="py-3.5 px-4">
-                            <div className="font-display text-sm font-semibold text-[var(--exposure)]">
+                            <div className="font-display text-sm font-semibold text-slate-900">
                               {nameStr}
                             </div>
-                            <div className="text-xs text-[var(--chalk)] truncate max-w-[190px]">
+                            <div className="text-xs text-slate-500 truncate max-w-[190px]">
                               {cand.email}
                             </div>
                           </td>
 
                           <td className="py-3.5 px-4">
-                            <div className="font-semibold text-[var(--exposure)]">
+                            <div className="font-medium text-slate-900">
                               {cand.primary_role || 'Not specified'}
                             </div>
-                            <div className="text-xs text-[var(--chalk)]">
+                            <div className="text-xs text-slate-500">
                               {cand.seniority_level || 'Mid-Level'}
                             </div>
                           </td>
 
                           <td className="py-3.5 px-4 whitespace-nowrap">
-                            <div className="text-[var(--exposure)]">
-                              {cand.current_city || '—'}
-                            </div>
-                            <div className="text-xs text-[var(--chalk)]">
+                            <div className="text-slate-900">{cand.current_city || '—'}</div>
+                            <div className="text-xs text-slate-500">
                               {cand.current_country || ''}
                             </div>
                           </td>
 
-                          <td className="py-3.5 px-4 text-right tabular-nums whitespace-nowrap text-[var(--exposure)]">
+                          <td className="py-3.5 px-4 text-right font-mono text-xs tabular-nums whitespace-nowrap text-slate-900">
                             {cand.total_experience_years !== null
                               ? `${cand.total_experience_years}y`
                               : '—'}
                           </td>
 
                           <td className="py-3.5 px-4 whitespace-nowrap">
-                            <span className="capitalize text-[var(--exposure)]">
+                            <span className="capitalize text-slate-800">
                               {cand.employment_status?.replace(/_/g, ' ') || 'Available'}
                             </span>
                             {cand.notice_period_days ? (
-                              <div className="text-xs text-[var(--chalk)]">
+                              <div className="text-xs text-slate-500">
                                 {cand.notice_period_days}d notice
                               </div>
                             ) : null}
                           </td>
 
-                          <td className="py-3.5 px-4 text-right tabular-nums font-bold">
+                          <td className="py-3.5 px-4 text-right font-mono text-xs tabular-nums font-bold">
                             <span
                               className={
                                 cand.completion_percentage >= 80
-                                  ? 'text-[var(--status-verified)]'
+                                  ? 'text-emerald-700'
                                   : cand.completion_percentage >= 50
-                                  ? 'text-[var(--status-warn)]'
-                                  : 'text-[var(--chalk)]'
+                                  ? 'text-amber-700'
+                                  : 'text-slate-500'
                               }
                             >
                               {cand.completion_percentage}%
@@ -804,8 +787,8 @@ export const AdminPortalPage: React.FC = () => {
                             <span
                               className={
                                 cand.willing_onsite_deployment
-                                  ? 'font-semibold text-[var(--status-verified)]'
-                                  : 'text-[var(--chalk)]'
+                                  ? 'text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md'
+                                  : 'text-xs text-slate-500'
                               }
                             >
                               {cand.willing_onsite_deployment ? 'On-Site' : 'Remote'}
@@ -819,7 +802,7 @@ export const AdminPortalPage: React.FC = () => {
                             <button
                               type="button"
                               onClick={() => openCandidateDetail(cand.id)}
-                              className="px-2.5 py-1.5 text-xs font-semibold text-[var(--edge)] bg-[var(--exposure)] hover:bg-white rounded-[var(--radius-xs)] transition-colors inline-flex items-center gap-1 cursor-pointer"
+                              className="px-3 py-1.5 text-xs font-semibold text-white bg-[#143A7B] hover:bg-[#0E2B5C] rounded-lg transition-colors inline-flex items-center gap-1.5 cursor-pointer"
                             >
                               <Eye className="w-3.5 h-3.5" />
                               <span>View</span>
@@ -835,17 +818,17 @@ export const AdminPortalPage: React.FC = () => {
 
             {/* Pagination Footer */}
             {!isTableLoading && candidates.length > 0 && (
-              <div className="px-4 py-3.5 bg-[var(--edge)]/80 border-t border-[var(--rule-hairline)] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-[var(--chalk)]">
+              <div className="px-4 py-3.5 bg-[#FAF9F6] border-t border-[#E4E2DA] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600">
                 <div>
                   Showing{' '}
-                  <span className="font-semibold text-[var(--exposure)]">
+                  <span className="font-mono font-semibold text-slate-900">
                     {(page - 1) * pageSize + 1}
                   </span>
                   –
-                  <span className="font-semibold text-[var(--exposure)]">
+                  <span className="font-mono font-semibold text-slate-900">
                     {Math.min(page * pageSize, totalCount)}
                   </span>{' '}
-                  of <span className="font-semibold text-[var(--exposure)]">{totalCount}</span>
+                  of <span className="font-mono font-semibold text-slate-900">{totalCount}</span>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -854,12 +837,12 @@ export const AdminPortalPage: React.FC = () => {
                     disabled={page <= 1}
                     onClick={() => setPage(page - 1)}
                     aria-label="Previous page"
-                    className="p-1.5 rounded-[var(--radius-xs)] border border-[var(--rule-strong)] bg-[var(--prussian)] text-[var(--exposure)] hover:bg-[var(--prussian-raise)] disabled:opacity-40 cursor-pointer"
+                    className="p-1.5 rounded-lg border border-[#CBD5E1] bg-white text-slate-700 hover:bg-[#FAF9F6] disabled:opacity-40 cursor-pointer"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
 
-                  <span className="text-xs px-2 text-[var(--exposure)]">
+                  <span className="font-mono text-xs px-2 text-slate-700">
                     Page {page} / {totalPages || 1}
                   </span>
 
@@ -868,7 +851,7 @@ export const AdminPortalPage: React.FC = () => {
                     disabled={page >= totalPages}
                     onClick={() => setPage(page + 1)}
                     aria-label="Next page"
-                    className="p-1.5 rounded-[var(--radius-xs)] border border-[var(--rule-strong)] bg-[var(--prussian)] text-[var(--exposure)] hover:bg-[var(--prussian-raise)] disabled:opacity-40 cursor-pointer"
+                    className="p-1.5 rounded-lg border border-[#CBD5E1] bg-white text-slate-700 hover:bg-[#FAF9F6] disabled:opacity-40 cursor-pointer"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </button>
@@ -877,7 +860,7 @@ export const AdminPortalPage: React.FC = () => {
             )}
           </section>
 
-          {/* Theme #064 §6.14 Exposure-White Filed Slip Right Slide-Over Drawer */}
+          {/* Candidate Dossier Slide-Over Drawer */}
           <AnimatePresence>
             {selectedCandidateId && (
               <motion.div
@@ -890,7 +873,7 @@ export const AdminPortalPage: React.FC = () => {
                 aria-modal="true"
                 aria-label="Candidate Profile Summary"
                 onClick={() => setSelectedCandidateId(null)}
-                className="fixed inset-0 z-50 bg-[var(--table)]/75 backdrop-blur-xs flex justify-end"
+                className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex justify-end"
               >
                 <motion.div
                   key="dossier-drawer-panel"
@@ -899,55 +882,50 @@ export const AdminPortalPage: React.FC = () => {
                   exit={{ x: '100%' }}
                   transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
                   onClick={(e) => e.stopPropagation()}
-                  className="bg-[var(--exposure)] text-[var(--edge)] border-l-2 border-[var(--prussian)] max-w-2xl w-full h-full overflow-y-auto shadow-[var(--shadow-slip)] p-6 sm:p-8 relative font-mono"
+                  className="bg-white text-slate-900 border-l border-[#E4E2DA] max-w-2xl w-full h-full overflow-y-auto shadow-2xl p-6 sm:p-8 relative"
                 >
                   <button
                     type="button"
                     onClick={() => setSelectedCandidateId(null)}
-                    aria-label="Close dossier slip"
-                    className="absolute top-5 right-5 p-2 text-[var(--prussian)] hover:text-[var(--edge)] rounded-[var(--radius-xs)] hover:bg-[rgba(15,39,64,0.08)] cursor-pointer"
+                    aria-label="Close dossier drawer"
+                    className="absolute top-5 right-5 p-2 text-slate-400 hover:text-slate-900 rounded-lg hover:bg-slate-100 cursor-pointer"
                   >
                     <X className="w-5 h-5" />
                   </button>
 
                   {isDetailLoading || !selectedCandidateDetail ? (
                     <div className="py-12">
-                      <BlankSheetLoader
-                        lightPaper
-                        label="LOADING CANDIDATE PROFILE..."
-                      />
+                      <BlankSheetLoader label="Loading candidate profile..." />
                     </div>
                   ) : (
                     <div>
-                      <div className="border-b-2 border-[var(--prussian)] pb-5 mb-6 pr-8">
-                        <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--prussian)] mb-2">
+                      <div className="border-b border-[#E4E2DA] pb-6 mb-6 pr-8">
+                        <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500 mb-2">
                           <div className="flex flex-wrap items-center gap-2">
-                            <span className="font-bold text-[var(--edge)]">
+                            <span className="font-mono font-semibold text-[#143A7B] bg-[#EEF3FA] px-2 py-0.5 rounded-md">
                               {selectedCandidateDetail.candidate.reference_code}
                             </span>
-                            <span aria-hidden="true">·</span>
                             <span>{selectedCandidateDetail.candidate.email}</span>
                           </div>
 
-                          {/* Strictly ONE --red rubber checker stamp on Filed Exposure Slip (§6.14) */}
                           {selectedCandidateDetail.candidate.completion_percentage >= 80 ? (
-                            <span className="stamp-strike inline-block border-2 border-[var(--red)] text-[var(--red)] px-2.5 py-0.5 text-[10px] font-bold tracking-widest">
-                              FILED · VERIFIED
+                            <span className="inline-block bg-emerald-50 border border-emerald-200 text-emerald-700 px-2.5 py-0.5 rounded-md text-xs font-semibold">
+                              Verified Ready
                             </span>
                           ) : (
-                            <span className="border border-[var(--prussian)] text-[var(--prussian)] px-2 py-0.5 text-[10px] font-bold tracking-widest">
-                              DRAFT · {selectedCandidateDetail.candidate.completion_percentage}%
+                            <span className="inline-block bg-amber-50 border border-amber-200 text-amber-700 px-2.5 py-0.5 rounded-md text-xs font-semibold">
+                              Draft · {selectedCandidateDetail.candidate.completion_percentage}%
                             </span>
                           )}
                         </div>
 
-                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-2">
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-3">
                           <div>
-                            <h2 className="font-display text-2xl font-bold text-[var(--edge)]">
+                            <h2 className="font-display text-2xl font-bold text-slate-900">
                               {selectedCandidateDetail.candidate.first_name}{' '}
                               {selectedCandidateDetail.candidate.last_name}
                             </h2>
-                            <div className="text-sm font-semibold text-[var(--prussian)] mt-0.5">
+                            <div className="text-sm font-medium text-slate-600 mt-0.5">
                               {selectedCandidateDetail.candidate.primary_role ||
                                 'Engineering Candidate'}{' '}
                               · {selectedCandidateDetail.candidate.seniority_level || 'Mid-Level'}
@@ -964,7 +942,7 @@ export const AdminPortalPage: React.FC = () => {
                                 selectedCandidateDetail.skills
                               )
                             }
-                            className="px-4 py-2 text-xs font-semibold text-[var(--exposure)] bg-[var(--edge)] hover:bg-[var(--prussian)] rounded-[var(--radius-xs)] transition-colors inline-flex items-center gap-1.5 shrink-0 cursor-pointer"
+                            className="px-4 py-2 text-xs font-semibold text-white bg-[#143A7B] hover:bg-[#0E2B5C] rounded-lg transition-colors inline-flex items-center gap-1.5 shrink-0 cursor-pointer"
                           >
                             <Download className="w-3.5 h-3.5" />
                             <span>Download PDF Dossier</span>
@@ -972,13 +950,13 @@ export const AdminPortalPage: React.FC = () => {
                         </div>
                       </div>
 
-                      <div className="divide-y divide-[var(--rule-paper)] text-xs text-[var(--prussian)]">
+                      <div className="divide-y divide-[#E4E2DA] text-sm text-slate-700">
                         {selectedCandidateDetail.candidate.professional_summary && (
                           <div className="pb-5">
-                            <h3 className="text-[11px] font-bold text-[var(--edge)] tracking-wider mb-2">
-                              PROFESSIONAL SUMMARY
+                            <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                              Professional Summary
                             </h3>
-                            <p className="leading-relaxed text-[var(--edge)]">
+                            <p className="leading-relaxed text-slate-800">
                               {selectedCandidateDetail.candidate.professional_summary}
                             </p>
                           </div>
@@ -986,18 +964,18 @@ export const AdminPortalPage: React.FC = () => {
 
                         <div className="py-5 grid grid-cols-2 gap-4">
                           <div>
-                            <span className="text-[11px] text-[var(--prussian)] block">
+                            <span className="text-xs text-slate-500 block">
                               Total Experience
                             </span>
-                            <span className="font-bold text-[var(--edge)] mt-0.5 block">
+                            <span className="font-mono font-semibold text-slate-900 mt-0.5 block">
                               {selectedCandidateDetail.candidate.total_experience_years ?? 0} Years
                             </span>
                           </div>
                           <div>
-                            <span className="text-[11px] text-[var(--prussian)] block">
+                            <span className="text-xs text-slate-500 block">
                               Expected Remuneration
                             </span>
-                            <span className="font-bold text-[var(--edge)] mt-0.5 block">
+                            <span className="font-mono font-semibold text-slate-900 mt-0.5 block">
                               {selectedCandidateDetail.candidate.expected_compensation_amount
                                 ? `${Number(
                                     selectedCandidateDetail.candidate.expected_compensation_amount
@@ -1008,18 +986,18 @@ export const AdminPortalPage: React.FC = () => {
                             </span>
                           </div>
                           <div>
-                            <span className="text-[11px] text-[var(--prussian)] block">
+                            <span className="text-xs text-slate-500 block">
                               Notice Period
                             </span>
-                            <span className="font-bold text-[var(--edge)] mt-0.5 block">
+                            <span className="font-mono font-semibold text-slate-900 mt-0.5 block">
                               {selectedCandidateDetail.candidate.notice_period_days ?? 0} Days
                             </span>
                           </div>
                           <div>
-                            <span className="text-[11px] text-[var(--prussian)] block">
+                            <span className="text-xs text-slate-500 block">
                               Deployment
                             </span>
-                            <span className="font-bold text-[var(--edge)] mt-0.5 block">
+                            <span className="font-semibold text-slate-900 mt-0.5 block">
                               {selectedCandidateDetail.candidate.willing_onsite_deployment
                                 ? 'On-Site Willing'
                                 : 'Remote Only'}
@@ -1029,10 +1007,10 @@ export const AdminPortalPage: React.FC = () => {
 
                         <div className="py-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
                           <div>
-                            <span className="text-[11px] text-[var(--prussian)] block">
+                            <span className="text-xs text-slate-500 block">
                               Max Commute
                             </span>
-                            <span className="font-semibold text-[var(--edge)] mt-0.5 block">
+                            <span className="font-mono text-xs font-semibold text-slate-900 mt-0.5 block">
                               {selectedCandidateDetail.candidate.max_commute_distance_km
                                 ? `${selectedCandidateDetail.candidate.max_commute_distance_km} km`
                                 : 'Flexible'}{' '}
@@ -1043,10 +1021,10 @@ export const AdminPortalPage: React.FC = () => {
                             </span>
                           </div>
                           <div>
-                            <span className="text-[11px] text-[var(--prussian)] block">
+                            <span className="text-xs text-slate-500 block">
                               Accommodation
                             </span>
-                            <span className="font-semibold text-[var(--edge)] capitalize mt-0.5 block">
+                            <span className="font-semibold text-slate-900 capitalize mt-0.5 block">
                               {selectedCandidateDetail.candidate.accommodation_status?.replace(
                                 /_/g,
                                 ' '
@@ -1057,10 +1035,10 @@ export const AdminPortalPage: React.FC = () => {
                             </span>
                           </div>
                           <div>
-                            <span className="text-[11px] text-[var(--prussian)] block">
+                            <span className="text-xs text-slate-500 block">
                               Transportation
                             </span>
-                            <span className="font-semibold text-[var(--edge)] capitalize mt-0.5 block">
+                            <span className="font-semibold text-slate-900 capitalize mt-0.5 block">
                               {selectedCandidateDetail.candidate.transportation_status?.replace(
                                 /_/g,
                                 ' '
@@ -1070,34 +1048,36 @@ export const AdminPortalPage: React.FC = () => {
                         </div>
 
                         <div className="py-5">
-                          <h3 className="text-[11px] font-bold text-[var(--edge)] tracking-wider mb-3">
-                            WORK EXPERIENCE ({selectedCandidateDetail.experiences?.length || 0})
+                          <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+                            Work Experience ({selectedCandidateDetail.experiences?.length || 0})
                           </h3>
                           {selectedCandidateDetail.experiences?.length === 0 ? (
-                            <p className="text-[var(--prussian)]">No experience records attached.</p>
+                            <p className="text-slate-500">No experience records attached.</p>
                           ) : (
                             <div className="space-y-3">
                               {selectedCandidateDetail.experiences.map((exp: any) => (
                                 <div
                                   key={exp.id}
-                                  className="pb-3 border-b border-[var(--rule-paper)] last:border-b-0 last:pb-0"
+                                  className="pb-3 border-b border-[#E4E2DA] last:border-b-0 last:pb-0"
                                 >
                                   <div className="flex flex-wrap justify-between gap-2">
                                     <div>
-                                      <span className="font-bold text-[var(--edge)]">
+                                      <span className="font-bold text-slate-900">
                                         {exp.job_title}
                                       </span>
-                                      <span className="text-[var(--prussian)] ml-2 font-semibold">
+                                      <span className="text-slate-600 ml-2 font-medium">
                                         · {exp.company_name}
                                       </span>
                                     </div>
-                                    <span className="text-xs text-[var(--prussian)]">
+                                    <span className="font-mono text-xs text-slate-500">
                                       {exp.start_date} —{' '}
                                       {exp.is_current ? 'Present' : exp.end_date || 'N/A'}
                                     </span>
                                   </div>
                                   {exp.responsibilities && (
-                                    <p className="text-[var(--edge)] mt-1">{exp.responsibilities}</p>
+                                    <p className="text-slate-700 mt-1 text-sm">
+                                      {exp.responsibilities}
+                                    </p>
                                   )}
                                 </div>
                               ))}
@@ -1106,24 +1086,24 @@ export const AdminPortalPage: React.FC = () => {
                         </div>
 
                         <div className="py-5">
-                          <h3 className="text-[11px] font-bold text-[var(--edge)] tracking-wider mb-3">
-                            ACADEMIC BACKGROUND ({selectedCandidateDetail.education?.length || 0})
+                          <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+                            Academic Background ({selectedCandidateDetail.education?.length || 0})
                           </h3>
                           {selectedCandidateDetail.education?.length === 0 ? (
-                            <p className="text-[var(--prussian)]">No education records attached.</p>
+                            <p className="text-slate-500">No education records attached.</p>
                           ) : (
                             <div className="space-y-2.5">
                               {selectedCandidateDetail.education.map((edu: any) => (
                                 <div key={edu.id} className="flex justify-between gap-4">
                                   <div>
-                                    <div className="font-bold text-[var(--edge)]">
+                                    <div className="font-bold text-slate-900">
                                       {edu.qualification}
                                     </div>
-                                    <div className="text-[var(--prussian)]">
+                                    <div className="text-slate-600 text-xs">
                                       {edu.institution} {edu.country && `· ${edu.country}`}
                                     </div>
                                   </div>
-                                  <div className="text-xs text-[var(--prussian)] shrink-0">
+                                  <div className="font-mono text-xs text-slate-500 shrink-0">
                                     {edu.start_year} —{' '}
                                     {edu.is_current ? 'Present' : edu.completion_year || 'Present'}
                                   </div>
@@ -1134,22 +1114,22 @@ export const AdminPortalPage: React.FC = () => {
                         </div>
 
                         <div className="pt-5">
-                          <h3 className="text-[11px] font-bold text-[var(--edge)] tracking-wider mb-3">
-                            TECHNICAL SKILLS ({selectedCandidateDetail.skills?.length || 0})
+                          <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-3">
+                            Technical Skills ({selectedCandidateDetail.skills?.length || 0})
                           </h3>
                           {selectedCandidateDetail.skills?.length === 0 ? (
-                            <p className="text-[var(--prussian)]">No skills listed.</p>
+                            <p className="text-slate-500">No skills listed.</p>
                           ) : (
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
                               {selectedCandidateDetail.skills.map((s: any) => (
                                 <div
                                   key={s.id}
-                                  className="py-1.5 border-b border-[var(--rule-paper)] flex items-baseline justify-between gap-2"
+                                  className="py-1.5 border-b border-[#E4E2DA] flex items-baseline justify-between gap-2"
                                 >
-                                  <span className="font-bold text-[var(--edge)]">
+                                  <span className="font-semibold text-slate-900">
                                     {s.skill_name}
                                   </span>
-                                  <span className="text-xs text-[var(--prussian)]">
+                                  <span className="font-mono text-xs text-slate-500">
                                     {s.proficiency_level} · {s.years_of_experience}y
                                   </span>
                                 </div>
@@ -1165,7 +1145,7 @@ export const AdminPortalPage: React.FC = () => {
             )}
           </AnimatePresence>
 
-          {/* System Audit Logs Modal */}
+          {/* Activity Log Modal */}
           <AnimatePresence>
             {showAuditLogs && (
               <motion.div
@@ -1176,9 +1156,9 @@ export const AdminPortalPage: React.FC = () => {
                 transition={{ duration: 0.16 }}
                 role="dialog"
                 aria-modal="true"
-                aria-label="Administrative Audit Logs"
+                aria-label="Administrative Activity Log"
                 onClick={() => setShowAuditLogs(false)}
-                className="fixed inset-0 z-50 bg-[var(--table)]/75 backdrop-blur-xs flex items-center justify-center p-4"
+                className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4"
               >
                 <motion.div
                   key="audit-modal-panel"
@@ -1187,54 +1167,53 @@ export const AdminPortalPage: React.FC = () => {
                   exit={{ opacity: 0, y: 8 }}
                   transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
                   onClick={(e) => e.stopPropagation()}
-                  className="cyanotype-sheet max-w-3xl w-full max-h-[85vh] overflow-y-auto p-6 sm:p-8 relative"
+                  className="enterprise-card max-w-3xl w-full max-h-[85vh] overflow-y-auto p-6 sm:p-8 relative"
                 >
-                  <RegistrationCrosses />
                   <button
                     type="button"
                     onClick={() => setShowAuditLogs(false)}
-                    aria-label="Close audit logs"
-                    className="absolute top-5 right-5 p-2 text-[var(--chalk)] hover:text-[var(--exposure)] rounded-[var(--radius-xs)] hover:bg-[var(--edge)] cursor-pointer"
+                    aria-label="Close activity log"
+                    className="absolute top-5 right-5 p-2 text-slate-400 hover:text-slate-900 rounded-lg hover:bg-slate-100 cursor-pointer"
                   >
                     <X className="w-5 h-5" />
                   </button>
 
-                  <h2 className="font-display text-lg font-bold text-[var(--exposure)] mb-1">
+                  <h2 className="font-display text-xl font-bold text-slate-900 mb-1">
                     Administrative Activity Log
                   </h2>
-                  <p className="text-xs font-mono text-[var(--chalk)] mb-5">
+                  <p className="text-sm text-slate-600 mb-5">
                     Complete record of candidate registrations, profile updates, and administrative exports.
                   </p>
 
                   {auditLogsLoading ? (
-                    <div className="py-12 text-center font-mono text-xs text-[var(--chalk)]">
-                      Loading audit history...
+                    <div className="py-12 text-center text-sm text-slate-500">
+                      Loading activity history...
                     </div>
                   ) : auditLogs.length === 0 ? (
-                    <div className="py-12 text-center font-mono text-xs text-[var(--chalk)]">
-                      No audit events recorded yet.
+                    <div className="py-12 text-center text-sm text-slate-500">
+                      No activity events recorded yet.
                     </div>
                   ) : (
-                    <div className="divide-y divide-[var(--rule-hairline)] border-t border-[var(--rule-hairline)]">
+                    <div className="divide-y divide-[#E4E2DA] border-t border-[#E4E2DA]">
                       {auditLogs.map((log) => (
-                        <div key={log.id} className="py-3 text-xs font-mono">
+                        <div key={log.id} className="py-3.5 text-sm">
                           <div className="flex justify-between items-baseline gap-2">
-                            <span className="font-semibold text-[var(--exposure)]">
+                            <span className="font-semibold text-slate-900">
                               {log.action}
                             </span>
-                            <span className="text-xs text-[var(--chalk)]">
+                            <span className="font-mono text-xs text-slate-500">
                               {new Date(log.created_at).toLocaleString()}
                             </span>
                           </div>
-                          <div className="text-[var(--chalk)] mt-0.5">
+                          <div className="text-xs text-slate-600 mt-1">
                             Actor:{' '}
-                            <span className="text-[var(--exposure)]">
+                            <span className="font-medium text-slate-900">
                               {log.actor_email || 'System'}
                             </span>{' '}
                             ({log.actor_role || 'ANONYMOUS'})
                           </div>
                           {log.metadata && (
-                            <div className="mt-1 text-xs text-[var(--chalk-dim)] truncate">
+                            <div className="mt-1 font-mono text-xs text-slate-500 truncate">
                               {log.metadata}
                             </div>
                           )}
